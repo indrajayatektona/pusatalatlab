@@ -1,0 +1,231 @@
+---
+// Import Komponen Universal
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SearchModal from '../components/SearchModal.astro';
+import QuoteModal from '../components/QuoteModal.astro';
+import FloatingWA from '../components/FloatingWA.astro'; // Import WA
+import { ClientRouter } from 'astro:transitions';
+import { SITE_CONFIG } from '../config';
+
+// Definisi Props Master
+interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+	type?: 'website' | 'article' | 'product';
+	showBreadcrumbs?: boolean;
+	noIndex?: boolean; 
+	isFullWidth?: boolean;
+}
+
+const { 
+	title, 
+	description = "Distributor Alat Laboratorium Teknik Sipil Terlengkap (Beton, Aspal, Tanah, Batuan). Berstandar SNI & ASTM.", 
+	image = "/images/default-og.jpg",
+	type = "website",
+	showBreadcrumbs = true,
+	noIndex = false,
+	isFullWidth = false
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const currentPath = Astro.url.pathname;
+const isHome = currentPath === '/';
+
+// Schema Organization
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": SITE_CONFIG.brandName,
+  "url": import.meta.env.SITE,
+  "logo": new URL("/logo.png", import.meta.env.SITE).toString(),
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": SITE_CONFIG.whatsapp,
+    "contactType": "sales",
+    "areaServed": "ID",
+    "availableLanguage": "Indonesian"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": SITE_CONFIG.address,
+    "addressCountry": "ID"
+  }
+};
+
+// Breadcrumbs Generator Logic
+const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, array) => {
+	const href = '/' + array.slice(0, index + 1).join('/');
+	// Bersihkan nama URL: ganti dash (-) jadi spasi, huruf kapital awal
+	const name = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); 
+	// Custom mapping nama
+	return { name: name === 'Products' ? 'Katalog' : name, href };
+});
+---
+
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		
+		{noIndex ? (
+			<meta name="robots" content="noindex, nofollow" />
+		) : (
+			<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		)}
+
+		<title>{title} | {SITE_CONFIG.brandName}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, Astro.site)} />
+
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={new URL(image, Astro.site)} />
+
+		<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+		<ClientRouter />
+		<slot name="head" />
+	</head>
+	
+	<body class="bg-gray-50 text-civil-dark font-sans flex flex-col min-h-screen">
+		
+		<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-civil-secondary focus:text-civil-primary focus:font-bold focus:shadow-hard">
+			Skip to Main Content
+		</a>
+
+		<div class="bg-civil-dark text-white text-[10px] md:text-xs font-bold text-center py-2 px-4 tracking-wide relative z-50">
+			PROMO: Gratis Kalibrasi KAN untuk Pembelian Alat Uji Beton Set Lengkap!
+		</div>
+
+		<Header />
+
+		{(!isHome && showBreadcrumbs && !isFullWidth) && (
+			<div class="border-b border-gray-200 bg-white py-3 w-full">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs font-mono text-gray-500 uppercase tracking-tight">
+					<a href="/" class="hover:text-civil-primary transition-colors">Home</a>
+					
+					{breadcrumbs.map((crumb, index) => (
+						<>
+							<span class="mx-2 text-gray-300">/</span>
+							{index === breadcrumbs.length - 1 ? (
+								<span class="font-bold text-civil-dark">{crumb.name}</span>
+							) : (
+								<a href={crumb.href} class="hover:text-civil-primary transition-colors">{crumb.name}</a>
+							)}
+						</>
+					))}
+				</div>
+			</div>
+		)}
+
+		<div id="main-content" class:list={[
+			"flex-grow focus:outline-none", 
+			isFullWidth ? "w-full" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full"
+		]} tabindex="-1">
+			
+			<main>
+				<slot />
+			</main>
+		</div>
+
+		<Footer />
+
+		<FloatingWA />
+		<SearchModal />
+		<QuoteModal />
+
+	</body>
+</html>
+
+<style is:global>
+    /* 1. Base Font Settings */
+    h1, h2, h3, h4, h5, h6 { 
+        font-weight: 800; 
+        letter-spacing: -0.025em; 
+        color: #0F253E; 
+    }
+    
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* 3. TYPOGRAPHY STYLING */
+    .prose { max-width: none; }
+    
+    .prose h2 { 
+        @apply text-2xl md:text-3xl font-black mt-10 mb-6 border-b-4 border-civil-secondary inline-block pb-1 pr-10 text-civil-primary uppercase; 
+    }
+    
+    .prose h3 { 
+        @apply text-xl font-bold mt-8 mb-4 text-civil-dark flex items-center gap-2;
+    }
+    .prose h3::before {
+        content: '';
+        @apply block w-2 h-6 bg-civil-secondary;
+    }
+
+    .prose p { @apply mb-6 leading-relaxed text-gray-700; }
+    
+    /* --- LIST STYLE (FIXED) --- */
+    
+    /* 1. Unordered List (UL) - Pakai Centang */
+    .prose ul { 
+        @apply list-none ml-2 mb-6 space-y-2; 
+    }
+    .prose ul > li { /* Pakai tanda '>' agar cuma kena anak langsung */
+        @apply relative pl-6 text-gray-700; 
+    }
+    .prose ul > li::before {
+        content: '✓';
+        @apply absolute left-0 text-civil-secondary font-black;
+    }
+
+    /* 2. Ordered List (OL) - Pakai Angka & HAPUS Centang warisan */
+    .prose ol { 
+        @apply list-decimal ml-5 mb-6 text-gray-700 font-bold; 
+    }
+    
+    /* Reset total untuk LI di dalam OL */
+    .prose ol li { 
+        padding-left: 0 !important; /* Reset padding biar gak terlalu menjorok */
+    }
+    .prose ol li::before {
+        content: none !important; /* HAPUS CENTANG DISINI */
+        display: none;
+    }
+    
+    .prose ol li span { @apply font-normal; } 
+
+    .prose blockquote {
+        @apply border-l-4 border-civil-primary bg-gray-50 p-6 italic text-gray-600 my-8 rounded-r-sm;
+    }
+
+    .prose img { @apply rounded-sm border-2 border-gray-200 shadow-md my-8 w-full h-auto; }
+
+    /* TABLE STYLING */
+    .prose table { @apply w-full text-sm text-left border-collapse border-2 border-civil-dark my-8 shadow-sm; }
+    .prose thead { @apply bg-civil-primary text-white; }
+    .prose th { @apply px-4 py-3 font-black uppercase tracking-wider border-r border-civil-dark/20 text-xs md:text-sm; }
+    .prose tbody tr { @apply border-b border-gray-200 transition-colors; }
+    .prose tbody tr:nth-child(even) { @apply bg-gray-50; }
+    .prose tbody tr:hover { @apply bg-blue-50; }
+    .prose td { @apply px-4 py-3 border-r border-gray-200 text-gray-700; }
+    .table-wrapper { @apply overflow-x-auto my-6 border border-gray-200 rounded-sm; }
+</style>

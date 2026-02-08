@@ -1,0 +1,195 @@
+---
+import { getWALink } from '../config';
+// Data Kategori sesuai brief
+// Kita bagi menjadi kolom-kolom logika untuk Mega Menu
+const menuCategories = [
+  {
+    title: "Konstruksi Jalan (Aspal)",
+    slug: "aspal",
+    items: ["Marshall Test", "Core Drill", "Bitumen Extractor", "Ductility Machine"]
+  },
+  {
+    title: "Konstruksi Beton",
+    slug: "beton",
+    items: ["Compression Machine", "Slump Test", "Cube/Cylinder Mold", "Hammer Test"]
+  },
+  {
+    title: "Mekanika Tanah",
+    slug: "tanah",
+    items: ["CBR Test Set", "Sondir (Dutch Cone)", "Hand Bor", "Sand Cone"]
+  },
+  {
+    title: "Material & Batuan",
+    slug: "batuan",
+    items: ["Los Angeles Machine", "Aggregate Impact", "Sieve Shaker", "Sample Splitter"]
+  },
+  {
+    title: "Semen & Mortar",
+    slug: "semen",
+    items: ["Vicat Test", "Air Permeability", "Mixer Mortar", "Flow Table"]
+  },
+  {
+    title: "Pengeboran & Tambang",
+    slug: "pertambangan", // Gabungan Bor & Tambang agar layout pas
+    items: ["Bor Mesin", "Diamond Bit", "Geology Compass", "GPS Geodetik"]
+  }
+];
+---
+
+<header class="sticky top-0 z-50 w-full bg-white border-b-2 border-civil-dark shadow-sm font-sans">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-20 items-center justify-between">
+      
+      <div class="flex-shrink-0">
+        <a href="/" class="flex flex-col group">
+          <span class="text-xl md:text-2xl font-black text-civil-primary tracking-tighter leading-none group-hover:text-civil-secondary transition-colors">
+            PUSAT ALAT LAB SIPIL
+          </span>
+          <span class="text-[10px] md:text-xs font-bold text-gray-500 tracking-[0.2em] uppercase mt-1 border-t-2 border-civil-secondary inline-block pt-1 w-max">
+            by CV. Sawarga Teknik
+          </span>
+        </a>
+      </div>
+
+      <nav class="hidden lg:flex items-center space-x-1">
+        
+        <a href="/" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
+          Beranda
+        </a>
+
+        <div class="group relative">
+          <button class="flex items-center gap-1 px-4 py-2 font-bold text-civil-dark group-hover:text-civil-primary group-hover:bg-gray-50 rounded-md outline-none">
+            Produk & Kategori
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <div class="absolute left-1/2 -translate-x-1/2 top-full w-[90vw] max-w-5xl pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out transform group-hover:translate-y-0 translate-y-2">
+            
+            <div class="bg-white border-2 border-civil-dark shadow-hard p-6 md:p-8 rounded-sm grid grid-cols-3 gap-y-8 gap-x-6 relative">
+              
+              <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-t-2 border-l-2 border-civil-dark transform rotate-45"></div>
+
+              {menuCategories.map((cat) => (
+                <div class="space-y-3">
+                  <a href={`/products/${cat.slug}`} class="block">
+                    <h3 class="font-black text-lg text-civil-primary border-b-2 border-gray-100 pb-1 hover:text-civil-secondary hover:border-civil-secondary transition-colors flex items-center justify-between">
+                      {cat.title}
+                      <span class="text-xs text-gray-400">➜</span>
+                    </h3>
+                  </a>
+                  <ul class="space-y-1">
+                    {cat.items.map((item) => (
+                      <li>
+                        <a href={`/search?q=${item}`} class="text-sm text-gray-600 hover:text-civil-primary hover:underline hover:font-bold block py-1">
+                          • {item}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+
+              <div class="col-span-3 mt-4 bg-gray-50 border border-gray-200 p-4 rounded text-center text-sm text-gray-600">
+                Tidak menemukan alat yang dicari? <a href="/contact" class="font-bold text-civil-primary underline">Hubungi tim sales kami</a> untuk katalog lengkap PDF.
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="/blog" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
+          Blog Teknik
+        </a>
+      </nav>
+
+      <div class="hidden lg:flex items-center gap-4">
+<button 
+  onclick="window.dispatchEvent(new CustomEvent('open-search'))"
+  class="text-civil-dark hover:text-civil-secondary p-2 transition-transform hover:scale-110"
+  aria-label="Cari Produk"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+</button>
+
+        <button 
+  onclick="window.dispatchEvent(new CustomEvent('open-quote'))"  class="inline-flex items-center justify-center bg-civil-secondary px-5 py-2.5 text-sm font-black uppercase tracking-wide text-civil-primary border-2 border-civil-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+          Minta Penawaran
+</button>
+      </div>
+
+      <div class="lg:hidden flex items-center gap-4">
+<button 
+  onclick="window.dispatchEvent(new CustomEvent('open-quote'))" 
+  class="text-xs font-bold bg-civil-secondary px-3 py-2 border border-civil-dark shadow-hard-sm cursor-pointer hover:bg-[#e6ac00] transition-colors"
+>
+  KONTAK
+</button>
+        <button id="mobile-menu-btn" class="p-2 text-civil-dark border-2 border-transparent hover:border-civil-dark rounded">
+          <span class="sr-only">Open menu</span>
+          <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden lg:hidden border-t-2 border-civil-dark bg-white">
+    <div class="space-y-1 px-4 pt-2 pb-3 shadow-lg">
+      <a href="/" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">Beranda</a>
+      
+      <div x-data="{ open: false }">
+        <button id="mobile-dropdown-btn" class="flex w-full items-center justify-between px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">
+          <span>Kategori Produk</span>
+          <svg id="mobile-chevron" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="mobile-dropdown-content" class="hidden bg-gray-50 px-4 py-2 space-y-2 border-b-2 border-civil-dark">
+          {menuCategories.map((cat) => (
+             <a href={`/products/${cat.slug}`} class="block py-2 text-sm font-semibold text-gray-600 hover:text-civil-primary">
+               ➜ {cat.title}
+             </a>
+          ))}
+        </div>
+      </div>
+
+      <a href="/blog" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">Blog Teknik</a>
+      <a href="/contact" class="block mt-4 text-center px-3 py-4 text-base font-black text-white bg-civil-primary border-2 border-civil-dark shadow-hard-sm active:shadow-none active:translate-y-1">
+        MINTA PENAWARAN HARGA
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Vanilla JS untuk Toggle Mobile Menu
+  // Tidak perlu framework berat, cukup logic sederhana
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconMenu = document.getElementById('icon-menu');
+  const iconClose = document.getElementById('icon-close');
+
+  // Logic Toggle Menu Utama
+  menuBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    iconMenu?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+  });
+
+  // Logic Toggle Dropdown Produk di Mobile
+  const dropdownBtn = document.getElementById('mobile-dropdown-btn');
+  const dropdownContent = document.getElementById('mobile-dropdown-content');
+  const chevron = document.getElementById('mobile-chevron');
+
+  dropdownBtn?.addEventListener('click', () => {
+    dropdownContent?.classList.toggle('hidden');
+    chevron?.classList.toggle('rotate-180');
+  });
+</script>

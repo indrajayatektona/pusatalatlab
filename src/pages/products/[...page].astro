@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+// 1. SETUP PAGINATION (Semua Produk)
+export async function getStaticPaths({ paginate }) {
+  const allProducts = await getCollection('products');
+  // Urutkan dari yang terbaru
+  const sortedProducts = allProducts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+  
+  // Pecah jadi 12 produk per halaman
+  return paginate(sortedProducts, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const products = page.data;
+
+// List Kategori untuk Sidebar/Dropdown
+const categories = [
+  { name: "Semua Produk", slug: "/products", active: true },
+  { name: "Alat Lab Aspal", slug: "/products/aspal", active: false },
+  { name: "Alat Lab Beton", slug: "/products/beton", active: false },
+  { name: "Alat Lab Tanah", slug: "/products/tanah", active: false },
+  { name: "Alat Lab Batuan", slug: "/products/batuan", active: false },
+  { name: "Alat Lab Semen", slug: "/products/semen", active: false },
+  { name: "Pertambangan", slug: "/products/pertambangan", active: false },
+  { name: "Alat Umum", slug: "/products/umum", active: false },
+];
+---
+
+<Layout 
+  title={`Katalog Produk Halaman ${page.currentPage}`} 
+  description="Daftar lengkap alat laboratorium teknik sipil standar SNI & ASTM."
+>
+
+  <div class="bg-white border-b border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl md:text-4xl font-black text-civil-primary uppercase mb-2">Katalog Produk</h1>
+      <p class="text-gray-600 max-w-2xl">
+        Halaman {page.currentPage} dari {page.lastPage}. Menampilkan alat uji kualitas material konstruksi.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      
+      <aside class="hidden lg:block lg:col-span-1">
+        <div class="sticky top-24">
+          <div class="bg-white border-2 border-civil-dark shadow-hard">
+            <div class="bg-civil-primary text-white p-3 font-bold uppercase text-sm tracking-wider border-b-2 border-civil-dark">
+              Kategori
+            </div>
+            <nav class="flex flex-col p-2">
+              {categories.map((cat) => (
+                <a 
+                  href={cat.slug} 
+                  class={`px-3 py-2 text-sm font-bold border-b border-gray-100 last:border-0 hover:text-civil-primary transition-colors ${cat.active ? 'text-civil-primary bg-civil-secondary/20 border-l-4 border-civil-secondary' : 'text-gray-600 border-l-4 border-transparent hover:border-gray-300'}`}
+                >
+                  {cat.name}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </div>
+      </aside>
+
+      <div class="lg:hidden col-span-1 mb-6">
+        <label for="mobile-cat" class="block text-xs font-bold uppercase text-gray-500 mb-2">Pilih Kategori:</label>
+        <div class="relative w-full">
+            <select 
+              id="mobile-cat" 
+              onchange="window.location.href=this.value"
+              class="appearance-none w-full border-2 border-civil-dark pl-4 pr-12 py-3 font-bold text-civil-dark bg-white rounded-none focus:outline-none focus:ring-2 focus:ring-civil-secondary focus:border-civil-primary shadow-sm"
+            >
+              {categories.map((cat) => (
+                <option value={cat.slug} selected={cat.active}>{cat.name}</option>
+              ))}
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-civil-dark bg-civil-secondary border-l-2 border-civil-dark">
+                <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-3">
+        {products.length > 0 ? (
+          <>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+              {products.map((product) => (
+                <ProductCard product={product} />
+              ))}
+            </div>
+            <Pagination page={page} />
+          </>
+        ) : (
+          <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded p-12 text-center">
+            <p class="text-gray-400">Belum ada produk.</p>
+          </div>
+        )}
+      </div>
+
+    </div>
+  </div>
+</Layout>

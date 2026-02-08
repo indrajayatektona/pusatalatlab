@@ -1,0 +1,94 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+// 1. Generate Paths untuk setiap Tag Unik
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection('blog');
+  
+  // Ambil semua tag dari semua post, lalu ratakan (flat), dan ambil uniknya saja
+  const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
+
+  return uniqueTags.flatMap(tag => {
+    // Filter post yang mengandung tag ini
+    const filteredPosts = allPosts.filter(post => post.data.tags.includes(tag));
+    
+    // Urutkan terbaru
+    const sortedPosts = filteredPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    // Buat slug yang aman (lowercase + dash)
+    const tagSlug = tag.toLowerCase().replace(/\s+/g, '-');
+
+    return paginate(sortedPosts, {
+      params: { tag: tagSlug },
+      props: { tagName: tag },
+      pageSize: 9
+    });
+  });
+}
+
+const { page, tagName } = Astro.props;
+const posts = page.data;
+
+// Helper Format Tanggal
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('id-ID', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+---
+
+<Layout 
+  title={`Arsip Artikel: ${tagName} | CV. Sawarga Teknik`} 
+  description={`Kumpulan artikel dan panduan teknis sipil dengan topik ${tagName}.`}
+>
+
+  <div class="bg-civil-primary py-12 border-b-4 border-civil-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-civil-secondary font-bold text-xs uppercase tracking-widest mb-2 block">Arsip Tag</span>
+      <h1 class="text-3xl md:text-4xl font-black text-white uppercase">
+        #{tagName}
+      </h1>
+      <p class="text-gray-300 mt-2">Menampilkan {page.total} artikel terkait.</p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {posts.map((post) => (
+        <article class="group bg-white border-2 border-civil-dark hover:shadow-hard transition-all duration-300 flex flex-col h-full">
+          <a href={`/blog/${post.slug}`} class="block overflow-hidden h-48 border-b-2 border-civil-dark relative">
+            <img 
+              src={post.data.image || "https://placehold.co/600x400"} 
+              alt={post.data.title} 
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div class="absolute top-2 left-2 flex gap-1">
+                 <span class="bg-civil-primary text-white text-[10px] font-bold px-2 py-1 uppercase">{post.data.tags[0]}</span>
+            </div>
+          </a>
+          <div class="p-6 flex flex-col flex-grow">
+            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">
+              {formatDate(post.data.pubDate)}
+            </div>
+            <h3 class="text-xl font-black text-civil-primary leading-tight mb-3 group-hover:text-civil-secondary transition-colors line-clamp-2">
+              <a href={`/blog/${post.slug}`}>
+                {post.data.title}
+              </a>
+            </h3>
+            <a href={`/blog/${post.slug}`} class="inline-flex items-center gap-2 text-sm font-bold text-civil-dark uppercase border-b-2 border-civil-secondary pb-1 hover:text-civil-secondary transition-colors w-fit mt-auto">
+              Baca Selengkapnya &rarr;
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <Pagination page={page} />
+
+  </div>
+</Layout>

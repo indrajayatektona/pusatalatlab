@@ -1,0 +1,115 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Pagination from '../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection('blog');
+  // Urutkan artikel dari yang terbaru
+  const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  
+  // Pagination 9 artikel per halaman
+  return paginate(sortedPosts, { pageSize: 9 });
+}
+
+const { page } = Astro.props;
+const posts = page.data;
+
+// Format Tanggal Indonesia
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('id-ID', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+---
+
+<Layout 
+  title={`Blog & Artikel Teknik Sipil - Halaman ${page.currentPage}`} 
+  description="Kumpulan artikel edukasi, tutorial pengujian tanah/beton/aspal, dan info standar SNI terbaru."
+>
+
+  <div class="bg-civil-dark py-16 border-b-4 border-civil-secondary relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 20px 20px;"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <h1 class="text-4xl md:text-5xl font-black text-white uppercase mb-4">
+        Wawasan <span class="text-civil-secondary">Teknik Sipil</span>
+      </h1>
+      <p class="text-gray-300 max-w-2xl mx-auto text-lg">
+        Panduan teknis, update standar SNI, dan tips penggunaan alat laboratorium.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    {page.currentPage === 1 && posts.length > 0 && (
+      <div class="mb-16">
+        <a href={`/blog/${posts[0].slug}`} class="group relative block">
+          <div class="relative h-[400px] md:h-[500px] w-full overflow-hidden border-2 border-civil-dark shadow-hard">
+            <div class="absolute inset-0 bg-gradient-to-t from-civil-dark via-transparent to-transparent z-10 opacity-90"></div>
+            <img 
+              src={posts[0].data.image || "https://placehold.co/1200x600"} 
+              alt={posts[0].data.title} 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div class="absolute bottom-0 left-0 p-6 md:p-10 z-20 max-w-3xl">
+              <span class="inline-block bg-civil-secondary text-civil-primary text-xs font-black uppercase px-3 py-1 mb-4 border border-civil-dark">
+                Artikel Terbaru
+              </span>
+              <h2 class="text-3xl md:text-5xl font-black text-white uppercase leading-tight mb-4 group-hover:text-civil-secondary transition-colors">
+                {posts[0].data.title}
+              </h2>
+              <p class="text-gray-200 line-clamp-2 md:text-lg mb-4">
+                {posts[0].data.description}
+              </p>
+              <div class="flex items-center gap-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <span>{formatDate(posts[0].data.pubDate)}</span>
+                <span>•</span>
+                <span>Oleh {posts[0].data.author}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    )}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {posts.slice(page.currentPage === 1 ? 1 : 0).map((post) => (
+        <article class="group bg-white border-2 border-civil-dark hover:shadow-hard transition-all duration-300 flex flex-col h-full">
+          <a href={`/blog/${post.slug}`} class="block overflow-hidden h-48 border-b-2 border-civil-dark relative">
+            <img 
+              src={post.data.image || "https://placehold.co/600x400"} 
+              alt={post.data.title} 
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div class="absolute top-2 left-2 flex gap-1">
+                 <span class="bg-civil-primary text-white text-[10px] font-bold px-2 py-1 uppercase">{post.data.tags[0]}</span>
+            </div>
+          </a>
+          <div class="p-6 flex flex-col flex-grow">
+            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">
+              {formatDate(post.data.pubDate)}
+            </div>
+            <h3 class="text-xl font-black text-civil-primary leading-tight mb-3 group-hover:text-civil-secondary transition-colors line-clamp-2">
+              <a href={`/blog/${post.slug}`}>
+                {post.data.title}
+              </a>
+            </h3>
+            <p class="text-sm text-gray-600 line-clamp-3 mb-4 flex-grow">
+              {post.data.description}
+            </p>
+            <a href={`/blog/${post.slug}`} class="inline-flex items-center gap-2 text-sm font-bold text-civil-dark uppercase border-b-2 border-civil-secondary pb-1 hover:text-civil-secondary transition-colors w-fit mt-auto">
+              Baca Selengkapnya &rarr;
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <Pagination page={page} />
+
+  </div>
+</Layout>

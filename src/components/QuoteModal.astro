@@ -1,0 +1,154 @@
+---
+import { SITE_CONFIG } from '../config';
+---
+
+<div id="quote-modal" class="relative z-[110] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  
+  <div class="fixed inset-0 bg-civil-primary/90 backdrop-blur-sm transition-opacity opacity-0 enter-start"></div>
+
+  <div class="fixed inset-0 z-10 overflow-y-auto">
+    <div class="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
+      
+      <div class="relative transform overflow-hidden bg-white text-left shadow-hard transition-all sm:my-8 w-full sm:max-w-lg border-2 border-civil-dark scale-95 opacity-0 enter-start-panel">
+        
+        <div class="bg-civil-dark px-4 py-3 sm:px-6 flex justify-between items-center border-b-4 border-civil-secondary">
+          <h3 class="text-base sm:text-lg font-black uppercase tracking-wider text-white flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-civil-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
+            Minta Penawaran
+          </h3>
+          <button id="close-quote" class="text-gray-400 hover:text-white p-2 -mr-2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form id="rfq-form" class="p-5 sm:p-8 space-y-4">
+          
+          <input type="hidden" id="rfq-product" name="product" value="General Inquiry">
+
+          <div>
+            <label for="rfq-name" class="block text-[10px] sm:text-xs font-bold uppercase text-gray-500 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+            <input type="text" id="rfq-name" required class="w-full border-2 border-gray-200 bg-gray-50 p-3 text-sm font-bold text-civil-dark focus:border-civil-primary focus:bg-white focus:outline-none transition-colors rounded-none" placeholder="Nama Anda">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="rfq-city" class="block text-[10px] sm:text-xs font-bold uppercase text-gray-500 mb-1">Kota <span class="text-red-500">*</span></label>
+              <input type="text" id="rfq-city" required class="w-full border-2 border-gray-200 bg-gray-50 p-3 text-sm font-bold text-civil-dark focus:border-civil-primary focus:bg-white focus:outline-none rounded-none" placeholder="Cth: Jakarta">
+            </div>
+            <div>
+              <label for="rfq-type" class="block text-[10px] sm:text-xs font-bold uppercase text-gray-500 mb-1">Status</label>
+              <div class="relative">
+                <select id="rfq-type" class="w-full border-2 border-gray-200 bg-gray-50 p-3 text-sm font-bold text-civil-dark focus:border-civil-primary focus:bg-white focus:outline-none appearance-none rounded-none">
+                  <option value="Perusahaan">Perusahaan</option>
+                  <option value="Dinas/Pemerintah">Dinas PU/Pemerintah</option>
+                  <option value="Kampus/Sekolah">Kampus/Sekolah</option>
+                  <option value="Perorangan">Perorangan</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label for="rfq-message" class="block text-[10px] sm:text-xs font-bold uppercase text-gray-500 mb-1">Kebutuhan Alat / Spesifikasi</label>
+            <textarea id="rfq-message" rows="3" class="w-full border-2 border-gray-200 bg-gray-50 p-3 text-sm font-medium text-civil-dark focus:border-civil-primary focus:bg-white focus:outline-none transition-colors rounded-none" placeholder="Tuliskan alat yang dicari..."></textarea>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="w-full bg-civil-primary text-white font-black uppercase tracking-widest py-3.5 sm:py-4 hover:bg-civil-dark border-b-4 border-civil-secondary active:border-b-0 active:translate-y-1 transition-all shadow-lg text-sm sm:text-base">
+              Kirim ke WhatsApp
+            </button>
+            <p class="text-[10px] text-gray-400 text-center mt-3 leading-tight">
+              Dengan mengklik tombol di atas, Anda akan diarahkan ke WhatsApp Admin CV. Sawarga Teknik.
+            </p>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ waNumber: SITE_CONFIG.whatsapp }}>
+  const modal = document.getElementById('quote-modal');
+  const backdrop = modal.querySelector('.fixed.inset-0.bg-civil-primary\\/90'); // Selector backdrop
+  const panel = modal.querySelector('.relative.transform'); // Selector panel
+  const closeBtn = document.getElementById('close-quote');
+  const form = document.getElementById('rfq-form');
+
+  // ANIMATION FUNCTIONS
+  function enterAnimation() {
+    modal.classList.remove('hidden');
+    // Force reflow
+    void modal.offsetWidth;
+    
+    backdrop.classList.remove('opacity-0');
+    backdrop.classList.add('opacity-100');
+    
+    panel.classList.remove('scale-95', 'opacity-0');
+    panel.classList.add('scale-100', 'opacity-100');
+  }
+
+  function leaveAnimation() {
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0');
+    
+    panel.classList.remove('scale-100', 'opacity-100');
+    panel.classList.add('scale-95', 'opacity-0');
+
+    setTimeout(() => {
+      modal.classList.add('hidden');
+    }, 200); // Wait for transition
+  }
+
+  // OPEN EVENT
+  window.addEventListener('open-quote', (e) => {
+    if(e.detail && e.detail.product) {
+       document.getElementById('rfq-product').value = e.detail.product;
+    }
+    enterAnimation();
+  });
+
+  // CLOSE EVENTS
+  closeBtn.addEventListener('click', leaveAnimation);
+  
+  // Close when clicking BACKDROP (not the panel)
+  modal.querySelector('.fixed.inset-0.z-10').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget || e.target.classList.contains('flex')) {
+      leaveAnimation();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) leaveAnimation();
+  });
+
+  // SUBMIT HANDLER
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('rfq-name').value;
+    const city = document.getElementById('rfq-city').value;
+    const type = document.getElementById('rfq-type').value;
+    const product = document.getElementById('rfq-product').value;
+    const message = document.getElementById('rfq-message').value;
+
+    const text = `*PERMINTAAN PENAWARAN HARGA (RFQ)*%0A%0A` +
+                 `*Produk:* ${product}%0A` +
+                 `--------------------------------%0A` +
+                 `*Nama:* ${name}%0A` +
+                 `*Domisili:* ${city}%0A` +
+                 `*Status:* ${type}%0A` +
+                 `--------------------------------%0A` +
+                 `*Pesan:* ${message}`;
+
+    const url = `https://wa.me/${waNumber}?text=${text}`;
+    window.open(url, '_blank');
+    leaveAnimation();
+  });
+</script>

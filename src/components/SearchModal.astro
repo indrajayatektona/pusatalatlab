@@ -1,0 +1,237 @@
+---
+// SearchModal.astro (Re-design Professional Industrial Style)
+---
+
+<div id="search-modal" class="fixed inset-0 z-[100] hidden bg-civil-primary/90 backdrop-blur-sm transition-all duration-200">
+  
+  <div class="mx-auto mt-16 w-full max-w-3xl px-4 transform transition-all scale-100">
+    
+    <div class="relative overflow-hidden bg-white shadow-2xl ring-1 ring-white/10 flex flex-col max-h-[70vh] rounded-sm">
+      
+      <div class="relative flex items-center border-b-2 border-civil-dark p-0 bg-white z-10">
+        <div class="pl-6 pr-4 text-civil-dark">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Cari alat, standar ASTM, atau kategori..." 
+          class="h-20 w-full text-2xl font-black text-civil-primary placeholder-gray-300 focus:outline-none bg-transparent tracking-tight"
+          autocomplete="off"
+        />
+        
+        <button id="close-search" class="mr-6 p-2 hover:bg-red-50 hover:text-red-600 rounded-full transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div id="search-scroll-area" class="overflow-y-auto bg-gray-50 min-h-[300px]">
+        
+        <div id="initial-state" class="p-8">
+          <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Pencarian Populer</h4>
+          <div class="flex flex-wrap gap-3">
+            <button class="quick-search px-4 py-2 bg-white border border-gray-200 text-civil-dark font-bold text-sm shadow-sm hover:border-civil-secondary hover:text-civil-primary hover:shadow-md transition-all rounded-sm">
+              ASTM C-39
+            </button>
+            <button class="quick-search px-4 py-2 bg-white border border-gray-200 text-civil-dark font-bold text-sm shadow-sm hover:border-civil-secondary hover:text-civil-primary hover:shadow-md transition-all rounded-sm">
+              Compression Machine
+            </button>
+            <button class="quick-search px-4 py-2 bg-white border border-gray-200 text-civil-dark font-bold text-sm shadow-sm hover:border-civil-secondary hover:text-civil-primary hover:shadow-md transition-all rounded-sm">
+              CBR Test
+            </button>
+            <button class="quick-search px-4 py-2 bg-white border border-gray-200 text-civil-dark font-bold text-sm shadow-sm hover:border-civil-secondary hover:text-civil-primary hover:shadow-md transition-all rounded-sm">
+              Slump Test
+            </button>
+          </div>
+
+          <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-8 mb-4">Kategori Utama</h4>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+             <a href="/products/beton" class="flex items-center gap-3 p-3 bg-white border border-gray-200 hover:border-civil-primary hover:bg-civil-primary hover:text-white transition-all group rounded-sm">
+                <span class="w-2 h-8 bg-civil-secondary group-hover:bg-white"></span>
+                <span class="font-bold text-sm">Alat Uji Beton</span>
+             </a>
+             <a href="/products/tanah" class="flex items-center gap-3 p-3 bg-white border border-gray-200 hover:border-civil-primary hover:bg-civil-primary hover:text-white transition-all group rounded-sm">
+                <span class="w-2 h-8 bg-[#8B4513] group-hover:bg-white"></span>
+                <span class="font-bold text-sm">Alat Uji Tanah</span>
+             </a>
+             <a href="/products/aspal" class="flex items-center gap-3 p-3 bg-white border border-gray-200 hover:border-civil-primary hover:bg-civil-primary hover:text-white transition-all group rounded-sm">
+                <span class="w-2 h-8 bg-black group-hover:bg-white"></span>
+                <span class="font-bold text-sm">Alat Uji Aspal</span>
+             </a>
+          </div>
+        </div>
+
+        <div id="loading-state" class="hidden flex flex-col items-center justify-center py-20 text-civil-secondary">
+          <svg class="animate-spin h-10 w-10 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="font-bold tracking-widest text-sm uppercase text-civil-dark">Mengakses Katalog...</span>
+        </div>
+
+        <div id="no-results" class="hidden flex flex-col items-center justify-center py-16">
+          <div class="bg-gray-200 p-4 rounded-full mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p class="text-civil-dark font-bold text-lg">Produk tidak ditemukan.</p>
+          <p class="text-gray-500 text-sm mt-1">Coba gunakan kata kunci yang lebih umum (contoh: "Mold" atau "Uji").</p>
+        </div>
+
+        <ul id="results-list" class="divide-y divide-gray-200">
+          </ul>
+      </div>
+
+      <div class="bg-gray-100 px-6 py-3 border-t border-gray-200 flex justify-between items-center text-[10px] md:text-xs font-mono text-gray-500">
+        <div class="flex gap-4">
+          <span class="flex items-center gap-1"><kbd class="bg-white border border-gray-300 rounded px-1 min-w-[20px] text-center font-bold text-gray-700">↵</kbd> Select</span>
+          <span class="flex items-center gap-1"><kbd class="bg-white border border-gray-300 rounded px-1 min-w-[20px] text-center font-bold text-gray-700">↑↓</kbd> Navigate</span>
+        </div>
+        <span class="flex items-center gap-1"><kbd class="bg-white border border-gray-300 rounded px-1 min-w-[20px] text-center font-bold text-gray-700">Esc</kbd> Close</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // -- Logic JS tetap sama, dengan penambahan event listener untuk Quick Chips --
+  
+  const modal = document.getElementById('search-modal');
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const resultsList = document.getElementById('results-list');
+  const initialState = document.getElementById('initial-state');
+  const noResults = document.getElementById('no-results');
+  const loadingState = document.getElementById('loading-state');
+  const closeBtn = document.getElementById('close-search');
+
+  let products = [];
+  let isDataLoaded = false;
+
+  // Event untuk membuka modal
+  window.addEventListener('open-search', () => {
+    modal.classList.remove('hidden');
+    // Animasi fade in sedikit
+    setTimeout(() => {
+        document.querySelector('#search-modal > div').classList.remove('scale-95', 'opacity-0');
+    }, 10);
+    input.focus();
+    if (!isDataLoaded) loadProductData();
+  });
+
+  const closeModal = () => {
+    modal.classList.add('hidden');
+    input.value = '';
+    resultsList.innerHTML = '';
+    initialState.classList.remove('hidden');
+    noResults.classList.add('hidden');
+  };
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent('open-search'));
+    }
+  });
+
+  // Fitur Quick Search Chips
+  document.querySelectorAll('.quick-search').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const text = (e.target as HTMLElement).innerText;
+        input.value = text;
+        performSearch(text.toLowerCase());
+    });
+  });
+
+  async function loadProductData() {
+    loadingState.classList.remove('hidden');
+    initialState.classList.add('hidden');
+    
+    try {
+      const res = await fetch('/api/search.json');
+      products = await res.json();
+      isDataLoaded = true;
+      loadingState.classList.add('hidden');
+      if (input.value) performSearch(input.value); 
+      else initialState.classList.remove('hidden');
+    } catch (err) {
+      console.error("Gagal memuat data search", err);
+    }
+  }
+
+  input.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase();
+    performSearch(query);
+  });
+
+  function performSearch(query) {
+    if (!query) {
+      resultsList.innerHTML = '';
+      initialState.classList.remove('hidden');
+      noResults.classList.add('hidden');
+      return;
+    }
+
+    initialState.classList.add('hidden');
+    
+    // Algoritma Filter
+    const filtered = products.filter(p => p.searchable.includes(query)).slice(0, 10);
+
+    renderResults(filtered);
+  }
+
+  function renderResults(items) {
+    resultsList.innerHTML = '';
+    
+    if (items.length === 0) {
+      noResults.classList.remove('hidden');
+      return;
+    }
+
+    noResults.classList.add('hidden');
+
+    items.forEach(item => {
+      const li = document.createElement('li');
+      // Layout Result Item yang lebih Professional
+      li.innerHTML = `
+        <a href="/products/${item.slug}" class="block bg-white hover:bg-gray-50 transition-colors group">
+          <div class="px-6 py-4 flex items-center justify-between border-l-4 border-transparent hover:border-civil-secondary">
+            
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-lg font-bold text-civil-primary group-hover:text-civil-dark truncate">${item.title}</span>
+                ${item.id ? `<span class="hidden md:inline-block px-2 py-0.5 bg-gray-100 text-xs font-mono font-bold text-gray-500 rounded">${item.id}</span>` : ''}
+              </div>
+              
+              <div class="flex items-center text-sm text-gray-500">
+                <span class="font-semibold text-civil-secondary">${item.category}</span>
+                <span class="mx-2 text-gray-300">•</span>
+                <span class="truncate">Klik untuk lihat spesifikasi</span>
+              </div>
+            </div>
+
+            <div class="ml-4 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 group-hover:text-civil-secondary transform group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+
+          </div>
+        </a>
+      `;
+      resultsList.appendChild(li);
+    });
+  }
+</script>

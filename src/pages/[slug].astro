@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+// 1. Generate Static Paths untuk semua halaman di 'src/content/pages'
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map(page => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const { Content } = await page.render();
+---
+
+<Layout 
+  title={page.data.title} 
+  description={page.data.description || page.data.title}
+  image={page.data.coverImage}
+>
+
+  <div class="bg-civil-primary relative border-b-4 border-civil-secondary overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 20px 20px;"></div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10 text-center">
+      <h1 class="text-3xl md:text-5xl font-black text-white uppercase mb-4 tracking-wide">
+        {page.data.title}
+      </h1>
+      {page.data.description && (
+        <p class="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
+          {page.data.description}
+        </p>
+      )}
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    {page.data.coverImage && (
+      <div class="mb-10 border-2 border-civil-dark shadow-hard rounded-sm overflow-hidden">
+        <img 
+          src={page.data.coverImage} 
+          alt={page.data.title} 
+          class="w-full h-auto object-cover"
+        />
+      </div>
+    )}
+
+    <article class="prose prose-lg prose-slate max-w-none 
+      prose-headings:font-black prose-headings:text-civil-primary prose-headings:uppercase
+      prose-h2:border-b-2 prose-h2:border-civil-secondary prose-h2:pb-2 prose-h2:inline-block prose-h2:pr-8
+      prose-h3:text-civil-dark
+      prose-a:text-civil-secondary prose-a:font-bold prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-civil-dark prose-strong:font-black
+      prose-li:marker:text-civil-secondary
+      prose-table:border-2 prose-table:border-gray-200
+      prose-th:bg-civil-primary prose-th:text-white prose-th:p-4
+      prose-td:p-4 prose-tr:border-b prose-tr:border-gray-100 even:prose-tr:bg-gray-50
+      bg-white p-8 md:p-12 border-2 border-gray-100 shadow-sm rounded-sm"
+    >
+      <Content />
+    </article>
+
+  </div>
+</Layout>

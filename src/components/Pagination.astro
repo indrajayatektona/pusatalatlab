@@ -1,0 +1,29 @@
+---
+const { page } = Astro.props;
+---
+
+<div class="flex justify-center items-center gap-2 mt-12 font-mono text-sm font-bold">
+  {page.url.prev ? (
+    <a href={page.url.prev} class="px-4 py-2 bg-white border-2 border-civil-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+      &larr; Prev
+    </a>
+  ) : (
+    <span class="px-4 py-2 border-2 border-gray-200 text-gray-300 cursor-not-allowed">
+      &larr; Prev
+    </span>
+  )}
+
+  <div class="px-4 py-2 bg-civil-secondary text-civil-primary border-2 border-civil-dark">
+    Page {page.currentPage} / {page.lastPage}
+  </div>
+
+  {page.url.next ? (
+    <a href={page.url.next} class="px-4 py-2 bg-white border-2 border-civil-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+      Next &rarr;
+    </a>
+  ) : (
+    <span class="px-4 py-2 border-2 border-gray-200 text-gray-300 cursor-not-allowed">
+      Next &rarr;
+    </span>
+  )}
+</div>
