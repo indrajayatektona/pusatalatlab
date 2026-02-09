@@ -68,7 +68,7 @@ export default config({
       },
     }),
     
-    // --- 2. KOLEKSI PRODUK ---
+// --- 2. KOLEKSI PRODUK ---
     products: collection({
       label: 'Produk Katalog',
       slugField: 'title',
@@ -78,7 +78,7 @@ export default config({
         title: fields.slug({ name: { label: 'Nama Produk' } }),
         id: fields.text({ label: 'SKU / Kode Barang' }),
         
-        // Inject SEO Schema Disini
+        // Inject SEO Schema
         seo: seoSchema, 
 
         category: fields.select({
@@ -103,6 +103,27 @@ export default config({
             fields.text({ label: 'Standar' }),
             { label: 'Standar SNI/ASTM' }
         ),
+
+        // --- TAMBAHAN BARU ---
+        // 1. Brochure Link (Text field biasa agar bisa diisi URL atau path)
+        brochureLink: fields.text({
+            label: 'Link Brosur / PDF',
+            description: 'Contoh: /brosur/produk-a.pdf atau https://drive.google.com/...' 
+        }),
+
+        // 2. Specifications (Menggunakan Array agar bisa diedit di UI)
+        specifications: fields.array(
+            fields.object({
+                key: fields.text({ label: 'Nama Spesifikasi (ex: Dimensi)' }),
+                value: fields.text({ label: 'Nilai (ex: 10 x 20 cm)' }),
+            }),
+            {
+                label: 'Spesifikasi Teknis',
+                itemLabel: (props) => `${props.fields.key.value}: ${props.fields.value.value}`,
+            }
+        ),
+        // ---------------------
+
         description: fields.text({ label: 'Ringkasan Produk (Untuk Card/List)', multiline: true }),
         featured: fields.checkbox({ label: 'Tampilkan di Homepage (Featured)?' }),
         publishDate: fields.date({ label: 'Tanggal Publish', defaultValue: { kind: 'today' } }),
@@ -119,7 +140,7 @@ export default config({
         }),
       },
     }),
-
+    
     // --- 3. KOLEKSI BLOG ---
     blog: collection({
       label: 'Artikel Blog',
