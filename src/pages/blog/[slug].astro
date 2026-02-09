@@ -15,20 +15,35 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await post.render();
 
-// --- LOGIC AUTHOR (BARU) ---
-// Mengambil detail author berdasarkan referensi ID dari frontmatter
+// --- LOGIC AUTHOR ---
 const authorData = await getEntry('authors', post.data.author.id);
-
-// Fallback data jika author tidak ditemukan/error
 const author = authorData ? authorData.data : { 
   name: 'Admin Technical', 
   role: 'Administrator',
   avatar: null,
   socials: {}
 };
-
-// Render Bio Singkat Author (karena formatnya MDOC)
 const { Content: AuthorBio } = authorData ? await authorData.render() : { Content: null };
+
+// --- LOGIC SEO (BARU) ---
+// Kita ambil object SEO, atau object kosong jika belum diisi
+const seo = post.data.seo || {};
+
+// 1. Title: Pakai Meta Title custom, kalau kosong pakai Judul Post
+const metaTitle = seo.metaTitle || post.data.title;
+
+// 2. Description: Pakai Meta Desc custom, kalau kosong pakai Ringkasan Post
+const metaDesc = seo.metaDescription || post.data.description;
+
+// 3. H1 Title: Pakai Custom Title, kalau kosong pakai Judul Post
+const h1Title = seo.customTitle || post.data.title;
+
+// 4. Canonical: Pakai custom URL, kalau kosong pakai URL halaman ini
+const canonicalURL = seo.canonicalUrl || new URL(Astro.url.pathname, Astro.site).toString();
+
+// 5. No Index: Ambil dari checkbox
+const isNoIndex = seo.noIndex || false;
+
 // ---------------------------
 
 // Format Tanggal
@@ -38,14 +53,13 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('id-ID', {
   day: 'numeric',
 });
 
-// ISO Date untuk Schema
 const isoDate = new Date(post.data.pubDate).toISOString();
 
 // Schema Article
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": post.data.title,
+  "headline": h1Title, // Gunakan H1 Title
   "image": [
     new URL(post.data.image || '/default-og.jpg', Astro.site).toString()
   ],
@@ -53,7 +67,7 @@ const articleSchema = {
   "dateModified": isoDate,
   "author": [{
       "@type": "Person",
-      "name": author.name, // Update: Pakai nama dari relasi Author
+      "name": author.name,
       "url": Astro.site
     }],
   "publisher": {
@@ -64,20 +78,21 @@ const articleSchema = {
         "url": new URL("/logo.png", Astro.site).toString()
       }
   },
-  "description": post.data.description
+  "description": metaDesc // Gunakan deskripsi SEO
 };
 
-// Cross-Selling Sidebar
 const allProducts = await getCollection('products');
 const sidebarProducts = allProducts.slice(0, 2); 
 ---
 
 <Layout 
-  title={post.data.title} 
-  description={post.data.description}
-  type="article"
+  title={metaTitle} 
+  description={metaDesc}
   image={post.data.image}
+  type="article"
   showBreadcrumbs={true}
+  canonical={canonicalURL}
+  noIndex={isNoIndex} 
 >
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
 
@@ -104,7 +119,7 @@ const sidebarProducts = allProducts.slice(0, 2);
           </div>
           
           <h1 class="text-3xl md:text-5xl font-black text-civil-primary uppercase leading-tight mb-6">
-            {post.data.title}
+            {h1Title}
           </h1>
 
           <div class="w-full aspect-video bg-gray-100 border-2 border-civil-dark shadow-hard overflow-hidden rounded-sm">

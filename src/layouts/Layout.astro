@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SearchModal from '../components/SearchModal.astro';
 import QuoteModal from '../components/QuoteModal.astro';
-import FloatingWA from '../components/FloatingWA.astro'; // Import WA
+import FloatingWA from '../components/FloatingWA.astro';
 import { ClientRouter } from 'astro:transitions';
 import { SITE_CONFIG } from '../config';
 
@@ -17,6 +17,7 @@ interface Props {
 	showBreadcrumbs?: boolean;
 	noIndex?: boolean; 
 	isFullWidth?: boolean;
+	canonical?: string; // Tambahan untuk Custom Canonical
 }
 
 const { 
@@ -26,10 +27,13 @@ const {
 	type = "website",
 	showBreadcrumbs = true,
 	noIndex = false,
-	isFullWidth = false
+	isFullWidth = false,
+	canonical // Ambil prop canonical
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Logic Canonical: Jika ada prop canonical pakai itu, jika tidak pakai URL sekarang
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).toString();
+
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/';
 
@@ -55,11 +59,10 @@ const organizationSchema = {
 };
 
 // Breadcrumbs Generator Logic
+// ... (Bagian ini tidak berubah) ...
 const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, array) => {
 	const href = '/' + array.slice(0, index + 1).join('/');
-	// Bersihkan nama URL: ganti dash (-) jadi spasi, huruf kapital awal
 	const name = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); 
-	// Custom mapping nama
 	return { name: name === 'Products' ? 'Katalog' : name, href };
 });
 ---
@@ -183,13 +186,13 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
 
     .prose p { @apply mb-6 leading-relaxed text-gray-700; }
     
-    /* --- LIST STYLE (FIXED) --- */
+    /* --- LIST STYLE (REVISI FINAL) --- */
     
-    /* 1. Unordered List (UL) - Pakai Centang */
+    /* 1. Unordered List (UL) - Centang Kuning */
     .prose ul { 
         @apply list-none ml-2 mb-6 space-y-2; 
     }
-    .prose ul > li { /* Pakai tanda '>' agar cuma kena anak langsung */
+    .prose ul > li { 
         @apply relative pl-6 text-gray-700; 
     }
     .prose ul > li::before {
@@ -197,20 +200,25 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
         @apply absolute left-0 text-civil-secondary font-black;
     }
 
-    /* 2. Ordered List (OL) - Pakai Angka & HAPUS Centang warisan */
+    /* 2. Ordered List (OL) - Angka Saja (TANPA CENTANG) */
     .prose ol { 
         @apply list-decimal ml-5 mb-6 text-gray-700 font-bold; 
     }
     
-    /* Reset total untuk LI di dalam OL */
+    /* Kita tembak semua LI di dalam OL, dimanapun dia berada */
     .prose ol li { 
-        padding-left: 0 !important; /* Reset padding biar gak terlalu menjorok */
-    }
-    .prose ol li::before {
-        content: none !important; /* HAPUS CENTANG DISINI */
-        display: none;
+        padding-left: 0 !important;
+        list-style-type: decimal !important; /* Paksa muncul angka */
+        display: list-item !important; 
     }
     
+    /* HAPUS paksa elemen 'before' (si centang) di dalam OL */
+    .prose ol li::before {
+        content: none !important; 
+        display: none !important;
+    }
+    
+    /* Reset font weight isi list */
     .prose ol li span { @apply font-normal; } 
 
     .prose blockquote {

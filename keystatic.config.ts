@@ -1,5 +1,39 @@
 import { config, fields, collection } from '@keystatic/core';
 
+// --- 0. DEFINISI SEO SCHEMA (Reusable) ---
+// Ini akan membuat group field seperti Yoast SEO
+const seoSchema = fields.object({
+  metaTitle: fields.text({
+    label: 'Meta Title (SERP)',
+    description: 'Judul biru yang muncul di Google. Jika kosong, akan menggunakan Judul Halaman.',
+    validation: { length: { max: 60 } }
+  }),
+  metaDescription: fields.text({
+    label: 'Meta Description (SERP)',
+    description: 'Deskripsi pendek di hasil pencarian Google. Max 160 karakter.',
+    multiline: true,
+    validation: { length: { max: 160 } }
+  }),
+  customTitle: fields.text({
+    label: 'Custom H1 Title',
+    description: 'Judul besar di halaman (Override). Isi jika ingin H1 beda dengan Judul Dokumen.',
+  }),
+  breadcrumbTitle: fields.text({
+    label: 'Breadcrumb Label',
+    description: 'Nama pendek untuk navigasi breadcrumb (Misal: "Tutorial" alih-alih judul panjang).',
+  }),
+  canonicalUrl: fields.url({
+    label: 'Canonical URL',
+    description: 'Isi jika konten ini adalah duplikat/pindahan dari URL lain.',
+  }),
+  noIndex: fields.checkbox({
+    label: 'No Index',
+    description: 'Centang jika halaman ini TIDAK BOLEH muncul di Google.',
+    defaultValue: false,
+  }),
+}, { label: 'Pengaturan SEO & Metadata' }); // Label Group
+
+
 export default config({
   storage: {
     kind: 'local', // Ubah ke 'github' nanti saat deploy
@@ -7,11 +41,12 @@ export default config({
   collections: {
 
     // --- 1. KOLEKSI AUTHORS (Penulis) ---
+    // (Tidak butuh SEO Schema karena biasanya tidak diindex sbg halaman utama)
     authors: collection({
       label: 'Penulis (Authors)',
       slugField: 'name',
       path: 'src/content/authors/*',
-      format: { contentField: 'bio' }, // Bio pakai MDOC
+      format: { contentField: 'bio' },
       schema: {
         name: fields.slug({ name: { label: 'Nama Lengkap' } }),
         role: fields.text({ label: 'Posisi / Jabatan' }),
@@ -42,6 +77,10 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: 'Nama Produk' } }),
         id: fields.text({ label: 'SKU / Kode Barang' }),
+        
+        // Inject SEO Schema Disini
+        seo: seoSchema, 
+
         category: fields.select({
           label: 'Kategori',
           options: [
@@ -61,15 +100,15 @@ export default config({
             publicPath: '/images/products/',
         }),
         standards: fields.array(
-            fields.text({ label: 'Standar (Contoh: ASTM C-39)' }),
+            fields.text({ label: 'Standar' }),
             { label: 'Standar SNI/ASTM' }
         ),
-        description: fields.text({ label: 'Deskripsi Singkat (SEO)', multiline: true }),
+        description: fields.text({ label: 'Ringkasan Produk (Untuk Card/List)', multiline: true }),
         featured: fields.checkbox({ label: 'Tampilkan di Homepage (Featured)?' }),
         publishDate: fields.date({ label: 'Tanggal Publish', defaultValue: { kind: 'today' } }),
         
         content: fields.document({
-          label: 'Deskripsi Lengkap (Artikel)',
+          label: 'Deskripsi Lengkap',
           formatting: true,
           dividers: true,
           links: true,
@@ -89,13 +128,16 @@ export default config({
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Judul Artikel' } }),
-        description: fields.text({ label: 'Ringkasan', multiline: true }),
+        
+        // Inject SEO Schema Disini
+        seo: seoSchema,
+
+        description: fields.text({ label: 'Ringkasan (Excerpt)', multiline: true }),
         pubDate: fields.date({ label: 'Tanggal', defaultValue: { kind: 'today' } }),
         
-        // --- PERBAIKAN DISINI: Author pakai Relationship ---
         author: fields.relationship({
             label: 'Penulis',
-            collection: 'authors', // Mengambil data dari koleksi 'authors'
+            collection: 'authors',
             validation: { isRequired: true }
         }),
 
@@ -128,8 +170,12 @@ export default config({
       path: 'src/content/pages/*',
       format: { contentField: 'content' },
       schema: {
-        title: fields.slug({ name: { label: 'Judul Halaman' } }),
-        description: fields.text({ label: 'Deskripsi SEO', multiline: true }),
+        title: fields.slug({ name: { label: 'Nama Halaman (Internal)' } }),
+        
+        // Inject SEO Schema Disini
+        seo: seoSchema,
+
+        description: fields.text({ label: 'Deskripsi Singkat', multiline: true }),
         coverImage: fields.image({
             label: 'Cover Image (Opsional)',
             directory: 'public/images/pages',

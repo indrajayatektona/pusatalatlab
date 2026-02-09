@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-// import { Image } from 'astro:assets'; // (Aktifkan ini nanti kalau sudah setup aset)
 
 interface Props {
   product: CollectionEntry<'products'>;
@@ -8,14 +7,24 @@ interface Props {
 
 const { product } = Astro.props;
 const { title, id, category, image, standards } = product.data;
+
+// --- LOGIC GAMBAR AMAN (FALLBACK) ---
+// Jika 'image' ada isinya, pakai itu. 
+// Jika kosong/undefined, pakai placeholder dari placehold.co
+const imageSrc = image && image.trim() !== "" 
+  ? image 
+  : "https://placehold.co/400x400/e2e8f0/1e293b?text=No+Image";
+
+// Logic Alt Text yang aman
+const standardText = standards && standards.length > 0 ? `Standar ${standards[0]}` : '';
 ---
 
 <a href={`/products/${product.slug}`} class="group relative flex flex-col bg-white border-2 border-civil-dark h-full shadow-hard-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200">
   
   <div class="relative w-full aspect-square bg-gray-100 overflow-hidden border-b-2 border-civil-dark">
     <img 
-      src={image} 
-      alt={`Jual ${title} Standar ${standards ? standards[0] : ''}`}
+      src={imageSrc} 
+      alt={`Jual ${title} ${standardText}`}
       class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
       loading="lazy"
     />
@@ -31,7 +40,8 @@ const { title, id, category, image, standards } = product.data;
 
   <div class="p-4 flex flex-col flex-grow">
     
-    {standards && (
+    {/* Cek apakah standards ada DAN punya isi */}
+    {standards && standards.length > 0 && (
       <div class="flex flex-wrap gap-1 mb-2">
         {standards.slice(0, 2).map((std) => (
           <span class="inline-block bg-gray-100 text-gray-600 text-[10px] font-bold px-1.5 py-0.5 rounded border border-gray-300">

@@ -1,8 +1,18 @@
 import { defineCollection, reference, z } from 'astro:content';
 
-// 1. Schema untuk AUTHORS (Penulis) - BARU
+// REUSABLE SEO ZOD SCHEMA
+const seoZodSchema = z.object({
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
+  customTitle: z.string().optional(),
+  breadcrumbTitle: z.string().optional(),
+  canonicalUrl: z.string().optional(),
+  noIndex: z.boolean().default(false),
+}).optional(); 
+
+// 1. AUTHORS
 const authorsCollection = defineCollection({
-  type: 'content', // Kita pakai 'content' karena ada Bio (MDOC)
+  type: 'content',
   schema: z.object({
     name: z.string(),
     role: z.string().optional(),
@@ -15,35 +25,38 @@ const authorsCollection = defineCollection({
   }),
 });
 
-// 2. Schema untuk BLOG (Artikel) - UPDATE AUTHOR
+// 2. BLOG
 const blogCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    
+    // Tambahkan field SEO
+    seo: seoZodSchema,
+
     description: z.string().optional(),
     pubDate: z.date(),
-    
-    // PERUBAHAN PENTING:
-    // Menghubungkan field ini ke koleksi 'authors'
-    // Nilai di file markdown harus sesuai dengan nama file author (misal: 'budi-santoso')
     author: reference('authors'), 
-
     image: z.string().optional(),
     tags: z.array(z.string()).default(['Teknik Sipil']),
     featured: z.boolean().default(false),
   }),
 });
 
-// 3. Schema untuk PRODUK
+// 3. PRODUK
 const productsCollection = defineCollection({
   type: 'content', 
   schema: z.object({
     title: z.string(),
-    id: z.string(), 
+    id: z.string().optional(),
+    
+    // Tambahkan field SEO
+    seo: seoZodSchema,
+
     category: z.enum(['Aspal', 'Beton', 'Tanah', 'Batuan', 'Semen', 'Pertambangan', 'Umum']),
-    image: z.string(),
+    image: z.string().optional(),
     standards: z.array(z.string()).optional(), 
-    description: z.string(), 
+    description: z.string().optional(), 
     featured: z.boolean().default(false), 
     specifications: z.record(z.string()).optional(), 
     brochureLink: z.string().optional(),
@@ -51,20 +64,23 @@ const productsCollection = defineCollection({
   }),
 });
 
-// 4. Schema untuk PAGES
+// 4. PAGES
 const pagesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    
+    // Tambahkan field SEO
+    seo: seoZodSchema,
+
     description: z.string().optional(),
     coverImage: z.string().optional(),
   }),
 });
 
-// Export agar bisa dibaca Astro
 export const collections = {
   'products': productsCollection,
   'blog': blogCollection,
   'pages': pagesCollection,
-  'authors': authorsCollection, // <--- Jangan lupa didaftarkan disini
+  'authors': authorsCollection,
 };
