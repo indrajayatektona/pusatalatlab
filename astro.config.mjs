@@ -5,15 +5,11 @@ import sitemap from "@astrojs/sitemap";
 import keystatic from '@keystatic/astro';
 import markdoc from '@astrojs/markdoc';
 
-// 1. Import Adapter Cloudflare
+// 1. Adapter Cloudflare TETAP DIPAKAI
 import cloudflare from '@astrojs/cloudflare';
 
-// https://astro.build/config
 export default defineConfig({
   site: 'https://pusatalatlabsipil.com',
-  
-  // 2. Tambahkan pengaturan Output & Adapter
-  output: 'hybrid', // 'hybrid' = Halaman statis tetap cepat, API tetap jalan
   adapter: cloudflare(),
   
   integrations: [
