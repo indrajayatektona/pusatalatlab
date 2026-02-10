@@ -2,7 +2,7 @@
 export const SITE_CONFIG = {
   brandName: "Pusat Alat Lab Sipil",
   // Format nomor WA: Gunakan kode negara tanpa +, contoh: 62812xxx
-  whatsapp: "687893030300", 
+  whatsapp: "6287893030300", 
   email: "sales@pusatalatlabsipil.com",
   address: "Jl.Jend Amir Machmud No 111/115 , Cibeureum , Cimahi Selatan Jawa Barat.",
   

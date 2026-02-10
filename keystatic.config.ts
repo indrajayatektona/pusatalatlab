@@ -1,7 +1,6 @@
 import { config, fields, collection } from '@keystatic/core';
 
 // --- 0. DEFINISI SEO SCHEMA (Reusable) ---
-// Ini akan membuat group field seperti Yoast SEO
 const seoSchema = fields.object({
   metaTitle: fields.text({
     label: 'Meta Title (SERP)',
@@ -31,17 +30,29 @@ const seoSchema = fields.object({
     description: 'Centang jika halaman ini TIDAK BOLEH muncul di Google.',
     defaultValue: false,
   }),
-}, { label: 'Pengaturan SEO & Metadata' }); // Label Group
+}, { label: 'Pengaturan SEO & Metadata' });
 
 
 export default config({
-  storage: {
-    kind: 'local', // Ubah ke 'github' nanti saat deploy
-  },
+  // --- BAGIAN INI YANG DIUPDATE OTOMATIS ---
+  // Jika sedang di Production (Cloudflare), pakai GitHub mode.
+  // Jika di Local (Komputer sendiri), pakai Local mode.
+  storage: import.meta.env.PROD
+    ? {
+        kind: 'github',
+        // GANTI INI DENGAN USERNAME & REPO GITHUB ANDA YANG ASLI
+        // Format: 'username/nama-repo'
+        // Contoh: 'indrajayatektona/pusatalatlab'
+        repo: 'indrajayatektona/pusatalatlab', 
+      }
+    : {
+        kind: 'local',
+      },
+  // -----------------------------------------
+
   collections: {
 
     // --- 1. KOLEKSI AUTHORS (Penulis) ---
-    // (Tidak butuh SEO Schema karena biasanya tidak diindex sbg halaman utama)
     authors: collection({
       label: 'Penulis (Authors)',
       slugField: 'name',
@@ -68,7 +79,7 @@ export default config({
       },
     }),
     
-// --- 2. KOLEKSI PRODUK ---
+    // --- 2. KOLEKSI PRODUK ---
     products: collection({
       label: 'Produk Katalog',
       slugField: 'title',
@@ -78,7 +89,6 @@ export default config({
         title: fields.slug({ name: { label: 'Nama Produk' } }),
         id: fields.text({ label: 'SKU / Kode Barang' }),
         
-        // Inject SEO Schema
         seo: seoSchema, 
 
         category: fields.select({
@@ -104,14 +114,11 @@ export default config({
             { label: 'Standar SNI/ASTM' }
         ),
 
-        // --- TAMBAHAN BARU ---
-        // 1. Brochure Link (Text field biasa agar bisa diisi URL atau path)
         brochureLink: fields.text({
             label: 'Link Brosur / PDF',
             description: 'Contoh: /brosur/produk-a.pdf atau https://drive.google.com/...' 
         }),
 
-        // 2. Specifications (Menggunakan Array agar bisa diedit di UI)
         specifications: fields.array(
             fields.object({
                 key: fields.text({ label: 'Nama Spesifikasi (ex: Dimensi)' }),
@@ -122,7 +129,6 @@ export default config({
                 itemLabel: (props) => `${props.fields.key.value}: ${props.fields.value.value}`,
             }
         ),
-        // ---------------------
 
         description: fields.text({ label: 'Ringkasan Produk (Untuk Card/List)', multiline: true }),
         featured: fields.checkbox({ label: 'Tampilkan di Homepage (Featured)?' }),
@@ -150,7 +156,6 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: 'Judul Artikel' } }),
         
-        // Inject SEO Schema Disini
         seo: seoSchema,
 
         description: fields.text({ label: 'Ringkasan (Excerpt)', multiline: true }),
@@ -193,7 +198,6 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: 'Nama Halaman (Internal)' } }),
         
-        // Inject SEO Schema Disini
         seo: seoSchema,
 
         description: fields.text({ label: 'Deskripsi Singkat', multiline: true }),
