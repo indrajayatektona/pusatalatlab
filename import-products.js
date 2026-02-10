@@ -91,11 +91,12 @@ function processProduct(row) {
   }
 
   // 2. Parsing Object Spesifikasi (Penting untuk Schema)
-  const specsObj = parseSpecs(row.Spesifikasi_Raw);
+ const specsObj = parseSpecs(row.Spesifikasi_Raw);
   let specsYaml = '';
   if (Object.keys(specsObj).length > 0) {
+    // Format baru: List of Objects
     specsYaml = Object.entries(specsObj)
-      .map(([k, v]) => `  "${k}": "${v}"`) // Quote keys and values
+      .map(([k, v]) => `  - key: "${k}"\n    value: "${v}"`) 
       .join('\n');
   }
 

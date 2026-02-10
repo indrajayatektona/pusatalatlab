@@ -157,7 +157,7 @@ const productSchema = {
             )}
         </div>
 
-        {specifications && Object.keys(specifications).length > 0 && (
+{specifications && specifications.length > 0 && (
             <div class="mb-10">
                 <h3 class="text-lg font-black text-civil-primary uppercase mb-4 flex items-center gap-2">
                     <span class="w-6 h-1 bg-civil-secondary"></span> Spesifikasi Teknis
@@ -165,12 +165,14 @@ const productSchema = {
                 <div class="overflow-hidden border-2 border-gray-100 rounded-sm">
                     <table class="w-full text-sm">
                         <tbody class="divide-y divide-gray-100">
-                            {Object.entries(specifications).map(([key, value], index) => (
+                           {/* --- MULAI BAGIAN YG DIGANTI --- */}
+                            {specifications.map((spec, index) => (
                                 <tr class={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                                    <td class="px-5 py-3 font-bold text-civil-dark w-1/3 align-top">{key}</td>
-                                    <td class="px-5 py-3 text-gray-600 font-mono align-top">{value}</td>
+                                    <td class="px-5 py-3 font-bold text-civil-dark w-1/3 align-top">{spec.key}</td>
+                                    <td class="px-5 py-3 text-gray-600 font-mono align-top">{spec.value}</td>
                                 </tr>
                             ))}
+                           {/* --- SELESAI BAGIAN YG DIGANTI --- */}
                         </tbody>
                     </table>
                 </div>

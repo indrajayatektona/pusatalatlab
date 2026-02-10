@@ -50,16 +50,24 @@ const productsCollection = defineCollection({
     title: z.string(),
     id: z.string().optional(),
     
-    // Tambahkan field SEO
     seo: seoZodSchema,
 
     category: z.enum(['Aspal', 'Beton', 'Tanah', 'Batuan', 'Semen', 'Pertambangan', 'Umum']),
     image: z.string().optional(),
     standards: z.array(z.string()).optional(), 
+    
+    // --- BAGIAN INI YANG DIUBAH ---
+    specifications: z.array(
+      z.object({
+        key: z.string(),
+        value: z.string(),
+      })
+    ).optional(),
+    // ------------------------------
+
+    brochureLink: z.string().optional(), // Pastikan ini juga sudah ada jika di Keystatic ada
     description: z.string().optional(), 
     featured: z.boolean().default(false), 
-    specifications: z.record(z.string()).optional(), 
-    brochureLink: z.string().optional(),
     publishDate: z.date().default(() => new Date()),
   }),
 });
