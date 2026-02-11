@@ -4,13 +4,13 @@ import react from '@astrojs/react';
 import sitemap from "@astrojs/sitemap";
 import keystatic from '@keystatic/astro';
 import markdoc from '@astrojs/markdoc';
-
-// 1. Adapter Cloudflare TETAP DIPAKAI
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://pusatalatlabsipil.com',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'passthrough',
+  }),
   
   integrations: [
     tailwind(), 
@@ -18,5 +18,6 @@ export default defineConfig({
     react(),
     keystatic(),
     markdoc()
-  ]
+  ],
+  output: 'static', 
 });
