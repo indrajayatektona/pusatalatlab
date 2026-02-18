@@ -18,5 +18,5 @@ export default defineConfig({
     keystatic(),
     markdoc()
   ],
-  output: 'server',
+  output: 'hybrid',
 });
