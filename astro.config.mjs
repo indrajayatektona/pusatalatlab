@@ -11,7 +11,6 @@ export default defineConfig({
   adapter: cloudflare({
     imageService: 'passthrough',
   }),
-  
   integrations: [
     tailwind(), 
     sitemap(), 
@@ -19,5 +18,5 @@ export default defineConfig({
     keystatic(),
     markdoc()
   ],
-  output: 'static', 
+  output: 'hybrid',
 });
