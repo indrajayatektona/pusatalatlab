@@ -57,12 +57,7 @@ const productsCollection = defineCollection({
     standards: z.array(z.string()).optional(), 
     
     // --- BAGIAN INI YANG DIUBAH ---
-    specifications: z.array(
-      z.object({
-        key: z.string(),
-        value: z.string(),
-      })
-    ).optional(),
+    specifications: z.string().optional(),
     // ------------------------------
 
     brochureLink: z.string().optional(), // Pastikan ini juga sudah ada jika di Keystatic ada
