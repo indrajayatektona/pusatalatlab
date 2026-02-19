@@ -17,3 +17,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+#imported
+import-products.js
+data-products.csv

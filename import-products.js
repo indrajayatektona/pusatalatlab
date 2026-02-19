@@ -8,55 +8,25 @@ const OUTPUT_DIR = 'src/content/products';
 
 const results = [];
 
-// Helper: Ubah string "Key:Val | Key2:Val2" jadi Object
-function parseSpecs(rawString) {
-  if (!rawString) return {};
-  const specs = {};
-  rawString.split('|').forEach(item => {
-    const [key, val] = item.split(':');
-    if (key && val) {
-      specs[key.trim()] = val.trim();
+// Helper: Ubah string "Key:Val | Key2:Val2" di CSV jadi format Teks Multiline 
+// (Menyesuaikan dengan mode input spesifikasi cepat yang baru)
+function parseSpecsToMultiline(rawString) {
+  if (!rawString) return '';
+  return rawString.split('|').map(item => {
+    const parts = item.split(':');
+    if (parts.length >= 2) {
+      const key = parts[0].trim();
+      const val = parts.slice(1).join(':').trim(); // Gabung sisa jika ada titik dua
+      return `${key} : ${val}`;
     }
-  });
-  return specs;
+    return '';
+  }).filter(line => line !== '').join('\n');
 }
 
-// Helper: Auto-Generate Konten SEO (Anti Thin Content)
-function generateSEOContent(row, specsObj) {
-  // Jika sudah ada konten manual di CSV, pakai itu
-  if (row.Konten_Manual && row.Konten_Manual.length > 50) {
-    return row.Konten_Manual;
-  }
-
-  // Jika kosong, generate template
-  const specList = Object.entries(specsObj)
-    .map(([k, v]) => `- **${k}**: ${v}`)
-    .join('\n');
-  
-  const standarText = row.Standar ? `sesuai standar ${row.Standar.replace(/\|/g, ', ')}` : 'berstandar industri';
-
-  return `
-## Deskripsi Produk ${row.Judul}
-
-**${row.Judul}** adalah solusi instrumen pengujian kualitas tinggi untuk kebutuhan kategori **${row.Kategori}**. Alat ini dirancang khusus untuk memenuhi standar pengujian laboratorium teknik sipil dan konstruksi, ${standarText}.
-
-Produk ini menjadi pilihan utama kontraktor dan konsultan karena durabilitas tinggi dan akurasi pengukuran yang presisi. Sangat cocok digunakan untuk pengujian lapangan maupun laboratorium permanen.
-
-### Fitur dan Spesifikasi Unggulan
-
-Untuk memastikan keandalan data pengujian Anda, ${row.Judul} dilengkapi dengan spesifikasi teknis sebagai berikut:
-
-${specList}
-
-### Mengapa Memilih Alat Ini?
-
-1. **Akurasi Terjamin**: Dikalibrasi untuk meminimalkan margin error.
-2. **Material Kokoh**: Tahan terhadap kondisi lingkungan proyek yang keras.
-3. **Kemudahan Operasional**: Desain ergonomis yang memudahkan teknisi lab.
-
----
-*Butuh penawaran harga atau konsultasi teknis terkait ${row.Judul}? Hubungi tim Indra Jaya Tektona melalui WhatsApp di pojok kanan bawah.*
-`;
+// Helper: Mencegah error jika ada tanda kutip ganda (") di dalam CSV
+function escapeYamlString(str) {
+  if (!str) return '';
+  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 }
 
 // Baca File CSV
@@ -78,52 +48,53 @@ fs.createReadStream(CSV_FILE)
   });
 
 function processProduct(row) {
-  if (!row.Judul) return;
+  if (!row.Judul) return; // Wajib ada Nama Produk
 
+  // 1. Slug (Auto dari Judul)
   const slug = slugify(row.Judul, { lower: true, strict: true });
   const today = new Date().toISOString().split('T')[0];
   
-  // 1. Parsing Array Standar
-  let standardsYaml = '';
+  // 2. Parsing Array Standar (Pisahkan dengan koma atau pipa | di CSV)
+  let standardsYaml = '[]';
   if (row.Standar) {
-    const standardsArray = row.Standar.split(/[|,]/).map(s => s.trim());
-    standardsYaml = standardsArray.map(s => `  - "${s}"`).join('\n');
+    const standardsArray = row.Standar.split(/[|,]/).map(s => s.trim()).filter(s => s !== '');
+    if (standardsArray.length > 0) {
+      standardsYaml = '\n' + standardsArray.map(s => `  - "${escapeYamlString(s)}"`).join('\n');
+    }
   }
 
-  // 2. Parsing Object Spesifikasi (Penting untuk Schema)
- const specsObj = parseSpecs(row.Spesifikasi_Raw);
-  let specsYaml = '';
-  if (Object.keys(specsObj).length > 0) {
-    // Format baru: List of Objects
-    specsYaml = Object.entries(specsObj)
-      .map(([k, v]) => `  - key: "${k}"\n    value: "${v}"`) 
-      .join('\n');
+  // 3. Parsing Object Spesifikasi menjadi format Teks (Multiline YAML)
+  let specsText = '';
+  if (row.Spesifikasi) {
+    if (row.Spesifikasi.includes('|') || row.Spesifikasi.includes(':')) {
+        specsText = parseSpecsToMultiline(row.Spesifikasi);
+    } else {
+        specsText = row.Spesifikasi;
+    }
   }
+  // Indentasi YAML untuk teks multiline (menggunakan operator |)
+  const specsYaml = specsText ? `|\n  ${specsText.replace(/\n/g, '\n  ')}` : `""`;
 
-  // 3. Generate Body Content
-  const bodyContent = generateSEOContent(row, specsObj);
+  // 4. Generate Body Content (Deskripsi Lengkap)
+  let bodyContent = row.Konten_Lengkap || `Deskripsi lengkap untuk produk **${row.Judul}** belum tersedia.`;
 
-  // 4. Susun Frontmatter (YAML)
-  // Perhatikan: Kita escape double quotes di Judul untuk menghindari YAML error
+  // 5. Susun Frontmatter (YAML) sesuai Schema Keystatic
   const fileContent = `---
-title: "${row.Judul.replace(/"/g, '\\"')}"
-id: "${row.SKU || ''}"
+title: "${escapeYamlString(row.Judul)}"
+id: "${escapeYamlString(row.SKU || '')}"
 seo:
-  metaTitle: "${row.Meta_Title || row.Judul}"
-  metaDescription: "${row.Meta_Desc || row.Deskripsi_Singkat || ''}"
-  customTitle: "${row.SEO_Custom_Title || ''}"
-  breadcrumbTitle: ""
-  canonicalUrl: ""
-  noIndex: ${row.SEO_NoIndex === 'true' ? true : false}
-category: ${row.Kategori || 'Umum'}
-image: "${row.Gambar || ''}"
-standards:
-${standardsYaml}
-specifications:
-${specsYaml}
-brochureLink: "${row.Brochure_Link || ''}"
-description: >
-  ${row.Deskripsi_Singkat || `Jual ${row.Judul} spesifikasi terbaik untuk kebutuhan ${row.Kategori}.`}
+  metaTitle: "${escapeYamlString(row.Meta_Title || '')}"
+  metaDescription: "${escapeYamlString(row.Meta_Description || '')}"
+  customTitle: "${escapeYamlString(row.Custom_H1 || '')}"
+  breadcrumbTitle: "${escapeYamlString(row.Breadcrumb || '')}"
+  canonicalUrl: "${escapeYamlString(row.Canonical || '')}"
+  noIndex: ${row.NoIndex === 'true' || row.NoIndex === '1' ? 'true' : 'false'}
+category: "${escapeYamlString(row.Kategori || 'Umum')}"
+image: "${escapeYamlString(row.Gambar || '')}"
+standards: ${standardsYaml}
+brochureLink: "${escapeYamlString(row.Brosur || '')}"
+specifications: ${specsYaml}
+description: "${escapeYamlString(row.Ringkasan || '')}"
 featured: false
 publishDate: ${today}
 ---
@@ -133,8 +104,8 @@ ${bodyContent}
   const filePath = `${OUTPUT_DIR}/${slug}.mdoc`;
   try {
     fs.writeFileSync(filePath, fileContent);
-    // console.log(`Drafted: ${slug}`); // Optional log
+    // console.log(`Drafted: ${slug}`);
   } catch (err) {
-    console.error(`❌ Gagal: ${slug}`, err);
+    console.error(`❌ Gagal generate: ${slug}`, err);
   }
 }
