@@ -119,16 +119,11 @@ export default config({
             description: 'Contoh: /brosur/produk-a.pdf atau https://drive.google.com/...' 
         }),
 
-        specifications: fields.array(
-            fields.object({
-                key: fields.text({ label: 'Nama Spesifikasi (ex: Dimensi)' }),
-                value: fields.text({ label: 'Nilai (ex: 10 x 20 cm)' }),
-            }),
-            {
-                label: 'Spesifikasi Teknis',
-                itemLabel: (props) => `${props.fields.key.value}: ${props.fields.value.value}`,
-            }
-        ),
+        specifications: fields.text({
+    label: 'Spesifikasi Teknis (Mode Cepat)',
+    description: 'Format: "Nama Spesifikasi : Nilai". Satu per baris. Contoh:\nDimensi : 10 x 20 cm\nBerat : 5 kg',
+    multiline: true,
+}),
 
         description: fields.text({ label: 'Ringkasan Produk (Untuk Card/List)', multiline: true }),
         featured: fields.checkbox({ label: 'Tampilkan di Homepage (Featured)?' }),
