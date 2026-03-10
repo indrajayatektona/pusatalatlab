@@ -25,8 +25,8 @@ const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 
 // Fallback Data (Jika CMS kosong)
 const dummyProducts = featuredProducts.length > 0 ? featuredProducts : [
-  { slug: '#', data: { title: "CBR Test Set Mechanical", id: "SO-330", category: "Tanah", image: "https://placehold.co/600x600/png?text=CBR+Set", standards: ["ASTM D-1883", "SNI 1744"] } },
-  { slug: '#', data: { title: "Compression Machine 2000kN", id: "CO-325", category: "Beton", image: "https://placehold.co/600x600/png?text=Compression+Machine", standards: ["ASTM C-39", "SNI 1974"] } },
+  { slug: 'hand-bor-test-set/', data: { title: "Hand Bor Test Set", id: "SO-110 A", category: "Tanah", image: "https://pusatalatlabsipil.com/images/products/hand-bor-test-set/image.jpg", standards: ["ASTM D-1452"] } },
+  { slug: 'compaction-test-set/', data: { title: "Compaction Test Seet", id: "CO-325", category: "Beton", image: "https://pusatalatlabsipil.com/images/products/compaction-test-set/image.jpg", standards: ["ASTM D-698"] } },
   { slug: '#', data: { title: "Marshall Test Set", id: "BI-320", category: "Aspal", image: "https://placehold.co/600x600/png?text=Marshall+Test", standards: ["ASTM D-1559", "AASHTO T-245"] } },
   { slug: '#', data: { title: "Sondir 2.5 Ton Heavy Duty", id: "SO-100", category: "Tanah", image: "https://placehold.co/600x600/png?text=Sondir+2.5T", standards: ["ASTM D-3441", "SNI 2827"] } },
 ];
