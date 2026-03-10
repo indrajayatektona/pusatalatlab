@@ -59,41 +59,41 @@ const quickLinks = [
         </div>
       </div>
 
-      <div class="mt-12 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-        <div class="md:grid md:grid-cols-2 md:gap-8">
-          <div>
-            <h3 class="text-sm font-black uppercase tracking-wider text-civil-secondary border-b border-gray-700 pb-2 mb-4">
-              Kategori Produk
-            </h3>
-            <ul role="list" class="space-y-3">
-              {categories.map((item) => (
-                <li>
-                  <a href={item.href} class="text-sm text-gray-400 hover:text-white hover:translate-x-1 transition-transform inline-block">
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div class="mt-10 md:mt-0">
-            <h3 class="text-sm font-black uppercase tracking-wider text-civil-secondary border-b border-gray-700 pb-2 mb-4">
-              Perusahaan
-            </h3>
-            <ul role="list" class="space-y-3">
-              {quickLinks.map((item) => (
-                <li>
-                  <a href={item.href} class="text-sm text-gray-400 hover:text-white hover:translate-x-1 transition-transform inline-block">
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 xl:col-span-2 xl:mt-0">
+        
+        <div>
+          <h3 class="text-sm font-black uppercase tracking-wider text-civil-secondary border-b border-gray-700 pb-2 mb-4">
+            Kategori Produk
+          </h3>
+          <ul role="list" class="space-y-3">
+            {categories.map((item) => (
+              <li>
+                <a href={item.href} class="text-sm text-gray-400 hover:text-white hover:translate-x-1 transition-transform inline-block">
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-black uppercase tracking-wider text-civil-secondary border-b border-gray-700 pb-2 mb-4">
+            Perusahaan
+          </h3>
+          <ul role="list" class="space-y-3">
+            {quickLinks.map((item) => (
+              <li>
+                <a href={item.href} class="text-sm text-gray-400 hover:text-white hover:translate-x-1 transition-transform inline-block">
+                  {item.name}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
         
         <div class="flex flex-col justify-start space-y-4">
            <h3 class="text-sm font-black uppercase tracking-wider text-civil-secondary border-b border-gray-700 pb-2 mb-4">
-              Butuh Penawaran Cepat?
+             Butuh Penawaran Cepat?
             </h3>
             <p class="text-xs text-gray-400 mb-2">
               Kami melayani pembuatan surat dukungan lelang dan faktur pajak (PPN).

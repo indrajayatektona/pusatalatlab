@@ -75,80 +75,87 @@ import { SITE_CONFIG } from '../config';
 </div>
 
 <script define:vars={{ waNumber: SITE_CONFIG.whatsapp }}>
-  const modal = document.getElementById('quote-modal');
-  const backdrop = modal.querySelector('.fixed.inset-0.bg-civil-primary\\/90'); // Selector backdrop
-  const panel = modal.querySelector('.relative.transform'); // Selector panel
-  const closeBtn = document.getElementById('close-quote');
-  const form = document.getElementById('rfq-form');
-
-  // ANIMATION FUNCTIONS
-  function enterAnimation() {
-    modal.classList.remove('hidden');
-    // Force reflow
-    void modal.offsetWidth;
+  document.addEventListener('astro:page-load', () => {
+    const modal = document.getElementById('quote-modal');
     
-    backdrop.classList.remove('opacity-0');
-    backdrop.classList.add('opacity-100');
-    
-    panel.classList.remove('scale-95', 'opacity-0');
-    panel.classList.add('scale-100', 'opacity-100');
-  }
+    // Guard clause: Jika modal tidak ada di halaman ini, stop eksekusi script
+    if (!modal) return; 
 
-  function leaveAnimation() {
-    backdrop.classList.remove('opacity-100');
-    backdrop.classList.add('opacity-0');
-    
-    panel.classList.remove('scale-100', 'opacity-100');
-    panel.classList.add('scale-95', 'opacity-0');
+    const backdrop = modal.querySelector('.fixed.inset-0.bg-civil-primary\\/90'); // Selector backdrop
+    const panel = modal.querySelector('.relative.transform'); // Selector panel
+    const closeBtn = document.getElementById('close-quote');
+    const form = document.getElementById('rfq-form');
 
-    setTimeout(() => {
-      modal.classList.add('hidden');
-    }, 200); // Wait for transition
-  }
-
-  // OPEN EVENT
-  window.addEventListener('open-quote', (e) => {
-    if(e.detail && e.detail.product) {
-       document.getElementById('rfq-product').value = e.detail.product;
+    // ANIMATION FUNCTIONS
+    function enterAnimation() {
+      modal.classList.remove('hidden');
+      // Force reflow
+      void modal.offsetWidth;
+      
+      backdrop.classList.remove('opacity-0');
+      backdrop.classList.add('opacity-100');
+      
+      panel.classList.remove('scale-95', 'opacity-0');
+      panel.classList.add('scale-100', 'opacity-100');
     }
-    enterAnimation();
-  });
 
-  // CLOSE EVENTS
-  closeBtn.addEventListener('click', leaveAnimation);
-  
-  // Close when clicking BACKDROP (not the panel)
-  modal.querySelector('.fixed.inset-0.z-10').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget || e.target.classList.contains('flex')) {
+    function leaveAnimation() {
+      backdrop.classList.remove('opacity-100');
+      backdrop.classList.add('opacity-0');
+      
+      panel.classList.remove('scale-100', 'opacity-100');
+      panel.classList.add('scale-95', 'opacity-0');
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200); // Wait for transition
+    }
+
+    // OPEN EVENT
+    window.addEventListener('open-quote', (e) => {
+      if(e.detail && e.detail.product) {
+         const productInput = document.getElementById('rfq-product');
+         if (productInput) productInput.value = e.detail.product;
+      }
+      enterAnimation();
+    });
+
+    // CLOSE EVENTS
+    closeBtn?.addEventListener('click', leaveAnimation);
+    
+    // Close when clicking BACKDROP (not the panel)
+    modal.querySelector('.fixed.inset-0.z-10')?.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget || e.target.classList.contains('flex')) {
+        leaveAnimation();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) leaveAnimation();
+    });
+
+    // SUBMIT HANDLER
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('rfq-name').value;
+      const city = document.getElementById('rfq-city').value;
+      const type = document.getElementById('rfq-type').value;
+      const product = document.getElementById('rfq-product').value;
+      const message = document.getElementById('rfq-message').value;
+
+      const text = `*PERMINTAAN PENAWARAN HARGA (RFQ)*%0A%0A` +
+                   `*Produk:* ${product}%0A` +
+                   `--------------------------------%0A` +
+                   `*Nama:* ${name}%0A` +
+                   `*Domisili:* ${city}%0A` +
+                   `*Status:* ${type}%0A` +
+                   `--------------------------------%0A` +
+                   `*Pesan:* ${message}`;
+
+      const url = `https://wa.me/${waNumber}?text=${text}`;
+      window.open(url, '_blank');
       leaveAnimation();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) leaveAnimation();
-  });
-
-  // SUBMIT HANDLER
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const name = document.getElementById('rfq-name').value;
-    const city = document.getElementById('rfq-city').value;
-    const type = document.getElementById('rfq-type').value;
-    const product = document.getElementById('rfq-product').value;
-    const message = document.getElementById('rfq-message').value;
-
-    const text = `*PERMINTAAN PENAWARAN HARGA (RFQ)*%0A%0A` +
-                 `*Produk:* ${product}%0A` +
-                 `--------------------------------%0A` +
-                 `*Nama:* ${name}%0A` +
-                 `*Domisili:* ${city}%0A` +
-                 `*Status:* ${type}%0A` +
-                 `--------------------------------%0A` +
-                 `*Pesan:* ${message}`;
-
-    const url = `https://wa.me/${waNumber}?text=${text}`;
-    window.open(url, '_blank');
-    leaveAnimation();
+    });
   });
 </script>

@@ -101,137 +101,142 @@
 </div>
 
 <script>
-  // -- Logic JS tetap sama, dengan penambahan event listener untuk Quick Chips --
-  
-  const modal = document.getElementById('search-modal');
-  const input = document.getElementById('search-input') as HTMLInputElement;
-  const resultsList = document.getElementById('results-list');
-  const initialState = document.getElementById('initial-state');
-  const noResults = document.getElementById('no-results');
-  const loadingState = document.getElementById('loading-state');
-  const closeBtn = document.getElementById('close-search');
-
+  // State ditaruh di luar agar tidak perlu fetch ulang berkali-kali saat pindah halaman
   let products = [];
   let isDataLoaded = false;
 
-  // Event untuk membuka modal
-  window.addEventListener('open-search', () => {
-    modal.classList.remove('hidden');
-    // Animasi fade in sedikit
-    setTimeout(() => {
-        document.querySelector('#search-modal > div').classList.remove('scale-95', 'opacity-0');
-    }, 10);
-    input.focus();
-    if (!isDataLoaded) loadProductData();
-  });
-
-  const closeModal = () => {
-    modal.classList.add('hidden');
-    input.value = '';
-    resultsList.innerHTML = '';
-    initialState.classList.remove('hidden');
-    noResults.classList.add('hidden');
-  };
-
-  closeBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault();
-      window.dispatchEvent(new CustomEvent('open-search'));
-    }
-  });
-
-  // Fitur Quick Search Chips
-  document.querySelectorAll('.quick-search').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const text = (e.target as HTMLElement).innerText;
-        input.value = text;
-        performSearch(text.toLowerCase());
-    });
-  });
-
-  async function loadProductData() {
-    loadingState.classList.remove('hidden');
-    initialState.classList.add('hidden');
+  document.addEventListener('astro:page-load', () => {
+    const modal = document.getElementById('search-modal');
     
-    try {
-      const res = await fetch('/api/search.json');
-      products = await res.json();
-      isDataLoaded = true;
-      loadingState.classList.add('hidden');
-      if (input.value) performSearch(input.value); 
-      else initialState.classList.remove('hidden');
-    } catch (err) {
-      console.error("Gagal memuat data search", err);
-    }
-  }
+    if (!modal) return; // Guard clause
 
-  input.addEventListener('input', (e) => {
-    const query = (e.target as HTMLInputElement).value.toLowerCase();
-    performSearch(query);
-  });
+    const input = document.getElementById('search-input') as HTMLInputElement;
+    const resultsList = document.getElementById('results-list');
+    const initialState = document.getElementById('initial-state');
+    const noResults = document.getElementById('no-results');
+    const loadingState = document.getElementById('loading-state');
+    const closeBtn = document.getElementById('close-search');
 
-  function performSearch(query) {
-    if (!query) {
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      input.value = '';
       resultsList.innerHTML = '';
       initialState.classList.remove('hidden');
       noResults.classList.add('hidden');
-      return;
+    };
+
+    // FUNGSI-FUNGSI PENCARIAN
+    async function loadProductData() {
+      loadingState.classList.remove('hidden');
+      initialState.classList.add('hidden');
+      
+      try {
+        const res = await fetch('/api/search.json');
+        products = await res.json();
+        isDataLoaded = true;
+        loadingState.classList.add('hidden');
+        if (input.value) performSearch(input.value); 
+        else initialState.classList.remove('hidden');
+      } catch (err) {
+        console.error("Gagal memuat data search", err);
+      }
     }
 
-    initialState.classList.add('hidden');
-    
-    // Algoritma Filter
-    const filtered = products.filter(p => p.searchable.includes(query)).slice(0, 10);
+    function performSearch(query) {
+      if (!query) {
+        resultsList.innerHTML = '';
+        initialState.classList.remove('hidden');
+        noResults.classList.add('hidden');
+        return;
+      }
 
-    renderResults(filtered);
-  }
+      initialState.classList.add('hidden');
+      
+      // Algoritma Filter
+      // Tambahan safety .searchable agar tidak error jika property undefined
+      const filtered = products.filter(p => p.searchable && p.searchable.includes(query)).slice(0, 10);
 
-  function renderResults(items) {
-    resultsList.innerHTML = '';
-    
-    if (items.length === 0) {
-      noResults.classList.remove('hidden');
-      return;
+      renderResults(filtered);
     }
 
-    noResults.classList.add('hidden');
+    function renderResults(items) {
+      resultsList.innerHTML = '';
+      
+      if (items.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      }
 
-    items.forEach(item => {
-      const li = document.createElement('li');
-      // Layout Result Item yang lebih Professional
-      li.innerHTML = `
-        <a href="/products/${item.slug}" class="block bg-white hover:bg-gray-50 transition-colors group">
-          <div class="px-6 py-4 flex items-center justify-between border-l-4 border-transparent hover:border-civil-secondary">
-            
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 mb-1">
-                <span class="text-lg font-bold text-civil-primary group-hover:text-civil-dark truncate">${item.title}</span>
-                ${item.id ? `<span class="hidden md:inline-block px-2 py-0.5 bg-gray-100 text-xs font-mono font-bold text-gray-500 rounded">${item.id}</span>` : ''}
-              </div>
+      noResults.classList.add('hidden');
+
+      items.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <a href="/products/${item.slug}" class="block bg-white hover:bg-gray-50 transition-colors group">
+            <div class="px-6 py-4 flex items-center justify-between border-l-4 border-transparent hover:border-civil-secondary">
               
-              <div class="flex items-center text-sm text-gray-500">
-                <span class="font-semibold text-civil-secondary">${item.category}</span>
-                <span class="mx-2 text-gray-300">•</span>
-                <span class="truncate">Klik untuk lihat spesifikasi</span>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-lg font-bold text-civil-primary group-hover:text-civil-dark truncate">${item.title}</span>
+                  ${item.id ? `<span class="hidden md:inline-block px-2 py-0.5 bg-gray-100 text-xs font-mono font-bold text-gray-500 rounded">${item.id}</span>` : ''}
+                </div>
+                
+                <div class="flex items-center text-sm text-gray-500">
+                  <span class="font-semibold text-civil-secondary">${item.category}</span>
+                  <span class="mx-2 text-gray-300">•</span>
+                  <span class="truncate">Klik untuk lihat spesifikasi</span>
+                </div>
               </div>
-            </div>
 
-            <div class="ml-4 flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 group-hover:text-civil-secondary transform group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
+              <div class="ml-4 flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 group-hover:text-civil-secondary transform group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
 
-          </div>
-        </a>
-      `;
-      resultsList.appendChild(li);
+            </div>
+          </a>
+        `;
+        resultsList.appendChild(li);
+      });
+    }
+
+    // EVENT LISTENERS
+    window.addEventListener('open-search', () => {
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+          document.querySelector('#search-modal > div')?.classList.remove('scale-95', 'opacity-0');
+      }, 10);
+      input.focus();
+      if (!isDataLoaded) loadProductData();
     });
-  }
+
+    closeBtn?.addEventListener('click', closeModal);
+    
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('open-search'));
+      }
+    });
+
+    document.querySelectorAll('.quick-search').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const text = (e.target as HTMLElement).innerText;
+          input.value = text;
+          performSearch(text.toLowerCase());
+      });
+    });
+
+    input.addEventListener('input', (e) => {
+      const query = (e.target as HTMLInputElement).value.toLowerCase();
+      performSearch(query);
+    });
+
+  });
 </script>

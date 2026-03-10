@@ -7,20 +7,421 @@ import { getCollection } from 'astro:content';
 // 1. SETUP PAGINATION PER KATEGORI
 export async function getStaticPaths({ paginate }) {
   const allProducts = await getCollection('products');
-  
-  // Definisi Kategori
+
+  // Tambahkan seoContent berformat HTML untuk optimasi SEO
   const categories = [
-    { slug: "aspal", name: "Alat Lab Aspal" },
-    { slug: "beton", name: "Alat Lab Beton" },
-    { slug: "tanah", name: "Alat Lab Tanah" },
-    { slug: "batuan", name: "Alat Lab Batuan" },
-    { slug: "semen", name: "Alat Lab Semen" },
-    { slug: "pertambangan", name: "Pertambangan" },
-    { slug: "umum", name: "Alat Umum" },
+{ 
+      slug: "aspal", 
+      name: "Alat Lab Aspal",
+      seoContent: `
+        <h2>Jual Alat Uji Laboratorium Aspal Berstandar SNI, ASTM & AASHTO</h2>
+        <p>Dalam dunia konstruksi jalan raya, kualitas material aspal beton (hot mix) sangat menentukan umur pakai dan ketahanan infrastruktur terhadap beban lalu lintas maupun perubahan cuaca. Pengujian aspal yang akurat adalah langkah krusial yang tidak boleh dilewatkan oleh kontraktor, konsultan pengawas, maupun instansi pemerintahan (Bina Marga). Kami, <strong>CV. Sawarga Teknik</strong>, hadir sebagai distributor terpercaya yang men <strong>jual alat lab aspal berkualitas</strong> untuk memastikan proyek pengaspalan Anda memenuhi spesifikasi teknis yang ketat.</p>
+
+        <p>Kami menyadari bahwa setiap proyek membutuhkan efisiensi anggaran tanpa mengorbankan mutu. Oleh karena itu, kami menawarkan alat pengujian laboratorium dengan <strong>harga murah</strong> namun tetap mempertahankan standar presisi industri. Setiap instrumen uji aspal yang kami distribusikan telah melalui tahap *Quality Control* (QC) yang ketat dan dirancang khusus untuk memenuhi standar pengujian nasional (SNI) maupun internasional (ASTM & AASHTO).</p>
+
+        <h3>Pentingnya Instrumen Pengujian Aspal Hot Mix</h3>
+        <p>Pengaspalan bukan sekadar menghampar material di atas permukaan jalan. Material aspal harus diuji mulai dari tahap perencanaan campuran (Job Mix Formula) hingga tahap evaluasi pasca-konstruksi (Core Drill). Berikut adalah beberapa parameter penting yang harus diuji:</p>
+        <ul>
+          <li><strong>Kestabilan dan Kelelehan (Stability & Flow):</strong> Diuji menggunakan <em>Marshall Test Set</em> untuk mengetahui ketahanan aspal terhadap deformasi plastis.</li>
+          <li><strong>Kadar Aspal (Bitumen Content):</strong> Menggunakan <em>Centrifuge Extractor</em> atau <em>Reflux Extractor</em> untuk memastikan persentase aspal dalam campuran hot mix sesuai dengan spesifikasi teknis Bina Marga.</li>
+          <li><strong>Penetrasi dan Titik Lembek:</strong> Diuji menggunakan <em>Penetrometer</em> dan <em>Softening Point Apparatus</em> untuk mengetahui tingkat kekerasan dan kepekaan aspal terhadap suhu.</li>
+          <li><strong>Kepadatan Lapangan:</strong> Menggunakan <em>Core Drill Machine</em> untuk mengambil sampel aspal yang sudah dihampar guna menguji ketebalan dan kepadatannya di laboratorium.</li>
+        </ul>
+
+        <h3>Katalog & Perkiraan Spesifikasi Alat Uji Aspal</h3>
+        <p>Untuk memudahkan Anda dalam menyusun Rencana Anggaran Biaya (RAB), berikut adalah daftar peralatan uji aspal yang paling sering dibutuhkan untuk mendirikan laboratorium teknik sipil atau batching plant AMP (Asphalt Mixing Plant):</p>
+
+          <div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
+            <table class="min-w-full text-sm text-left">
+              <thead class="bg-civil-dark text-white uppercase font-bold">
+              <tr>
+                <th>Nama Alat Lab Aspal</th>
+                <th>Fungsi Utama / Parameter Uji</th>
+                <th>Standar Rujukan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Marshall Test Set</strong></td>
+                <td>Menguji stabilitas dan kelelehan (flow) campuran aspal. Tersedia versi Analog & Digital.</td>
+                <td>SNI 06-2489, ASTM D-1559</td>
+              </tr>
+              <tr>
+                <td><strong>Core Drill Machine</strong></td>
+                <td>Mengebor dan mengambil sampel aspal beton dari lapangan (jalan raya). Tersedia mesin bensin (Honda/Kohler).</td>
+                <td>SNI 03-6890, ASTM D-5361</td>
+              </tr>
+              <tr>
+                <td><strong>Centrifuge Extractor</strong></td>
+                <td>Menentukan kadar aspal / bitumen pada campuran aspal hot mix (kapasitas 1500g - 3000g).</td>
+                <td>SNI 03-6894, ASTM D-2172</td>
+              </tr>
+              <tr>
+                <td><strong>Penetration Test Set</strong></td>
+                <td>Mengukur tingkat kekerasan (penetrasi) aspal keras dan tar. Tersedia model manual dan elektrik.</td>
+                <td>SNI 06-2456, ASTM D-5</td>
+              </tr>
+              <tr>
+                <td><strong>Ductility of Bituminous</strong></td>
+                <td>Mengukur jarak elongasi (pemuluran) bahan aspal sebelum putus pada suhu tertentu.</td>
+                <td>SNI 2432:2011, ASTM D-113</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+        <h3>Keunggulan Beli Alat Lab Aspal di Sawarga Teknik</h3>
+        <p>Memilih vendor alat laboratorium teknik sipil tidak boleh sembarangan. Kesalahan pembacaan alat uji dapat berakibat fatal pada kegagalan konstruksi. Berikut adalah alasan mengapa ratusan kontraktor di seluruh Indonesia mempercayakan kebutuhannya kepada kami:</p>
+        <ol>
+          <li><strong>Sertifikat Kalibrasi KAN:</strong> Sebagian besar produk kami dapat dilengkapi dengan sertifikat <strong>kalibrasi KAN (Komite Akreditasi Nasional)</strong> yang valid dan diakui oleh auditor proyek pemerintah.</li>
+          <li><strong>Garansi Resmi 1 Tahun:</strong> Kami memberikan jaminan garansi servis dan ketersediaan sparepart selama 1 tahun penuh, sehingga investasi alat Anda lebih aman.</li>
+          <li><strong>Berkualitas & Tahan Banting:</strong> Alat kami dirancang menggunakan material kokoh yang tahan terhadap lingkungan proyek yang keras dan kotor.</li>
+          <li><strong>Bantuan Teknis & Pelatihan:</strong> Tim engineer kami siap memberikan panduan cara penggunaan alat sesuai dengan SOP standar pengujian.</li>
+        </ol>
+
+        <p>Jangan biarkan proyek jalan raya Anda terhambat karena hasil uji laboratorium yang tidak akurat. Dapatkan penawaran harga alat lab aspal terbaik, terlengkap, dan <strong>berkualitas</strong> sekarang juga. Klik produk di atas untuk melihat spesifikasi detailnya, atau langsung hubungi tim sales kami melalui WhatsApp untuk meminta brosur PDF dan Rencana Penawaran Harga (Quotation) resmi dari perusahaan kami!</p>
+      `
+    },
+{ 
+      slug: "beton", 
+      name: "Alat Lab Beton",
+      seoContent: `
+        <h2>Jual Alat Uji Laboratorium Beton Berkualitas, Terlengkap & Bergaransi</h2>
+        <p>Beton merupakan material tulang punggung dalam hampir seluruh proyek infrastruktur berskala besar, mulai dari pembangunan gedung bertingkat, jembatan, bendungan, hingga jalan tol. Memastikan kualitas dan mutu beton (yang umumnya dinyatakan dalam nilai K atau fc') harus selalu diawasi secara ketat. Kegagalan dalam mencapai mutu beton yang disyaratkan dapat berakibat fatal pada runtuhnya struktur bangunan. Oleh karena itu, keberadaan <strong>Alat Lab Beton</strong> yang presisi dan akurat menjadi syarat mutlak bagi setiap kontraktor pelaksana, konsultan pengawas, produsen beton pracetak (precast), maupun penyedia <em>ready mix</em> di <em>batching plant</em>.</p>
+
+        <p>Sebagai mitra andalan dalam industri konstruksi sipil, <strong>CV. Sawarga Teknik</strong> hadir untuk men-jual berbagai macam instrumen pengujian beton <strong>berkualitas</strong> tinggi dengan <strong>harga murah</strong> dan bersaing. Kami sangat memahami bahwa keamanan dan daya tahan struktur adalah prioritas paling utama. Oleh sebab itu, setiap alat uji mekanika beton yang kami suplai diproduksi menggunakan material baja <em>heavy-duty</em> yang sangat kokoh, serta di-cover oleh <strong>garansi</strong> resmi. Anda tidak perlu ragu terkait akurasi pembacaannya, karena produk kami telah dilengkapi dengan opsi sertifikat <strong>kalibrasi KAN</strong> (Komite Akreditasi Nasional) yang sah dan diakui oleh auditor proyek pemerintah maupun BUMN.</p>
+
+        <h3>Tahapan dan Parameter Pengujian Mutu Beton</h3>
+        <p>Untuk memastikan material beton segar yang dihampar di lapangan sesuai dengan spesifikasi Rencana Kerja dan Syarat-syarat (RKS), terdapat beberapa tahapan uji mekanika laboratorium yang wajib dilakukan, antara lain:</p>
+        <ul>
+          <li><strong>Uji Workability (Kelecekan):</strong> Pengujian ini wajib dilakukan sebelum beton segar dituang dari truk mixer. Menggunakan <em>Slump Test Set</em>, penguji memastikan adukan beton tidak terlalu encer (yang dapat menurunkan mutu) atau terlalu kental (yang menyulitkan pemadatan).</li>
+          <li><strong>Pembuatan Benda Uji (Casting):</strong> Mempersiapkan spesimen beton menggunakan cetakan silinder atau cetakan kubus beton (<em>Concrete Mold</em>). Cetakan yang presisi sangat penting agar saat beton ditekan, beban tersebar merata.</li>
+          <li><strong>Uji Kuat Tekan (Compressive Strength):</strong> Ini adalah metode pengujian paling krusial untuk menentukan mutu beton fc'. Menggunakan mesin penghancur beton atau <em>Compression Machine</em> untuk mengetahui beban maksimal yang dapat ditahan spesimen hingga pecah.</li>
+          <li><strong>Uji Tanpa Merusak (Non-Destructive Test):</strong> Dilakukan pada struktur beton yang sudah keras dan terpasang menggunakan <em>Concrete Test Hammer</em> (Hammer Test) untuk memperkirakan nilai kuat tekannya secara cepat di lokasi proyek.</li>
+        </ul>
+
+        <h3>Katalog Perangkat Uji Laboratorium Beton</h3>
+        <p>Guna memudahkan Anda dalam menyusun RAB (Rencana Anggaran Biaya) pengadaan alat laboratorium untuk proyek atau pembangunan <em>batching plant</em> baru, berikut adalah ringkasan daftar peralatan uji beton yang kami sediakan:</p>
+
+          <div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
+            <table class="min-w-full text-sm text-left">
+              <thead class="bg-civil-dark text-white uppercase font-bold">
+              <tr>
+                <th class="px-4 py-3">Nama Alat Lab Beton</th>
+                <th class="px-4 py-3">Fungsi Utama / Parameter Uji</th>
+                <th class="px-4 py-3">Standar Rujukan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr class="bg-white hover:bg-gray-50">
+                <td class="px-4 py-3 border-r border-gray-100"><strong>Concrete Compression Machine</strong></td>
+                <td class="px-4 py-3 border-r border-gray-100">Mesin uji kuat tekan beton (silinder & kubus). Tersedia model Analog & Digital (Kapasitas 1500 kN - 3000 kN).</td>
+                <td class="px-4 py-3">SNI 1974, ASTM C-39</td>
+              </tr>
+              <tr class="bg-white hover:bg-gray-50">
+                <td class="px-4 py-3 border-r border-gray-100"><strong>Slump Test Set</strong></td>
+                <td class="px-4 py-3 border-r border-gray-100">Menentukan nilai slump (tingkat kelecekan/workability) pada adukan beton segar ready mix.</td>
+                <td class="px-4 py-3">SNI 1972:2008, ASTM C-143</td>
+              </tr>
+              <tr class="bg-white hover:bg-gray-50">
+                <td class="px-4 py-3 border-r border-gray-100"><strong>Concrete Mold (Cetakan Beton)</strong></td>
+                <td class="px-4 py-3 border-r border-gray-100">Mencetak sampel uji beton. Tersedia bentuk Silinder (15x30 cm) dan Kubus (15x15x15 cm) bahan cast iron.</td>
+                <td class="px-4 py-3">SNI 4810:2013, ASTM C-470</td>
+              </tr>
+              <tr class="bg-white hover:bg-gray-50">
+                <td class="px-4 py-3 border-r border-gray-100"><strong>Concrete Test Hammer</strong></td>
+                <td class="px-4 py-3 border-r border-gray-100">Alat pantul mekanis untuk mengestimasi kuat tekan permukaan beton terpasang secara praktis (Non-Destructive).</td>
+                <td class="px-4 py-3">SNI ASTM C805:2012</td>
+              </tr>
+              <tr class="bg-white hover:bg-gray-50">
+                <td class="px-4 py-3 border-r border-gray-100"><strong>Air Content of Fresh Concrete</strong></td>
+                <td class="px-4 py-3 border-r border-gray-100">Mengukur persentase kadar udara yang terperangkap di dalam campuran beton segar (Metode Tekanan).</td>
+                <td class="px-4 py-3">SNI 3418:2011, ASTM C-231</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+        <h3>Keunggulan Belanja Alat Uji Beton di CV. Sawarga Teknik</h3>
+        <p>Memilih vendor supplier alat laboratorium tidak boleh dilakukan secara asal-asalan, karena alat ini memegang peranan krusial sebagai "hakim" penentu kualitas bangunan. Berikut adalah alasan mengapa kami menjadi pilihan utama:</p>
+        <ol>
+          <li><strong>Presisi Tinggi:</strong> Seluruh indikator beban dan pembacaan hidrolik dikalibrasi sesuai standar internasional, meminimalisir kesalahan pembacaan kuat tekan.</li>
+          <li><strong>Dukungan Sertifikasi KAN:</strong> Memudahkan kontraktor saat menyerahkan laporan kualitas mutu kepada <em>owner</em> proyek atau pengawas dari Dinas PUPR.</li>
+          <li><strong>After-Sales & Pelatihan:</strong> Tim teknisi kami siap memandu Anda mulai dari proses instalasi mesin Compression hingga <em>training</em> cara pengoperasian yang benar sesuai SOP.</li>
+          <li><strong>Layanan Cepat Tanggap:</strong> Stok <em>sparepart</em> terjamin dan klaim garansi yang tidak berbelit-belit jika terjadi kendala teknis.</li>
+        </ol>
+
+        <p>Tingkatkan profesionalisme dan validitas hasil pengujian laboratorium Anda dengan dukungan perangkat terbaik. Jangan pertaruhkan keamanan struktur infrastruktur Anda! Klik produk-produk unggulan kami di atas untuk melihat spesifikasi detailnya, atau langsung hubungi layanan konsumen (sales) kami via WhatsApp untuk mendapatkan daftar penawaran harga dan katalog brosur PDF terlengkap!</p>
+      `
+    },
+    { 
+      slug: "tanah", 
+      name: "Alat Lab Tanah",
+      seoContent: `
+        <h2>Jual Alat Uji Mekanika Tanah (Soil Mechanics) Bergaransi & Berkualitas</h2>
+        <p>Keamanan dan keawetan sebuah konstruksi sangat bergantung pada pondasinya, dan kekuatan pondasi tersebut mutlak ditentukan oleh karakteristik tanah di bawahnya. Pengujian mekanika tanah (<em>Soil Mechanics</em>) adalah tahapan survei pendahuluan yang paling krusial dalam setiap proyek teknik sipil—mulai dari pembangunan gedung bertingkat, jalan raya, jembatan, hingga bendungan. Kesalahan dalam menganalisis daya dukung tanah dapat berakibat fatal, seperti terjadinya penurunan tanah (<em>settlement</em>), keretakan struktur, hingga bangunan amblas.</p>
+
+        <p>Untuk menghindari risiko tersebut, <strong>CV. Sawarga Teknik</strong> hadir menyediakan berbagai instrumen <strong>Alat Lab Tanah</strong> yang dirancang dengan tingkat presisi tinggi untuk membaca karakteristik geoteknik. Kami berkomitmen untuk membantu kontraktor dan konsultan perencana mendapatkan data lapangan yang valid. Oleh karena itu, kami men-jual produk alat lab tanah yang <strong>berkualitas</strong>, awet, dan kokoh dengan penawaran <strong>harga murah</strong> agar sesuai dengan anggaran (RAB) proyek Anda. Setiap alat yang kami suplai telah dilengkapi dengan <strong>garansi</strong> resmi serta dapat diterbitkan sertifikat <strong>kalibrasi KAN</strong> (Komite Akreditasi Nasional) guna memenuhi syarat tender dan audit ISO perusahaan Anda.</p>
+
+        <h3>Pentingnya Pengujian Karakteristik & Daya Dukung Tanah</h3>
+        <p>Tanah memiliki sifat fisik dan mekanik yang sangat dinamis tergantung pada lokasi dan kedalamannya. Pengujian di lapangan (<em>in-situ test</em>) maupun di laboratorium sangat penting untuk menentukan jenis pondasi yang tepat (pondasi dangkal atau tiang pancang). Berikut adalah beberapa parameter utama yang wajib diuji:</p>
+        <ul>
+          <li><strong>Daya Dukung & Penetrasi Tanah:</strong> Diuji secara langsung di lapangan menggunakan alat <em>Sondir (Dutch Cone Penetrometer)</em> untuk mengetahui perlawanan konus dan gesekan lokal lapisan tanah hingga tanah keras.</li>
+          <li><strong>Nilai CBR (California Bearing Ratio):</strong> Pengujian ini esensial untuk konstruksi jalan raya. Dilakukan menggunakan <em>CBR Lapangan</em> atau <em>CBR Laboratorium</em> guna menilai kekuatan tanah dasar (<em>subgrade</em>) sebelum dihampar perkerasan.</li>
+          <li><strong>Kepadatan Tanah Lapangan:</strong> Menggunakan <em>Sand Cone Test Set</em> untuk memastikan tanah urugan atau timbunan telah dipadatkan sesuai dengan persentase kepadatan maksimum yang disyaratkan.</li>
+          <li><strong>Sifat Fisik & Batas Konsistensi:</strong> Menggunakan alat uji <em>Atterberg Limit (Liquid Limit & Plastic Limit)</em> untuk mengetahui perilaku tanah lempung/kohesif saat kadar airnya berubah.</li>
+          <li><strong>Kekuatan Geser Tanah:</strong> Diuji di laboratorium dengan <em>Direct Shear Test Set</em> untuk mendapatkan nilai kohesi (c) dan sudut geser dalam, yang sangat penting untuk menghitung stabilitas lereng dan dinding penahan tanah.</li>
+        </ul>
+
+        <h3>Katalog Perangkat Uji Tanah & Geoteknik</h3>
+        <p>Kami memiliki lini produk pengujian mekanika tanah yang komplit, mulai dari alat bor manual (<em>hand auger</em>) hingga mesin uji triaxial digital. Berikut adalah beberapa peralatan uji tanah yang paling sering dipesan oleh pelanggan kami:</p>
+
+          <div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
+            <table class="min-w-full text-sm text-left">
+              <thead class="bg-civil-dark text-white uppercase font-bold">
+            <tr>
+              <th>Nama Alat Uji Tanah</th>
+              <th>Fungsi Utama / Parameter Uji</th>
+              <th>Standar Acuan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Sondir Test Set (2.5 Ton / 5 Ton)</strong></td>
+              <td>Mengetahui daya dukung dan profil kedalaman tanah keras secara langsung di lapangan (In-Situ).</td>
+              <td>SNI 2827:2008, ASTM D-3441</td>
+            </tr>
+            <tr>
+              <td><strong>CBR Laboratory & Field Test</strong></td>
+              <td>Mengukur rasio daya dukung tanah dasar (subgrade) jalan. Tersedia versi manual dan elektrik.</td>
+              <td>SNI 1744:2012, ASTM D-1883</td>
+            </tr>
+            <tr>
+              <td><strong>Sand Cone Test Set</strong></td>
+              <td>Menentukan kepadatan tanah di lapangan menggunakan media pasir silika standar.</td>
+              <td>SNI 2828:2011, ASTM D-1556</td>
+            </tr>
+            <tr>
+              <td><strong>Direct Shear Test Set</strong></td>
+              <td>Mengetahui parameter kuat geser tanah (kohesi dan sudut geser) terganggu atau tak terganggu.</td>
+              <td>SNI 2813:2008, ASTM D-3080</td>
+            </tr>
+            <tr>
+              <td><strong>Consolidation Test Set</strong></td>
+              <td>Memprediksi besaran dan kecepatan penurunan (settlement) tanah lempung akibat beban.</td>
+              <td>SNI 2812:2011, ASTM D-2435</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>Solusi Terbaik untuk Peralatan Lab Sipil Anda</h3>
+        <p>Berinvestasi pada alat uji mekanika tanah yang akurat adalah langkah awal untuk menjamin kualitas dan reputasi jasa konstruksi Anda. Sebagai distributor terpercaya, kami memastikan Anda tidak hanya sekadar membeli alat ukur. Tim teknisi ahli kami siap membantu Anda melakukan demonstrasi alat, pelatihan cara membaca dial gauge yang benar, hingga melayani servis berkala untuk memastikan performa alat tetap prima.</p>
+        
+        <p>Pastikan pondasi proyek Anda dibangun di atas data yang valid dan akurat. Jelajahi berbagai macam <strong>Alat Lab Tanah</strong> yang kami tawarkan pada katalog di atas. Jika Anda tidak menemukan alat yang dicari atau ingin meminta brosur lengkap beserta penawaran harga khusus (diskon proyek), jangan ragu untuk menghubungi kami via WhatsApp dengan menekan tombol Minta Penawaran sekarang juga!</p>
+      `
+    },
+    { 
+      slug: "batuan", 
+      name: "Alat Lab Batuan",
+      seoContent: `
+        <h2>Jual Alat Uji Laboratorium Batuan & Agregat Bergaransi dan Berkualitas</h2>
+        <p>Dalam setiap pengerjaan proyek konstruksi teknik sipil, mulai dari perkerasan jalan raya (<em>base course</em> dan <em>sub-base</em>), pembuatan aspal hot mix di Asphalt Mixing Plant (AMP), hingga produksi beton bermutu tinggi di Batching Plant, agregat atau batuan merupakan material utama yang proporsinya bisa mencapai 85% dari total volume campuran. Mengingat fungsinya sebagai penahan beban utama, kekuatan, kekerasan, dan gradasi agregat harus selalu diuji. Kegagalan material batuan dalam menahan keausan dan tumbukan dapat mengakibatkan jalan cepat berlubang atau beton mudah retak.</p>
+
+        <p>Untuk memastikan material batuan yang disuplai dari <em>quarry</em> (tambang batu) memenuhi Rencana Kerja dan Syarat-syarat (RKS), <strong>CV. Sawarga Teknik</strong> men-jual berbagai macam <strong>Alat Lab Batuan</strong> dan material agregat yang terjamin <strong>berkualitas</strong> tinggi. Kami menyadari pentingnya efisiensi dalam pengadaan proyek, oleh karena itu kami menawarkan instrumen laboratorium teknik sipil dengan <strong>harga murah</strong> namun tidak murahan. Seluruh mesin pengujian batuan yang kami rakit dan distribusikan telah menggunakan motor penggerak heavy-duty, dilindungi <strong>garansi</strong> resmi 1 tahun, dan dapat diterbitkan sertifikat <strong>kalibrasi KAN</strong> (Komite Akreditasi Nasional) agar hasil pengujian Anda diakui oleh auditor dan konsultan pengawas secara legal.</p>
+
+        <h3>Parameter Penting Pengujian Agregat & Batuan</h3>
+        <p>Pengujian batuan di laboratorium mencakup evaluasi sifat fisik dan mekanis agregat. Hasil dari pengujian ini akan digunakan untuk menyusun formula rancangan campuran (<em>Job Mix Design</em>). Berikut adalah beberapa pengujian wajib yang harus dilakukan:</p>
+        <ul>
+          <li><strong>Uji Keausan Batuan (Abrasion Test):</strong> Menggunakan mesin <em>Los Angeles Abrasion</em> untuk mengetahui persentase keausan agregat kasar akibat gesekan dan benturan bola-bola baja. Nilai keausan yang rendah menandakan batuan tersebut keras dan layak digunakan untuk lapisan permukaan jalan.</li>
+          <li><strong>Uji Ketahanan Tumbukan (Impact Test):</strong> Dilakukan menggunakan <em>Aggregate Impact Value (AIV) Apparatus</em> guna mengukur tingkat ketahanan batuan terhadap beban tumbukan yang terjadi secara tiba-tiba (seperti roda kendaraan berat).</li>
+          <li><strong>Uji Kekuatan Hancur (Crushing Value):</strong> Menggunakan alat <em>Aggregate Crushing Value (ACV)</em> untuk mengetahui kemampuan agregat menahan beban tekan secara perlahan.</li>
+          <li><strong>Uji Gradasi / Analisa Saringan:</strong> Menggunakan <em>Sieve Shaker</em> dan set saringan kuningan standar untuk memilah ukuran butir agregat. Gradasi yang baik akan menghasilkan rongga udara yang minimal pada campuran beton atau aspal.</li>
+          <li><strong>Persiapan Sampel (Sampling):</strong> Menggunakan <em>Sample Splitter</em> untuk membagi sampel batuan dari lapangan menjadi dua bagian yang homogen dan representatif sebelum diuji di laboratorium.</li>
+        </ul>
+
+        <h3>Katalog Perangkat Uji Agregat Laboratorium Sipil</h3>
+        <p>Kami memproduksi dan mendistribusikan alat pengujian material batuan sesuai dengan standarisasi Kementerian PUPR, Bina Marga, SNI, dan ASTM. Berikut adalah rincian peralatan utama yang kami sediakan:</p>
+
+          <div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
+            <table class="min-w-full text-sm text-left">
+              <thead class="bg-civil-dark text-white uppercase font-bold">
+            <tr>
+              <th>Nama Alat Uji Batuan</th>
+              <th>Fungsi / Aplikasi Pengujian Utama</th>
+              <th>Standar Acuan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Los Angeles Abrasion Machine</strong></td>
+              <td>Menguji tingkat keausan agregat kasar dengan silinder putar dan bola baja penumbuk.</td>
+              <td>SNI 2417:2008, ASTM C-131</td>
+            </tr>
+            <tr>
+              <td><strong>Aggregate Impact Value (AIV)</strong></td>
+              <td>Menentukan nilai ketahanan agregat terhadap tumbukan dari palu jatuh bebas (drop hammer).</td>
+              <td>BS-812, SNI 03-4426</td>
+            </tr>
+            <tr>
+              <td><strong>Sieve Shaker (Electric / Manual)</strong></td>
+              <td>Mesin penggetar saringan untuk analisis gradasi butiran pasir, kerikil, dan batu pecah.</td>
+              <td>SNI 03-1968, ASTM C-136</td>
+            </tr>
+            <tr>
+              <td><strong>Sample Splitter (Riffle Box)</strong></td>
+              <td>Alat pembagi sampel material batuan/tanah agar diperoleh porsi yang seragam dan mewakili.</td>
+              <td>ASTM C-702, AASHTO T-248</td>
+            </tr>
+            <tr>
+              <td><strong>Specific Gravity & Absorption</strong></td>
+              <td>Set alat untuk mencari nilai berat jenis (bulk, SSD, apparent) serta persentase penyerapan air batuan.</td>
+              <td>SNI 1969:2008, ASTM C-127</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>Penuhi Kebutuhan Laboratorium Material Anda Bersama Kami</h3>
+        <p>Kesalahan dalam memilih agregat dapat berdampak langsung pada umur konstruksi dan pembengkakan biaya pemeliharaan. Oleh sebab itu, pastikan laboratorium Anda dilengkapi dengan perangkat uji batuan yang memiliki tingkat akurasi dan durabilitas tinggi. CV. Sawarga Teknik siap menjadi vendor pengadaan alat lab sipil terbaik untuk perusahaan Anda. Kami menyediakan layanan <em>after-sales</em> yang mencakup ketersediaan <em>sparepart</em>, perbaikan, hingga panduan kalibrasi ulang.</p>
+        
+        <p>Jangan tunda lagi! Lihat spesifikasi lengkap masing-masing <strong>Alat Lab Batuan</strong> pada katalog di atas. Untuk diskusi lebih lanjut mengenai kebutuhan tender, pembuatan penawaran harga (Quotation), atau meminta katalog format PDF, silakan klik tombol "Minta Penawaran" atau hubungi spesialis kami melalui WhatsApp. Dapatkan harga diskon khusus untuk pembelian paket laboratorium lengkap hari ini!</p>
+      `
+    },
+{ 
+      slug: "semen", 
+      name: "Alat Lab Semen",
+      seoContent: `
+        <h2>Jual Alat Uji Laboratorium Semen & Mortar Bergaransi dan Berkualitas</h2>
+        <p>Semen Portland merupakan material pengikat (<em>binder</em>) paling krusial dalam pembuatan adukan beton maupun mortar. Kualitas fisik dan kimiawi semen akan sangat menentukan kekuatan akhir dari suatu struktur bangunan. Jika semen mengalami cacat produksi, terlalu cepat mengeras (<em>flash set</em>), atau terlalu kasar, maka adukan beton yang dihasilkan tidak akan mencapai kuat tekan yang ditargetkan. Oleh karena itu, pengujian kualitas semen di laboratorium teknik sipil maupun di pabrik pembuat semen wajib dilakukan dengan ketat.</p>
+
+        <p><strong>CV. Sawarga Teknik</strong> hadir sebagai solusi pengadaan <strong>Alat Lab Semen</strong> terlengkap di Indonesia. Kami senantiasa berkomitmen untuk mendukung <em>Quality Control</em> (QC) material proyek Anda dengan men-jual berbagai instrumen laboratorium yang <strong>berkualitas</strong> prima. Jangan khawatir dengan pembengkakan RAB, karena kami menawarkan <strong>harga murah</strong> langsung dari tangan pertama pembuat alat uji sipil. Seluruh produk kami didesain dengan tingkat presisi tinggi, dilindungi oleh <strong>garansi</strong> servis 1 tahun, dan siap dilengkapi dengan sertifikat <strong>kalibrasi KAN</strong> (Komite Akreditasi Nasional) agar hasil pengujian Anda valid dan sah di mata hukum konstruksi.</p>
+
+        <h3>Tahapan Pengujian Mutu Semen & Mortar Sesuai Standar</h3>
+        <p>Pengujian semen tidak hanya dilakukan pada semen bubuk kering, tetapi juga pada pasta semen dan mortar (campuran semen, pasir standar, dan air). Berikut adalah beberapa parameter wajib yang harus diuji untuk mengetahui kelayakan semen:</p>
+        <ul>
+          <li><strong>Konsistensi Normal & Waktu Ikat (Setting Time):</strong> Diuji menggunakan <em>Vicat Apparatus</em> untuk mengetahui seberapa banyak air yang dibutuhkan untuk mencapai konsistensi pasta semen standar, serta menentukan Waktu Ikat Awal (<em>Initial Setting Time</em>) dan Waktu Ikat Akhir (<em>Final Setting Time</em>).</li>
+          <li><strong>Kehalusan Semen (Fineness):</strong> Menggunakan alat <em>Air Permeability Blaine</em> untuk mengukur luas permukaan spesifik butiran semen. Semakin halus semen, semakin cepat proses hidrasi dan pengerasan terjadi.</li>
+          <li><strong>Kuat Tekan Mortar (Compressive Strength):</strong> Pasta semen dicampur dengan pasir silika standar menggunakan <em>Planetary Mortar Mixer</em>, lalu dicetak dalam cetakan kubus kuningan 5x5 cm. Setelah umur tertentu, kubus tersebut dihancurkan untuk mengetahui nilai kuat tekannya.</li>
+          <li><strong>Kelecekan Mortar (Flowability):</strong> Menggunakan <em>Flow Table Apparatus</em> untuk mengukur diameter penyebaran adukan mortar basah setelah diberi kejutan/getaran standar.</li>
+        </ul>
+
+        <h3>Daftar Harga & Spesifikasi Alat Uji Semen Terbaik</h3>
+        <p>Untuk menunjang kebutuhan laboratorium pengujian material Anda, berikut adalah rekomendasi peralatan utama yang wajib dimiliki beserta standar rujukannya:</p>
+
+        <div class="not-prose mt-8 overflow-hidden border-2 border-gray-200 rounded-sm shadow-sm">
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-civil-dark text-white uppercase font-bold tracking-wider">
+              <tr>
+                <th class="px-6 py-4 border-b-4 border-civil-secondary">Nama Perangkat Uji Semen</th>
+                <th class="px-6 py-4 border-b-4 border-civil-secondary">Fungsi / Aplikasi</th>
+                <th class="px-6 py-4 border-b-4 border-civil-secondary">Standar Acuan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-civil-primary">Vicat Test Apparatus</td>
+                <td class="px-6 py-4 text-gray-700">Menguji konsistensi normal dan waktu ikat awal/akhir pasta semen.</td>
+                <td class="px-6 py-4 text-gray-600">SNI 15-2049, ASTM C-191</td>
+              </tr>
+              <tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
+                <td class="px-6 py-4 font-bold text-civil-primary">Air Permeability of Portland Cement (Blaine)</td>
+                <td class="px-6 py-4 text-gray-700">Mengukur tingkat kehalusan butiran semen Portland dengan metode permeabilitas udara.</td>
+                <td class="px-6 py-4 text-gray-600">ASTM C-204, AASHTO T-153</td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-civil-primary">Mortar Mixer (Electric)</td>
+                <td class="px-6 py-4 text-gray-700">Mesin pengaduk otomatis dengan bowl stainless untuk mengaduk pasta semen dan mortar secara homogen.</td>
+                <td class="px-6 py-4 text-gray-600">ASTM C-305, EN 196-1</td>
+              </tr>
+              <tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
+                <td class="px-6 py-4 font-bold text-civil-primary">Flow Table Test Set</td>
+                <td class="px-6 py-4 text-gray-700">Meja uji aliran untuk mengetahui persentase kelecekan (workability) mortar semen.</td>
+                <td class="px-6 py-4 text-gray-600">ASTM C-230</td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 font-bold text-civil-primary">Compressive Strength of Mortar (Mesin Tekan)</td>
+                <td class="px-6 py-4 text-gray-700">Mesin uji kuat tekan berkapasitas lebih kecil khusus untuk menghancurkan sampel kubus mortar 5x5 cm.</td>
+                <td class="px-6 py-4 text-gray-600">ASTM C-109</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Pusat Pengadaan Alat Sipil & Semen Terpercaya</h3>
+        <p>Memilih perlengkapan alat laboratorium semen yang tepat adalah investasi jangka panjang. Kesalahan pembacaan alat tidak hanya merugikan pihak proyek, tetapi juga dapat menurunkan reputasi perusahaan Anda. Percayakan kebutuhan instrumen material sipil Anda kepada ahlinya.</p>
+        
+        <p>Silakan telusuri katalog lengkap <strong>Alat Lab Semen</strong> di atas. Kami siap melayani pengiriman ke seluruh Indonesia dengan <em>packing</em> kayu yang aman. Hubungi <em>customer service</em> kami via tombol WhatsApp untuk meminta brosur PDF spesifikasi, konsultasi teknis pengujian, hingga penyusunan surat penawaran harga (Quotation) resmi sekarang juga!</p>
+      `
+    },
+    { 
+      slug: "pertambangan", 
+      name: "Pertambangan",
+      seoContent: `
+        <h2>Jual Alat Preparasi Tambang & Eksplorasi Geologi Berkualitas dan Bergaransi</h2>
+        <p>Industri pertambangan mineral dan batubara menuntut akurasi data yang sangat tinggi sejak tahap eksplorasi awal hingga tahap pengapalan (<em>shipment</em>). Sebelum sampel batuan dari&nbsp;<em>quarry</em>&nbsp;atau lapisan batubara dianalisis kadar kalori maupun unsur kimianya di laboratorium (<em>Assaying</em>), sampel tersebut wajib melalui proses preparasi fisik yang ketat agar menjadi ukuran butir yang sangat halus dan homogen.</p>
+<p>Penggunaan mesin preparasi tambang yang buruk dapat menyebabkan terjadinya kontaminasi silang (<em>cross-contamination</em>) antar sampel yang berakibat fatal pada kesalahan perhitungan nilai ekonomis bahan galian.</p>
+<p>Untuk mendukung produktivitas perusahaan tambang dan laboratorium&nbsp;<em>assayer</em>,&nbsp;CV. Sawarga Teknik&nbsp;memproduksi dan mendistribusikan perlengkapan preparasi&nbsp;Pertambangan&nbsp;(Mining Preparation Equipment) yang kokoh, tangguh, dan&nbsp;berkualitas&nbsp;internasional.</p>
+<p>Mesin penghancur batuan (crusher) kami dirancang menggunakan pelat baja mangan (<em>manganese steel</em>) tahan aus yang sanggup bekerja&nbsp;<em>heavy-duty</em>&nbsp;secara terus menerus.</p>
+<p>Dapatkan peralatan preparasi lab mineral dengan penawaran&nbsp;harga murah&nbsp;terbaik di kelasnya, lengkap dengan jaminan garansi mesin selama 1 tahun, serta dukungan sertifikat&nbsp;kalibrasi KAN&nbsp;(untuk alat ukur/timbangan) guna menunjang legalitas laboratorium eksplorasi Anda.</p>
+<h3>Tahapan Standar Preparasi Sampel Tambang (Batubara &amp; Mineral)</h3>
+<p>Preparasi sampel adalah proses mereduksi ukuran bongkahan batuan/batubara dari lapangan menjadi serbuk halus (biasanya berukuran 100 hingga 200 mesh) yang siap diuji di laboratorium kimia. Berikut adalah tahapan utamanya:</p>
+<ul>
+<li><strong>Primary Crushing (Penghancuran Tahap Pertama):</strong>&nbsp;Bongkahan sampel berukuran besar (hingga 15 cm) dimasukkan ke dalam mesin&nbsp;<em>Jaw Crusher</em>&nbsp;untuk direduksi menjadi ukuran batu kerikil kecil (sekitar 20 mm).</li>
+<li><strong>Secondary Crushing (Penghancuran Lanjutan):</strong>&nbsp;Output dari Jaw Crusher seringkali dimasukkan lagi ke dalam&nbsp;<em>Double Roll Crusher</em>&nbsp;untuk diperkecil kembali hingga ukuran butir kurang dari 5 mm.</li>
+<li><strong>Milling / Pulverizing (Penggilingan Halus):</strong>&nbsp;Proses akhir penghalusan sampel menggunakan&nbsp;<em>Vibrating Disc Mill / Pulverizer</em>. Di dalam mangkuk baja (<em>grinding bowl</em>), sampel digiling hingga mencapai kehalusan spesifik (misal 200 mesh) dalam hitungan menit.</li>
+<li><strong>Sample Dividing (Pembagian Sampel):</strong>&nbsp;Menggunakan&nbsp;<em>Rotary Sample Divider</em>&nbsp;atau&nbsp;<em>Riffle Box Splitter</em>&nbsp;untuk membagi sampel dalam jumlah banyak menjadi sub-sampel kecil secara objektif tanpa menghilangkan sifat perwakilannya (<em>representativeness</em>).</li>
+<li><strong>Sieve Analysis (Analisis Ayakan):</strong>&nbsp;Menggunakan&nbsp;<em>Ro-Tap Sieve Shaker</em>&nbsp;untuk menguji apakah sampel yang dihaluskan sudah memenuhi persentase lolos mesh yang disyaratkan oleh standar (misal standar ASTM atau ISO).</li>
+</ul>
+<h3>Daftar Mesin Preparasi Tambang &amp; Eksplorasi Geologi</h3>
+<p>Kami menyuplai berbagai mesin lab pertambangan untuk nikel, emas, tembaga, hingga batubara. Berikut adalah jajaran mesin andalan kami yang banyak digunakan oleh perusahaan surveyor independen dan&nbsp;<em>site</em>&nbsp;tambang di Kalimantan, Sulawesi, hingga Papua:</p>
+<div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
+<table class="min-w-full text-sm text-left">
+<thead class="bg-civil-dark text-white uppercase font-bold">
+<tr>
+<th>Nama Mesin Preparasi Tambang</th>
+<th>Fungsi / Deskripsi Utama</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Laboratory Jaw Crusher</td>
+<td>Mesin peremuk rahang (Primary Crusher) untuk menghancurkan bongkahan batuan/ore mineral berukuran besar menjadi batuan kecil. Material rahang menggunakan Baja Mangan tebal.</td>
+</tr>
+<tr>
+<td>Double Roll Crusher</td>
+<td>Mesin peremuk rol ganda (Secondary Crusher) untuk menghaluskan output jaw crusher menjadi butiran lebih kecil sebelum masuk ke Pulverizer.</td>
+</tr>
+<tr>
+<td>Vibrating Disc Mill / Lab Pulverizer</td>
+<td>Mesin penggiling akhir berkecepatan tinggi dengan mangkuk (bowl) baja karbon/tungsten carbide. Menghasilkan serbuk sampel hingga kehalusan 200 mesh.</td>
+</tr>
+<tr>
+<td>Rotary Sample Divider (RSD)</td>
+<td>Membagi sampel batubara / mineral basah maupun kering menjadi beberapa porsi yang identik dan representatif untuk analisa lab dan sampel arsip.</td>
+</tr>
+<tr>
+<td>Mesin Bor Geologi (Core Drilling Rig)</td>
+<td>Mesin bor hidrolik portabel untuk eksplorasi tambang dan geoteknik. Digunakan untuk mengambil sampel inti batuan (coring) dari kedalaman tanah.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>Pabrikasi Peralatan Lab Tambang Spesifikasi Heavy-Duty</h3>
+<p>Lingkungan tambang terkenal sangat keras. Peralatan yang ringkih hanya akan menghambat pekerjaan operasional preparasi Anda. Di CV. Sawarga Teknik, kami memastikan seluruh motor penggerak (elektromotor) yang digunakan berstandar industri dengan&nbsp;<em>casing</em>&nbsp;yang kuat menahan debu batubara dan getaran ekstrem.</p>
+<p>Tingkatkan kapasitas dan kualitas pengujian laboratorium&nbsp;<em>assay</em>&nbsp;Anda dengan mesin&nbsp;Pertambangan&nbsp;dari kami. Silakan cek detail spesifikasi, foto, dan kapasitas masing-masing mesin pada etalase di atas. Tim&nbsp;<em>engineer</em>&nbsp;kami siap melayani kustomisasi spesifikasi sesuai kebutuhan teknis lapangan Anda.</p>
+<p>Hubungi kami via WhatsApp dan dapatkan diskon ongkos kirim ke lokasi tambang Anda!</p>
+      `
+    },
+    { 
+      slug: "umum", 
+      name: "Alat Umum", 
+      seoContent: "" 
+    },
   ];
 
   // Generate paths untuk setiap kategori + paginationnya
-  return categories.flatMap(({ slug, name }) => {
+  return categories.flatMap(({ slug, name, seoContent }) => {
     const filteredProducts = allProducts.filter(p => 
         p.data.category.toLowerCase() === name.replace("Alat Lab ", "").toLowerCase() || 
         p.data.category.toLowerCase() === slug
@@ -29,16 +430,16 @@ export async function getStaticPaths({ paginate }) {
     // Urutkan
     const sortedFiltered = filteredProducts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 
-    // Fungsi paginate akan otomatis membuat route /products/beton/1, /products/beton/2, dst.
     return paginate(sortedFiltered, {
       params: { category: slug },
-      props: { name },
+      props: { name, seoContent }, // <-- Meneruskan seoContent ke props
       pageSize: 12
     });
   });
 }
 
-const { page, name } = Astro.props;
+// 2. AMBIL PROPS SEOCONTENT
+const { page, name, seoContent } = Astro.props;
 const { category } = Astro.params;
 const products = page.data;
 
@@ -56,7 +457,7 @@ const sidebarLinks = [
 ---
 
 <Layout 
-  title={`Jual ${name} - Halaman ${page.currentPage}`} 
+  title={`Jual ${name} Resmi Bergaransi`} 
   description={`Katalog ${name} terlengkap standar SNI/ASTM. Halaman ${page.currentPage}.`}
 >
 
@@ -70,7 +471,7 @@ const sidebarLinks = [
         {name}
       </h1>
       <p class="text-gray-600 max-w-2xl">
-        Halaman {page.currentPage}. Menampilkan produk untuk kategori <strong>{name}</strong>.
+        #{page.currentPage} - Katalog produk <strong>{name}</strong> dari CV. Sawarga Teknik, distributor alat laboratorium teknik sipil terpercaya di Indonesia.
       </p>
     </div>
   </div>
@@ -132,7 +533,15 @@ const sidebarLinks = [
                 <ProductCard product={product} />
               ))}
             </div>
+            
             <Pagination page={page} />
+
+            {page.currentPage === 1 && seoContent && (
+              <div class="mt-16 bg-white p-6 sm:p-8 border-2 border-civil-dark shadow-sm prose max-w-none">
+                <Fragment set:html={seoContent} />
+              </div>
+            )}
+            
           </>
         ) : (
           <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded p-12 text-center">

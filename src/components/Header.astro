@@ -171,25 +171,27 @@ const menuCategories = [
 <script>
   // Vanilla JS untuk Toggle Mobile Menu
   // Tidak perlu framework berat, cukup logic sederhana
-  const menuBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const iconMenu = document.getElementById('icon-menu');
-  const iconClose = document.getElementById('icon-close');
+  document.addEventListener('astro:page-load', () => {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconMenu = document.getElementById('icon-menu');
+    const iconClose = document.getElementById('icon-close');
 
-  // Logic Toggle Menu Utama
-  menuBtn?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
-    iconMenu?.classList.toggle('hidden');
-    iconClose?.classList.toggle('hidden');
-  });
+    // Logic Toggle Menu Utama
+    menuBtn?.addEventListener('click', () => {
+      mobileMenu?.classList.toggle('hidden');
+      iconMenu?.classList.toggle('hidden');
+      iconClose?.classList.toggle('hidden');
+    });
 
-  // Logic Toggle Dropdown Produk di Mobile
-  const dropdownBtn = document.getElementById('mobile-dropdown-btn');
-  const dropdownContent = document.getElementById('mobile-dropdown-content');
-  const chevron = document.getElementById('mobile-chevron');
+    // Logic Toggle Dropdown Produk di Mobile
+    const dropdownBtn = document.getElementById('mobile-dropdown-btn');
+    const dropdownContent = document.getElementById('mobile-dropdown-content');
+    const chevron = document.getElementById('mobile-chevron');
 
-  dropdownBtn?.addEventListener('click', () => {
-    dropdownContent?.classList.toggle('hidden');
-    chevron?.classList.toggle('rotate-180');
+    dropdownBtn?.addEventListener('click', () => {
+      dropdownContent?.classList.toggle('hidden');
+      chevron?.classList.toggle('rotate-180');
+    });
   });
 </script>
