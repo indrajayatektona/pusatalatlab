@@ -6,9 +6,7 @@ import CTAButton from '../../components/CTAButton.astro';
 
 // 1. GENERATE PATHS
 export async function getStaticPaths() {
-  const products = await getCollection('products', ({ data }) => {
-    return import.meta.env.PROD ? data.status !== 'draft' : true;
-  });
+  const products = await getCollection('products');
   return products.map(product => ({
     params: { slug: product.slug },
     props: { product },
@@ -25,7 +23,7 @@ let formattedSpecs = [];
 
 // Cek 1: Jika data LAMA (masih berupa Array/List dari Keystatic lama)
 if (Array.isArray(specifications)) {
-  formattedSpecs = specifications;
+  formattedSpecs = specifications; 
 } 
 // Cek 2: Jika data BARU (berupa String/Teks Panjang dari mode Cepat)
 else if (typeof specifications === 'string') {
@@ -68,9 +66,7 @@ const canonicalURL = seoData.canonicalUrl || new URL(Astro.url.pathname, Astro.s
 const isNoIndex = seoData.noIndex || false;
 
 // --- C. RELATED PRODUCTS ---
-const allProducts = await getCollection('products', ({ data }) => {
-  return import.meta.env.PROD ? data.status !== 'draft' : true;
-});
+const allProducts = await getCollection('products');
 const relatedProducts = allProducts
   .filter(p => p.data.category === category && p.slug !== product.slug)
   .slice(0, 4);
