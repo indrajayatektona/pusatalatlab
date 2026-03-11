@@ -33,6 +33,7 @@ const blogCollection = defineCollection({
     
     // Tambahkan field SEO
     seo: seoZodSchema,
+    status: z.string().optional(),
 
     description: z.string().optional(),
     pubDate: z.date(),
@@ -58,6 +59,7 @@ const productsCollection = defineCollection({
     
     // --- BAGIAN INI YANG DIUBAH ---
     specifications: z.string().optional(),
+    status: z.string().optional(),
     // ------------------------------
 
     brochureLink: z.string().optional(), // Pastikan ini juga sudah ada jika di Keystatic ada

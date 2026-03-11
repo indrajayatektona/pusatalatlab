@@ -6,10 +6,13 @@ import { getCollection } from 'astro:content';
 
 // 1. SETUP PAGINATION (Semua Produk)
 export async function getStaticPaths({ paginate }) {
-  const allProducts = await getCollection('products');
+  const allProducts = await getCollection('products', ({ data }) => {
+    return import.meta.env.PROD ? data.status !== 'draft' : true;
+  });
+
   // Urutkan dari yang terbaru
   const sortedProducts = allProducts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
-  
+
   // Pecah jadi 12 produk per halaman
   return paginate(sortedProducts, { pageSize: 12 });
 }

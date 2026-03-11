@@ -17,14 +17,20 @@ const CONFIG = {
   heroImage: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2600&auto=format&fit=crop" // Foto background Hero
 };
 
-// --- 2. DATA FETCHING ---
-const allProducts = await getCollection('products');
+// --- 2. DATA FETCHING (DENGAN FILTER DRAFT) ---
+const allProducts = await getCollection('products', ({ data }) => {
+  return import.meta.env.PROD ? data.status !== 'draft' : true;
+});
 const featuredProducts = allProducts.filter(p => p.data.featured).slice(0, 4);
-const allPosts = await getCollection('blog');
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return import.meta.env.PROD ? data.status !== 'draft' : true;
+});
 const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
 
 // Fallback Data (Jika CMS kosong)
-const dummyProducts = featuredProducts.length > 0 ? featuredProducts : [
+const dummyProducts = featuredProducts.length > 0 ?
+featuredProducts : [
   { slug: 'hand-bor-test-set/', data: { title: "Hand Bor Test Set", id: "SO-110 A", category: "Tanah", image: "https://pusatalatlabsipil.com/images/products/hand-bor-test-set/image.jpg", standards: ["ASTM D-1452"] } },
   { slug: 'compaction-test-set/', data: { title: "Compaction Test Seet", id: "CO-325", category: "Beton", image: "https://pusatalatlabsipil.com/images/products/compaction-test-set/image.jpg", standards: ["ASTM D-698"] } },
   { slug: 'cbr-lapangan/', data: { title: "CBR Lapangan", id: "SO-260", category: "Tanah", image: "https://pusatalatlabsipil.com/images/products/cbr-lapangan/image.jpg", standards: ["ASTM D-4429"] } },
@@ -66,15 +72,20 @@ const categories = [
     name: "Alat Umum", 
     slug: "umum",
 	hide: true,
-    icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" // (Icon Gear)
+    icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" 
+// (Icon Gear)
   }
 ];
 
 const faqs = [
-  { q: "Apakah alat sudah terkalibrasi KAN?", a: "Ya, sebagian besar alat ukur kami seperti Compression Machine dan Proving Ring sudah termasuk sertifikat Kalibrasi KAN (ISO 17025)." },
-  { q: "Berapa lama garansi produk?", a: "Kami memberikan garansi service 12 bulan dan ketersediaan sparepart terjamin untuk alat-alat manufaktur lokal." },
-  { q: "Apakah bisa kirim ke luar pulau?", a: "Tentu. Kami bekerja sama dengan ekspedisi kargo darat, laut, dan udara untuk pengiriman aman ke seluruh Indonesia dengan packing kayu standar ekspor." },
-  { q: "Bagaimana cara meminta surat dukungan tender?", a: "Silakan hubungi tim sales kami via WhatsApp atau email dengan melampirkan detail paket pekerjaan. Kami siap menerbitkan surat dukungan resmi." }
+  { q: "Apakah alat sudah terkalibrasi KAN?", a: "Ya, sebagian besar alat ukur kami seperti Compression Machine dan Proving Ring sudah termasuk sertifikat Kalibrasi KAN (ISO 17025)."
+},
+  { q: "Berapa lama garansi produk?", a: "Kami memberikan garansi service 12 bulan dan ketersediaan sparepart terjamin untuk alat-alat manufaktur lokal."
+},
+  { q: "Apakah bisa kirim ke luar pulau?", a: "Tentu. Kami bekerja sama dengan ekspedisi kargo darat, laut, dan udara untuk pengiriman aman ke seluruh Indonesia dengan packing kayu standar ekspor."
+},
+  { q: "Bagaimana cara meminta surat dukungan tender?", a: "Silakan hubungi tim sales kami via WhatsApp atau email dengan melampirkan detail paket pekerjaan. Kami siap menerbitkan surat dukungan resmi."
+}
 ];
 ---
 
@@ -126,7 +137,7 @@ const faqs = [
       <p class="text-center text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-8">Dipercaya Oleh Instansi & Perusahaan</p>
       <div class="grid grid-cols-2 md:grid-cols-6 gap-8 items-center opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-           <img src={`https://placehold.co/200x100/e5e7eb/6b7280?text=CLIENT+${i}`} alt={`Logo Client ${i}`} class="h-12 w-full object-contain mix-blend-multiply" />
+         <img src={`https://placehold.co/200x100/e5e7eb/6b7280?text=CLIENT+${i}`} alt={`Logo Client ${i}`} class="h-12 w-full object-contain mix-blend-multiply" />
         ))}
       </div>
     </div>
@@ -145,7 +156,7 @@ const faqs = [
           <a href={`/products/${cat.slug}`} class="group flex flex-col items-center justify-center p-6 bg-gray-50 border-2 border-transparent hover:border-civil-primary hover:shadow-hard transition-all duration-300 rounded-sm w-[45%] md:w-[30%] lg:w-[13%] min-w-[140px]">
             <div class="w-12 h-12 mb-4 text-civil-dark group-hover:text-civil-primary transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d={cat.icon} />
+               <path stroke-linecap="round" stroke-linejoin="round" d={cat.icon} />
               </svg>
             </div>
             <h3 class="text-xs font-black text-gray-700 uppercase text-center group-hover:text-civil-primary tracking-wide leading-tight">{cat.name}</h3>
@@ -171,7 +182,7 @@ const faqs = [
           <div class="flex-shrink-0 w-12 h-12 bg-civil-secondary flex items-center justify-center text-civil-primary font-black shadow-[4px_4px_0px_0px_white]">02</div>
           <div>
             <h3 class="text-lg font-black uppercase text-civil-secondary mb-2">Jaminan Garansi</h3>
-            <p class="text-sm text-gray-300 leading-relaxed">Garansi service 1 tahun dan ketersediaan sparepart jangka panjang untuk melindungi investasi alat Anda.</p>
+             <p class="text-sm text-gray-300 leading-relaxed">Garansi service 1 tahun dan ketersediaan sparepart jangka panjang untuk melindungi investasi alat Anda.</p>
           </div>
         </div>
 
@@ -179,7 +190,7 @@ const faqs = [
           <div class="flex-shrink-0 w-12 h-12 bg-civil-secondary flex items-center justify-center text-civil-primary font-black shadow-[4px_4px_0px_0px_white]">03</div>
           <div>
             <h3 class="text-lg font-black uppercase text-civil-secondary mb-2">Support Tender</h3>
-            <p class="text-sm text-gray-300 leading-relaxed">Kami siap membantu administrasi teknis seperti Surat Dukungan, Brosur Asli, dan Jaminan Purna Jual untuk lelang.</p>
+             <p class="text-sm text-gray-300 leading-relaxed">Kami siap membantu administrasi teknis seperti Surat Dukungan, Brosur Asli, dan Jaminan Purna Jual untuk lelang.</p>
           </div>
         </div>
 
@@ -199,7 +210,7 @@ const faqs = [
         </a>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {dummyProducts.map((item: any) => (
           <ProductCard product={item.data ? item : { data: item, slug: item.slug }} />
         ))}
@@ -212,14 +223,14 @@ const faqs = [
         <div class="text-center mb-12">
             <h2 class="text-2xl md:text-3xl font-black text-civil-primary uppercase">Proses Pengadaan Mudah</h2>
             <p class="text-gray-600 mt-2">Kami menyederhanakan proses pengadaan alat lab untuk instansi & swasta.</p>
-        </div>
+         </div>
 
         <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="hidden md:block absolute top-8 left-0 w-full h-1 bg-gray-100 -z-10"></div>
 
             <div class="relative bg-white p-4 text-center group">
                 <div class="w-16 h-16 mx-auto bg-civil-dark text-white rounded-full flex items-center justify-center text-xl font-black border-4 border-white shadow-hard mb-4 group-hover:bg-civil-secondary group-hover:text-civil-primary transition-colors">1</div>
-                <h3 class="font-bold text-civil-primary uppercase mb-2">Pilih Produk</h3>
+                 <h3 class="font-bold text-civil-primary uppercase mb-2">Pilih Produk</h3>
                 <p class="text-sm text-gray-500">Cari alat melalui katalog website atau konsultasi dengan sales kami via WA.</p>
             </div>
 
@@ -236,13 +247,13 @@ const faqs = [
             </div>
 
             <div class="relative bg-white p-4 text-center group">
-                <div class="w-16 h-16 mx-auto bg-civil-dark text-white rounded-full flex items-center justify-center text-xl font-black border-4 border-white shadow-hard mb-4 group-hover:bg-civil-secondary group-hover:text-civil-primary transition-colors">4</div>
+                 <div class="w-16 h-16 mx-auto bg-civil-dark text-white rounded-full flex items-center justify-center text-xl font-black border-4 border-white shadow-hard mb-4 group-hover:bg-civil-secondary group-hover:text-civil-primary transition-colors">4</div>
                 <h3 class="font-bold text-civil-primary uppercase mb-2">Packing & Kirim</h3>
                 <p class="text-sm text-gray-500">Barang dikalibrasi, dipacking kayu aman, dan dikirim ke lokasi proyek Anda.</p>
             </div>
         </div>
     </div>
-  </section>
+   </section>
 
   <section class="py-24 bg-white border-t border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -252,18 +263,18 @@ const faqs = [
           <span class="text-civil-secondary font-bold text-xs tracking-widest uppercase block mb-2">Tentang Perusahaan</span>
           <h2 class="mt-0 mb-6 text-4xl leading-tight">Mitra Terpercaya Laboratorium Sipil Indonesia</h2>
           <p class="text-gray-600 text-base leading-relaxed">
-            <strong>CV. Sawarga Teknik</strong> adalah perusahaan manufaktur dan distributor alat uji teknik sipil yang berfokus pada kualitas dan presisi. Sejak berdiri, kami telah dipercaya oleh ratusan instansi pemerintah, BUMN, dan kontraktor swasta untuk memenuhi kebutuhan alat laboratorium tanah, beton, aspal, dan batuan.
-          </p>
+             <strong>CV. Sawarga Teknik</strong> adalah perusahaan manufaktur dan distributor alat uji teknik sipil yang berfokus pada kualitas dan presisi. Sejak berdiri, kami telah dipercaya oleh ratusan instansi pemerintah, BUMN, dan kontraktor swasta untuk memenuhi kebutuhan alat laboratorium tanah, beton, aspal, dan batuan.
+</p>
           <p class="text-gray-600 text-base leading-relaxed">
             Komitmen kami adalah menyediakan alat dengan durabilitas tinggi yang sesuai dengan standar pengujian (SNI/ASTM) untuk memastikan keamanan infrastruktur Indonesia.
-          </p>
+</p>
           
           <div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
             <table class="min-w-full text-sm text-left">
               <thead class="bg-civil-dark text-white uppercase font-bold">
                 <tr>
                   <th class="px-6 py-3">Cakupan Layanan</th>
-                  <th class="px-6 py-3">Detail</th>
+                   <th class="px-6 py-3">Detail</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100">
@@ -273,12 +284,12 @@ const faqs = [
                 </tr>
                 <tr class="bg-gray-50 hover:bg-gray-100">
                   <td class="px-6 py-3 font-bold text-civil-dark">Area Kirim</td>
-                  <td class="px-6 py-3 text-gray-600">Seluruh Indonesia (Sabang - Merauke)</td>
+                   <td class="px-6 py-3 text-gray-600">Seluruh Indonesia (Sabang - Merauke)</td>
                 </tr>
                 <tr class="bg-white hover:bg-gray-50">
                   <td class="px-6 py-3 font-bold text-civil-dark">Legalitas</td>
                   <td class="px-6 py-3 text-gray-600">PKP (Faktur Pajak), NIB, ISO 9001</td>
-                </tr>
+                 </tr>
               </tbody>
             </table>
           </div>
@@ -308,12 +319,12 @@ const faqs = [
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {latestPosts.length > 0 ? latestPosts.map(post => (
+         {latestPosts.length > 0 ? latestPosts.map(post => (
           <article class="group bg-white border border-gray-200 hover:border-civil-primary hover:shadow-hard transition-all duration-300">
             <a href={`/blog/${post.slug}`}>
               <div class="aspect-video bg-gray-100 overflow-hidden relative">
                  <img src={post.data.image || "https://placehold.co/600x400"} alt={post.data.title} class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" />
-                 <div class="absolute top-0 right-0 bg-civil-secondary text-civil-primary text-[10px] font-black px-2 py-1 uppercase">
+                  <div class="absolute top-0 right-0 bg-civil-secondary text-civil-primary text-[10px] font-black px-2 py-1 uppercase">
                     Terbaru
                  </div>
               </div>
@@ -324,14 +335,14 @@ const faqs = [
                 <p class="text-sm text-gray-500 line-clamp-3 mb-4">
                   {post.data.description}
                 </p>
-                <span class="text-xs font-bold text-civil-dark underline decoration-2 underline-offset-4">Baca Artikel →</span>
+                 <span class="text-xs font-bold text-civil-dark underline decoration-2 underline-offset-4">Baca Artikel →</span>
               </div>
             </a>
           </article>
         )) : (
           <div class="col-span-3 py-12 text-center border-2 border-dashed border-gray-200 rounded text-gray-400">
             <p>Artikel sedang disiapkan.</p>
-          </div>
+           </div>
         )}
       </div>
     </div>
@@ -344,20 +355,20 @@ const faqs = [
             <p class="text-gray-600 mt-2">Informasi yang sering ditanyakan oleh pelanggan kami.</p>
         </div>
 
-        <div class="space-y-4">
+         <div class="space-y-4">
             {faqs.map((item) => (
                 <details class="group bg-white border-2 border-transparent open:border-civil-secondary shadow-sm open:shadow-md transition-all rounded-sm overflow-hidden">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-civil-dark hover:bg-gray-50">
                         <span>{item.q}</span>
-                        <span class="transition group-open:rotate-180">
+                         <span class="transition group-open:rotate-180">
                             <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                         </span>
-                    </summary>
+                     </summary>
                     <div class="text-gray-600 px-5 pb-5 text-sm leading-relaxed border-t border-gray-100 pt-3">
                         {item.a}
                     </div>
                 </details>
-            ))}
+             ))}
         </div>
     </div>
   </section>
@@ -369,30 +380,30 @@ const faqs = [
       <div class="grid grid-cols-1 lg:grid-cols-12 shadow-2xl border-2 border-civil-secondary bg-civil-dark">
           
           <div class="lg:col-span-4 text-white p-8 md:p-10 flex flex-col justify-center relative z-10">
-              <span class="text-civil-secondary font-bold text-xs tracking-widest uppercase mb-2">Lokasi Fisik</span>
+               <span class="text-civil-secondary font-bold text-xs tracking-widest uppercase mb-2">Lokasi Fisik</span>
               <h2 class="text-2xl md:text-3xl font-black text-white uppercase mb-6">Kunjungi Workshop</h2>
               
               <div class="space-y-6 border-l-2 border-white/20 pl-6">
                   <div>
-                      <h3 class="text-white font-bold uppercase text-xs mb-1">Alamat</h3>
+                       <h3 class="text-white font-bold uppercase text-xs mb-1">Alamat</h3>
                       <p class="text-gray-300 text-sm leading-relaxed">{CONFIG.address}</p>
                   </div>
                   <div>
                       <h3 class="text-white font-bold uppercase text-xs mb-1">Kontak</h3>
-                      <p class="text-gray-300 text-sm">{CONFIG.phone}</p>
+                       <p class="text-gray-300 text-sm">{CONFIG.phone}</p>
                       <p class="text-gray-300 text-sm">{CONFIG.email}</p>
                   </div>
                   <div>
-                      <h3 class="text-white font-bold uppercase text-xs mb-1">Jam Operasional</h3>
+                       <h3 class="text-white font-bold uppercase text-xs mb-1">Jam Operasional</h3>
                       <p class="text-gray-300 text-sm">Senin - Jumat: 08.00 - 17.00 WIB</p>
                   </div>
               </div>
 
               <div class="mt-8">
-                  <a href={CONFIG.mapEmbed} target="_blank" class="inline-flex items-center justify-center w-full gap-2 border-2 border-civil-secondary text-civil-secondary px-6 py-3 text-sm font-bold uppercase hover:bg-civil-secondary hover:text-civil-primary transition-colors">
+                   <a href={CONFIG.mapEmbed} target="_blank" class="inline-flex items-center justify-center w-full gap-2 border-2 border-civil-secondary text-civil-secondary px-6 py-3 text-sm font-bold uppercase hover:bg-civil-secondary hover:text-civil-primary transition-colors">
                       Buka Google Maps <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                   </a>
-              </div>
+               </div>
           </div>
 
           <div class="lg:col-span-8 bg-gray-200 min-h-[400px] relative group border-l-0 lg:border-l-4 border-civil-secondary">
@@ -400,7 +411,7 @@ const faqs = [
                   src={CONFIG.mapEmbed}
                   width="100%" 
                   height="100%" 
-                  style="border:0;" 
+                  style="border:0;"
                   allowfullscreen="" 
                   loading="lazy" 
                   referrerpolicy="no-referrer-when-downgrade"
@@ -412,7 +423,7 @@ const faqs = [
     </div>
   </section>
 
-  <section class="py-24 bg-white text-center">
+   <section class="py-24 bg-white text-center">
     <div class="max-w-4xl mx-auto px-4">
         <h2 class="text-4xl md:text-5xl font-black text-civil-primary uppercase mb-6 leading-none">
             Siap Melengkapi <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-civil-primary to-civil-secondary">Laboratorium Anda?</span>
@@ -437,7 +448,7 @@ const faqs = [
                   <div class="absolute inset-0 flex items-center justify-center">
                       <div class="text-center p-6 border-4 border-white/20 m-6">
                           <span class="text-civil-secondary font-black text-4xl block mb-1">2026</span>
-                          <span class="text-white font-bold uppercase tracking-widest text-sm">Product Catalog</span>
+                           <span class="text-white font-bold uppercase tracking-widest text-sm">Product Catalog</span>
                       </div>
                   </div>
               </div>
@@ -446,14 +457,14 @@ const faqs = [
                   <h2 class="text-3xl font-black text-white uppercase mb-4 leading-tight">Butuh Referensi Spesifikasi Lengkap?</h2>
                   <p class="text-gray-300 text-lg mb-8 leading-relaxed">
                       Download E-Catalog terbaru kami berisi 100+ alat uji sipil lengkap dengan data teknis, dimensi, dan standar rujukan (ASTM/SNI) untuk keperluan penyusunan RAB atau Tender.
-                  </p>
+</p>
                   
                   <div class="flex flex-col sm:flex-row gap-4">
                       <button onclick="window.open('https://wa.me/+6287893030300?text=Halo%20Admin,%20saya%20mau%20request%20PDF%20Katalog%20Alat%20Sipil', '_blank')" class="inline-flex items-center justify-center gap-2 bg-civil-secondary text-civil-primary px-8 py-4 font-black uppercase hover:bg-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
-                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                           Download PDF (15 MB)
                       </button>
-                      <span class="text-xs text-gray-400 self-center">Updated: Januari 2026</span>
+                       <span class="text-xs text-gray-400 self-center">Updated: Januari 2026</span>
                   </div>
               </div>
 

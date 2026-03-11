@@ -6,7 +6,9 @@ import { getCollection } from 'astro:content';
 
 // 1. SETUP PAGINATION PER KATEGORI
 export async function getStaticPaths({ paginate }) {
-  const allProducts = await getCollection('products');
+  const allProducts = await getCollection('products', ({ data }) => {
+    return import.meta.env.PROD ? data.status !== 'draft' : true;
+  });
 
   // Tambahkan seoContent berformat HTML untuk optimasi SEO
   const categories = [
@@ -31,7 +33,7 @@ export async function getStaticPaths({ paginate }) {
         <h3>Katalog & Perkiraan Spesifikasi Alat Uji Aspal</h3>
         <p>Untuk memudahkan Anda dalam menyusun Rencana Anggaran Biaya (RAB), berikut adalah daftar peralatan uji aspal yang paling sering dibutuhkan untuk mendirikan laboratorium teknik sipil atau batching plant AMP (Asphalt Mixing Plant):</p>
 
-          <div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
+           <div class="not-prose mt-8 overflow-hidden border-2 border-gray-100 rounded-sm">
             <table class="min-w-full text-sm text-left">
               <thead class="bg-civil-dark text-white uppercase font-bold">
               <tr>
@@ -54,7 +56,7 @@ export async function getStaticPaths({ paginate }) {
               <tr>
                 <td><strong>Centrifuge Extractor</strong></td>
                 <td>Menentukan kadar aspal / bitumen pada campuran aspal hot mix (kapasitas 1500g - 3000g).</td>
-                <td>SNI 03-6894, ASTM D-2172</td>
+                 <td>SNI 03-6894, ASTM D-2172</td>
               </tr>
               <tr>
                 <td><strong>Penetration Test Set</strong></td>
@@ -64,7 +66,7 @@ export async function getStaticPaths({ paginate }) {
               <tr>
                 <td><strong>Ductility of Bituminous</strong></td>
                 <td>Mengukur jarak elongasi (pemuluran) bahan aspal sebelum putus pada suhu tertentu.</td>
-                <td>SNI 2432:2011, ASTM D-113</td>
+                 <td>SNI 2432:2011, ASTM D-113</td>
               </tr>
             </tbody>
           </table>
@@ -125,7 +127,7 @@ export async function getStaticPaths({ paginate }) {
               </tr>
               <tr class="bg-white hover:bg-gray-50">
                 <td class="px-4 py-3 border-r border-gray-100"><strong>Concrete Mold (Cetakan Beton)</strong></td>
-                <td class="px-4 py-3 border-r border-gray-100">Mencetak sampel uji beton. Tersedia bentuk Silinder (15x30 cm) dan Kubus (15x15x15 cm) bahan cast iron.</td>
+                 <td class="px-4 py-3 border-r border-gray-100">Mencetak sampel uji beton. Tersedia bentuk Silinder (15x30 cm) dan Kubus (15x15x15 cm) bahan cast iron.</td>
                 <td class="px-4 py-3">SNI 4810:2013, ASTM C-470</td>
               </tr>
               <tr class="bg-white hover:bg-gray-50">
@@ -135,7 +137,7 @@ export async function getStaticPaths({ paginate }) {
               </tr>
               <tr class="bg-white hover:bg-gray-50">
                 <td class="px-4 py-3 border-r border-gray-100"><strong>Air Content of Fresh Concrete</strong></td>
-                <td class="px-4 py-3 border-r border-gray-100">Mengukur persentase kadar udara yang terperangkap di dalam campuran beton segar (Metode Tekanan).</td>
+                 <td class="px-4 py-3 border-r border-gray-100">Mengukur persentase kadar udara yang terperangkap di dalam campuran beton segar (Metode Tekanan).</td>
                 <td class="px-4 py-3">SNI 3418:2011, ASTM C-231</td>
               </tr>
             </tbody>
@@ -261,20 +263,20 @@ export async function getStaticPaths({ paginate }) {
             <tr>
               <td><strong>Aggregate Impact Value (AIV)</strong></td>
               <td>Menentukan nilai ketahanan agregat terhadap tumbukan dari palu jatuh bebas (drop hammer).</td>
-              <td>BS-812, SNI 03-4426</td>
+               <td>BS-812, SNI 03-4426</td>
             </tr>
             <tr>
               <td><strong>Sieve Shaker (Electric / Manual)</strong></td>
               <td>Mesin penggetar saringan untuk analisis gradasi butiran pasir, kerikil, dan batu pecah.</td>
               <td>SNI 03-1968, ASTM C-136</td>
             </tr>
-            <tr>
+             <tr>
               <td><strong>Sample Splitter (Riffle Box)</strong></td>
               <td>Alat pembagi sampel material batuan/tanah agar diperoleh porsi yang seragam dan mewakili.</td>
               <td>ASTM C-702, AASHTO T-248</td>
             </tr>
             <tr>
-              <td><strong>Specific Gravity & Absorption</strong></td>
+               <td><strong>Specific Gravity & Absorption</strong></td>
               <td>Set alat untuk mencari nilai berat jenis (bulk, SSD, apparent) serta persentase penyerapan air batuan.</td>
               <td>SNI 1969:2008, ASTM C-127</td>
             </tr>
@@ -315,23 +317,23 @@ export async function getStaticPaths({ paginate }) {
               <tr>
                 <th class="px-6 py-4 border-b-4 border-civil-secondary">Nama Perangkat Uji Semen</th>
                 <th class="px-6 py-4 border-b-4 border-civil-secondary">Fungsi / Aplikasi</th>
-                <th class="px-6 py-4 border-b-4 border-civil-secondary">Standar Acuan</th>
+                 <th class="px-6 py-4 border-b-4 border-civil-secondary">Standar Acuan</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
               <tr class="hover:bg-gray-50 transition-colors">
                 <td class="px-6 py-4 font-bold text-civil-primary">Vicat Test Apparatus</td>
-                <td class="px-6 py-4 text-gray-700">Menguji konsistensi normal dan waktu ikat awal/akhir pasta semen.</td>
+                 <td class="px-6 py-4 text-gray-700">Menguji konsistensi normal dan waktu ikat awal/akhir pasta semen.</td>
                 <td class="px-6 py-4 text-gray-600">SNI 15-2049, ASTM C-191</td>
               </tr>
               <tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
                 <td class="px-6 py-4 font-bold text-civil-primary">Air Permeability of Portland Cement (Blaine)</td>
-                <td class="px-6 py-4 text-gray-700">Mengukur tingkat kehalusan butiran semen Portland dengan metode permeabilitas udara.</td>
+                 <td class="px-6 py-4 text-gray-700">Mengukur tingkat kehalusan butiran semen Portland dengan metode permeabilitas udara.</td>
                 <td class="px-6 py-4 text-gray-600">ASTM C-204, AASHTO T-153</td>
               </tr>
               <tr class="hover:bg-gray-50 transition-colors">
                 <td class="px-6 py-4 font-bold text-civil-primary">Mortar Mixer (Electric)</td>
-                <td class="px-6 py-4 text-gray-700">Mesin pengaduk otomatis dengan bowl stainless untuk mengaduk pasta semen dan mortar secara homogen.</td>
+                 <td class="px-6 py-4 text-gray-700">Mesin pengaduk otomatis dengan bowl stainless untuk mengaduk pasta semen dan mortar secara homogen.</td>
                 <td class="px-6 py-4 text-gray-600">ASTM C-305, EN 196-1</td>
               </tr>
               <tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -346,7 +348,7 @@ export async function getStaticPaths({ paginate }) {
               </tr>
             </tbody>
           </table>
-        </div>
+         </div>
 
         <h3>Pusat Pengadaan Alat Sipil & Semen Terpercaya</h3>
         <p>Memilih perlengkapan alat laboratorium semen yang tepat adalah investasi jangka panjang. Kesalahan pembacaan alat tidak hanya merugikan pihak proyek, tetapi juga dapat menurunkan reputasi perusahaan Anda. Percayakan kebutuhan instrumen material sipil Anda kepada ahlinya.</p>
@@ -517,7 +519,7 @@ const sidebarLinks = [
             >
               {sidebarLinks.map((link) => (
                 <option value={link.slug} selected={link.active}>{link.name}</option>
-              ))}
+               ))}
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-civil-dark bg-civil-secondary border-l-2 border-civil-dark">
                 <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -525,7 +527,7 @@ const sidebarLinks = [
          </div>
       </div>
 
-      <div class="lg:col-span-3">
+       <div class="lg:col-span-3">
         {products.length > 0 ? (
           <>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -541,7 +543,7 @@ const sidebarLinks = [
                 <Fragment set:html={seoContent} />
               </div>
             )}
-            
+           
           </>
         ) : (
           <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded p-12 text-center">

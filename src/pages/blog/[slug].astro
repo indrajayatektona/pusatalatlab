@@ -5,7 +5,9 @@ import ProductCard from '../../components/ProductCard.astro';
 
 // 1. Generate Static Paths
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.status !== 'draft' : true;
+  });
   return posts.map(post => ({
     params: { slug: post.slug },
     props: { post },
@@ -17,12 +19,14 @@ const { Content } = await post.render();
 
 // --- LOGIC AUTHOR ---
 const authorData = await getEntry('authors', post.data.author.id);
-const author = authorData ? authorData.data : { 
+const author = authorData ?
+authorData.data : { 
   name: 'Admin Technical', 
   role: 'Administrator',
   avatar: null,
   socials: {}
 };
+
 const { Content: AuthorBio } = authorData ? await authorData.render() : { Content: null };
 
 // --- LOGIC SEO (BARU) ---
@@ -43,8 +47,6 @@ const canonicalURL = seo.canonicalUrl || new URL(Astro.url.pathname, Astro.site)
 
 // 5. No Index: Ambil dari checkbox
 const isNoIndex = seo.noIndex || false;
-
-// ---------------------------
 
 // Format Tanggal
 const formattedDate = new Date(post.data.pubDate).toLocaleDateString('id-ID', {
@@ -81,8 +83,10 @@ const articleSchema = {
   "description": metaDesc // Gunakan deskripsi SEO
 };
 
-const allProducts = await getCollection('products');
-const sidebarProducts = allProducts.slice(0, 2); 
+const allProducts = await getCollection('products', ({ data }) => {
+  return import.meta.env.PROD ? data.status !== 'draft' : true;
+});
+const sidebarProducts = allProducts.slice(0, 2);
 ---
 
 <Layout 
@@ -108,7 +112,7 @@ const sidebarProducts = allProducts.slice(0, 2);
                 <a 
                   href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, '-')}`}
                   class="bg-civil-secondary text-civil-primary px-2 py-1 border border-civil-dark hover:bg-civil-primary hover:text-white transition-colors cursor-pointer"
-                >
+                 >
                   {tag}
                 </a>
               ))}
@@ -124,7 +128,7 @@ const sidebarProducts = allProducts.slice(0, 2);
 
           <div class="w-full aspect-video bg-gray-100 border-2 border-civil-dark shadow-hard overflow-hidden rounded-sm">
              <img 
-               src={post.data.image} 
+                 src={post.data.image} 
                alt={post.data.title} 
                class="w-full h-full object-cover"
              />
@@ -160,22 +164,23 @@ const sidebarProducts = allProducts.slice(0, 2);
         
         <div class="bg-gray-50 border-2 border-gray-200 p-6 rounded-sm">
             <div class="flex items-center gap-4 mb-4">
-                {author.avatar ? (
+                {author.avatar ?
+                (
                     <img src={author.avatar} alt={author.name} class="w-14 h-14 rounded-full border-2 border-civil-secondary object-cover shadow-sm" />
                 ) : (
                     <div class="w-14 h-14 rounded-full bg-civil-dark flex items-center justify-center text-white font-bold text-xl border-2 border-civil-secondary shadow-sm">
-                        {author.name.charAt(0)}
+                       {author.name.charAt(0)}
                     </div>
                 )}
                 
                 <div>
                     <h3 class="text-sm font-black text-civil-primary uppercase leading-tight">
-                       {author.name}
+                        {author.name}
                     </h3>
                     <span class="text-xs text-gray-500 font-bold tracking-wide">{author.role}</span>
                 </div>
             </div>
-            
+             
             <div class="text-sm text-gray-600 leading-relaxed mb-4 prose prose-sm prose-p:mb-2">
                  {AuthorBio && <AuthorBio />}
             </div>
@@ -202,7 +207,7 @@ const sidebarProducts = allProducts.slice(0, 2);
          </div>
 
         <div class="bg-civil-primary text-white p-6 border-2 border-civil-dark shadow-hard relative overflow-hidden">
-           <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#FFC107 1px, transparent 1px); background-size: 10px 10px;"></div>
+          <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#FFC107 1px, transparent 1px); background-size: 10px 10px;"></div>
            <h3 class="text-xl font-black uppercase text-civil-secondary mb-2 relative z-10">Butuh Alat Lab?</h3>
            <p class="text-sm text-gray-300 mb-6 relative z-10">
              Kami menyediakan alat uji tanah, beton, dan aspal standar SNI.
@@ -217,7 +222,7 @@ const sidebarProducts = allProducts.slice(0, 2);
              Produk Terkait
            </h3>
            <div class="flex flex-col gap-4">
-              {sidebarProducts.map(prod => (
+               {sidebarProducts.map(prod => (
                  <a href={`/products/${prod.slug}`} class="group flex gap-4 items-center bg-white border border-gray-200 p-2 hover:border-civil-primary hover:shadow-md transition-all">
                     <div class="w-16 h-16 bg-gray-100 flex-shrink-0 border border-gray-200 overflow-hidden">
                        <img src={prod.data.image} class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
@@ -225,7 +230,7 @@ const sidebarProducts = allProducts.slice(0, 2);
                     <div>
                        <h4 class="text-xs font-bold text-civil-dark uppercase group-hover:text-civil-primary line-clamp-2">{prod.data.title}</h4>
                        <span class="text-[10px] text-gray-500">Lihat Detail &rarr;</span>
-                    </div>
+                     </div>
                  </a>
               ))}
            </div>
