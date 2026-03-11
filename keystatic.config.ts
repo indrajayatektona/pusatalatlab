@@ -37,17 +37,16 @@ export default config({
   // --- BAGIAN INI YANG DIUPDATE OTOMATIS ---
   // Jika sedang di Production (Cloudflare), pakai GitHub mode.
   // Jika di Local (Komputer sendiri), pakai Local mode.
-  storage: import.meta.env.PROD
-    ? {
-        kind: 'github',
-        // GANTI INI DENGAN USERNAME & REPO GITHUB ANDA YANG ASLI
-        // Format: 'username/nama-repo'
-        // Contoh: 'indrajayatektona/pusatalatlab'
-        repo: 'indrajayatektona/pusatalatlab', 
-      }
-    : {
-        kind: 'local',
-      },
+storage: import.meta.env.PROD
+  ? {
+      kind: 'cloud',
+    }
+  : {
+      kind: 'local', // Tetap local saat development di komputer
+    },
+cloud: {
+  project: 'sawarga-teknik/sawargateknik', // Ganti dengan nama project dari dashboard keystatic cloud
+},
   // -----------------------------------------
 
   collections: {
