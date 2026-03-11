@@ -5,10 +5,7 @@ import ProductCard from '../../components/ProductCard.astro';
 
 // 1. Generate Static Paths
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.PROD ? data.status !== 'draft' : true;
-  });
-
+  const posts = await getCollection('blog');
   return posts.map(post => ({
     params: { slug: post.slug },
     props: { post },
@@ -84,10 +81,8 @@ const articleSchema = {
   "description": metaDesc // Gunakan deskripsi SEO
 };
 
-const allProducts = await getCollection('products', ({ data }) => {
-    return import.meta.env.PROD ? data.status !== 'draft' : true;
-});
-const sidebarProducts = allProducts.slice(0, 2);
+const allProducts = await getCollection('products');
+const sidebarProducts = allProducts.slice(0, 2); 
 ---
 
 <Layout 
