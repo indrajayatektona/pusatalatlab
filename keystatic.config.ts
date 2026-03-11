@@ -85,12 +85,23 @@ export default config({
       slugField: 'title',
       path: 'src/content/products/*',
       format: { contentField: 'content' },
+ columns: ['title', 'status', 'category', 'publishDate'],
+      
       schema: {
         title: fields.slug({ name: { label: 'Nama Produk' } }),
-        id: fields.text({ label: 'SKU / Kode Barang' }),
         
-        seo: seoSchema, 
+        // TAMBAHKAN FIELD STATUS PUBLIKASI
+        status: fields.select({
+          label: 'Status',
+          options: [
+            { label: 'Draft', value: 'draft' },
+            { label: 'Published', value: 'published' }
+          ],
+          defaultValue: 'published',
+        }),
 
+        id: fields.text({ label: 'SKU / Kode Barang' }),
+        seo: seoSchema, 
         category: fields.select({
           label: 'Kategori',
           options: [
@@ -128,6 +139,11 @@ export default config({
         description: fields.text({ label: 'Ringkasan Produk (Untuk Card/List)', multiline: true }),
         featured: fields.checkbox({ label: 'Tampilkan di Homepage (Featured)?' }),
         publishDate: fields.date({ label: 'Tanggal Publish', defaultValue: { kind: 'today' } }),
+
+        updatedDate: fields.date({ 
+          label: 'Tanggal Update Terakhir',
+          description: 'Pilih manual saat melakukan update konten'
+        }),
         
         content: fields.document({
           label: 'Deskripsi Lengkap',
@@ -148,13 +164,28 @@ export default config({
       slugField: 'title',
       path: 'src/content/blog/*',
       format: { contentField: 'content' },
+      columns: ['title', 'status', 'author', 'pubDate', 'updatedDate'],
       schema: {
         title: fields.slug({ name: { label: 'Judul Artikel' } }),
+
+        status: fields.select({
+          label: 'Status Artikel',
+          options: [
+            { label: 'Draft', value: 'draft' },
+            { label: 'Published', value: 'published' }
+          ],
+          defaultValue: 'draft', // Set default ke draft untuk artikel baru
+        }),
         
         seo: seoSchema,
 
         description: fields.text({ label: 'Ringkasan (Excerpt)', multiline: true }),
         pubDate: fields.date({ label: 'Tanggal', defaultValue: { kind: 'today' } }),
+
+        updatedDate: fields.date({ 
+          label: 'Tanggal Update Terakhir',
+          description: 'Ubah tanggal ini jika melakukan revisi artikel'
+        }),
         
         author: fields.relationship({
             label: 'Penulis',
