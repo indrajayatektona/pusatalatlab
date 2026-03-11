@@ -6,7 +6,10 @@ import { getCollection } from 'astro:content';
 
 // 1. SETUP PAGINATION PER KATEGORI
 export async function getStaticPaths({ paginate }) {
-  const allProducts = await getCollection('products');
+  // Tambahkan filter callback untuk memblokir draft
+  const allProducts = await getCollection('products', ({ data }) => {
+    return data.status !== 'draft';
+  });
 
   // Tambahkan seoContent berformat HTML untuk optimasi SEO
   const categories = [

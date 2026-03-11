@@ -5,7 +5,10 @@ import ProductCard from '../../components/ProductCard.astro';
 
 // 1. Generate Static Paths
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('blog', ({ data }) => {
+    return data.status !== 'draft';
+  });
+  
   return posts.map(post => ({
     params: { slug: post.slug },
     props: { post },
