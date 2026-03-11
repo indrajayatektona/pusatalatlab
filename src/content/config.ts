@@ -30,7 +30,7 @@ const blogCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    
+    status: z.enum(['draft', 'published']).default('published'),
     // Tambahkan field SEO
     seo: seoZodSchema,
 
@@ -49,7 +49,7 @@ const productsCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     id: z.string().optional(),
-    
+    status: z.enum(['draft', 'published']).default('published'),
     seo: seoZodSchema,
 
     category: z.enum(['Aspal', 'Beton', 'Tanah', 'Batuan', 'Semen', 'Pertambangan', 'Umum']),
@@ -72,7 +72,7 @@ const pagesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    
+    status: z.enum(['draft', 'published']).default('published'),
     // Tambahkan field SEO
     seo: seoZodSchema,
 
