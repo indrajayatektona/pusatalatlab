@@ -4,10 +4,13 @@ import Pagination from '../../components/Pagination.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths({ paginate }) {
-  const allPosts = await getCollection('blog');
+  // Tambahkan filter status
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return data.status !== 'draft';
+  });
+  
   // Urutkan artikel dari yang terbaru
   const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  
   // Pagination 9 artikel per halaman
   return paginate(sortedPosts, { pageSize: 9 });
 }

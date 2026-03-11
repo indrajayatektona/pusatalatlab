@@ -7,6 +7,7 @@ import CTAButton from '../../components/CTAButton.astro';
 // 1. GENERATE PATHS
 export async function getStaticPaths() {
   const products = await getCollection('products');
+  ({ data }) => data.status !== 'draft'
   return products.map(product => ({
     params: { slug: product.slug },
     props: { product },

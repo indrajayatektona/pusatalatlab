@@ -18,9 +18,14 @@ const CONFIG = {
 };
 
 // --- 2. DATA FETCHING ---
-const allProducts = await getCollection('products');
+const allProducts = await getCollection('products', ({ data }) => {
+  return data.status !== 'draft';
+});
 const featuredProducts = allProducts.filter(p => p.data.featured).slice(0, 4);
-const allPosts = await getCollection('blog');
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.status !== 'draft';
+});
 const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
 
 // Fallback Data (Jika CMS kosong)

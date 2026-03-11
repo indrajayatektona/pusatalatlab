@@ -1,8 +1,10 @@
 import { getCollection } from 'astro:content';
 
 export async function GET({}) {
-  // 1. Ambil semua produk dari content collections
-  const allProducts = await getCollection('products');
+  // 1. Ambil semua produk dan FILTER yang BUKAN draft
+  const allProducts = await getCollection('products', ({ data }) => {
+    return data.status !== 'draft';
+  });
 
   // 2. Format data agar ringan (hanya ambil field penting)
   const searchIndex = allProducts.map((product) => ({

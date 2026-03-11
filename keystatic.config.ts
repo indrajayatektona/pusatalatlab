@@ -223,6 +223,15 @@ export default config({
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Nama Halaman (Internal)' } }),
+
+        status: fields.select({
+  label: 'Status Halaman',
+  options: [
+    { label: 'Draft', value: 'draft' },
+    { label: 'Published', value: 'published' }
+  ],
+  defaultValue: 'draft',
+}),
         
         seo: seoSchema,
 
