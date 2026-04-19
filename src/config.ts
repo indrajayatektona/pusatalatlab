@@ -1,6 +1,6 @@
 // src/config.ts
 export const SITE_CONFIG = {
-  brandName: "Pusat Alat Lab Sipil",
+  brandName: "CV. Sawarga Teknik",
   // Format nomor WA: Gunakan kode negara tanpa +, contoh: 62812xxx
   whatsapp: "6287893030300", 
   email: "sales@pusatalatlabsipil.com",

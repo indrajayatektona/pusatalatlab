@@ -105,6 +105,9 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
 
 		<ClientRouter />
 		<slot name="head" />
+    <link rel="sitemap" href="/sitemap-0.xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <meta name="theme-color" content="#e6c55c">
 	</head>
 	
 	<body class="bg-gray-50 text-civil-dark font-sans flex flex-col min-h-screen">
@@ -229,12 +232,44 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
     .prose img { @apply rounded-sm border-2 border-gray-200 shadow-md my-8 w-full h-auto; }
 
     /* TABLE STYLING */
-    .prose table { @apply w-full text-sm text-left border-collapse border-2 border-civil-dark my-8 shadow-sm; }
+    .prose table { @apply w-full text-sm text-left border-collapse border-2 border-civil-dark my-8 shadow-sm; display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;}
     .prose thead { @apply bg-civil-primary text-white; }
-    .prose th { @apply px-4 py-3 font-black uppercase tracking-wider border-r border-civil-dark/20 text-xs md:text-sm; }
+    .prose th { @apply px-4 py-3 text-white uppercase tracking-wider border-r border-civil-dark/20 text-xs md:text-sm; }
     .prose tbody tr { @apply border-b border-gray-200 transition-colors; }
     .prose tbody tr:nth-child(even) { @apply bg-gray-50; }
     .prose tbody tr:hover { @apply bg-blue-50; }
     .prose td { @apply px-4 py-3 border-r border-gray-200 text-gray-700; }
     .table-wrapper { @apply overflow-x-auto my-6 border border-gray-200 rounded-sm; }
+
+	  .content-body {
+    overflow-wrap: anywhere;
+  }
+
+  .content-body :where(table) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    border-collapse: collapse;
+    border: 2px solid rgb(229 231 235);
+  }
+
+  .content-body :where(thead th) {
+    background: #0F253E;
+    color: white;
+  }
+
+  .content-body :where(th),
+  .content-body :where(td) {
+    min-width: 140px;
+    vertical-align: top;
+  }
+
+  .content-body :where(ul),
+  .content-body :where(ol) {
+    padding-left: 1.25rem;
+  }
+  
 </style>

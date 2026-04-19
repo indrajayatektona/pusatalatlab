@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /keystatic/
+
+Sitemap: https://pusatalatlabsipil.com/sitemap-index.xml
+Sitemap: https://pusatalatlabsipil.com/rss.xml
