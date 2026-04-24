@@ -84,8 +84,27 @@ const articleSchema = {
   "description": metaDesc // Gunakan deskripsi SEO
 };
 
+// 1. Ambil tag dari artikel saat ini menggunakan variabel 'post'
+const articleTags = post.data.tags || [];
+
+// 2. Ambil semua data produk
 const allProducts = await getCollection('products');
-const sidebarProducts = allProducts.slice(0, 2); 
+
+// 3. FILTERING: Cari produk yang kategorinya cocok dengan salah satu tag artikel
+let relatedProducts = allProducts.filter(product => {
+  const productCategory = product.data.category?.toLowerCase() || '';
+  return articleTags.some(tag => tag.toLowerCase().includes(productCategory));
+});
+
+// 4. FALLBACK: Jika tidak ada tag yang cocok atau produk kurang dari 2, gunakan seluruh produk
+if (relatedProducts.length < 2) {
+  relatedProducts = allProducts;
+}
+
+// 5. ACAK & POTONG: Acak urutan dan ambil 2 produk untuk sidebar
+const sidebarProducts = relatedProducts
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 2);
 ---
 
 <Layout 
@@ -100,7 +119,7 @@ const sidebarProducts = allProducts.slice(0, 2);
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
       
       <article class="lg:col-span-8">
         
@@ -159,7 +178,7 @@ const sidebarProducts = allProducts.slice(0, 2);
 
       </article>
 
-      <aside class="lg:col-span-4 space-y-8">
+      <aside class="lg:col-span-4 space-y-8 sticky top-28">
         
         <div class="bg-gray-50 border-2 border-gray-200 p-6 rounded-sm">
             <div class="flex items-center gap-4 mb-4">
