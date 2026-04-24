@@ -2,6 +2,7 @@
 import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import RelatedProductsGrid from '../../components/RelatedProductsGrid.astro';
 
 // 1. Generate Static Paths
 export async function getStaticPaths() {
@@ -141,7 +142,7 @@ const sidebarProducts = allProducts.slice(0, 2);
           prose-img:rounded-sm prose-img:border-2 prose-img:border-gray-200 prose-img:shadow-lg
           prose-strong:text-civil-dark">
           
-          <Content />
+          <Content components={{ relatedProducts: RelatedProductsGrid }} />
 
         </div>
 

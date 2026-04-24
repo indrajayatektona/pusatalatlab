@@ -1,4 +1,5 @@
 import { config, fields, collection } from '@keystatic/core';
+import { block } from '@keystatic/core/content-components';
 
 // --- 0. DEFINISI SEO SCHEMA (Reusable) ---
 const seoSchema = fields.object({
@@ -157,7 +158,7 @@ cloud: {
       },
     }),
     
-    // --- 3. KOLEKSI BLOG ---
+// --- 3. KOLEKSI BLOG ---
     blog: collection({
       label: 'Artikel Blog',
       slugField: 'title',
@@ -201,6 +202,8 @@ cloud: {
             fields.text({ label: 'Tag' }),
             { label: 'Tags' }
         ),
+        
+        // PERHATIKAN BLOK CONTENT DI BAWAH INI
         content: fields.document({
           label: 'Isi Artikel',
           formatting: true,
@@ -210,6 +213,21 @@ cloud: {
              directory: 'public/images/blog/content',
              publicPath: '/images/blog/content/',
           },
+          // PENYISIPAN COMPONENTS YANG BENAR (Sejajar dengan images & formatting)
+          components: {
+            relatedProducts: block({
+              label: 'Sisipkan Produk Terkait',
+              schema: {
+                products: fields.array(
+                  fields.relationship({
+                    label: 'Pilih Produk',
+                    collection: 'products',
+                  }),
+                  { label: 'Daftar Produk', itemLabel: props => props.value || 'Pilih...' }
+                )
+              }
+            })
+          }
         }),
       },
     }),

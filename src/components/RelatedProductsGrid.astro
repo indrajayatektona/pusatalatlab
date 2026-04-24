@@ -1,0 +1,35 @@
+---
+import { getEntry } from 'astro:content';
+import ProductCard from './ProductCard.astro';
+
+interface Props {
+  products: string[];
+}
+
+const { products = [] } = Astro.props;
+
+// Fetch data produk secara paralel berdasarkan slug dari editor
+const productEntries = await Promise.all(
+  products.map(async (slug) => {
+    return await getEntry('products', slug);
+  })
+);
+
+// Filter data untuk mencegah error jika ada produk yang terhapus di database
+const validProducts = productEntries.filter(p => p !== undefined && p !== null);
+---
+
+{validProducts.length > 0 && (
+  <div class="my-10 not-prose">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-1.5 h-6 bg-civil-secondary"></div>
+      <h3 class="text-xl md:text-2xl font-black text-civil-primary uppercase m-0 leading-none">Alat Uji Terkait</h3>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {validProducts.map((product: any) => (
+        <ProductCard product={product} />
+      ))}
+    </div>
+  </div>
+)}
