@@ -20,16 +20,30 @@ const validProducts = productEntries.filter(p => p !== undefined && p !== null);
 ---
 
 {validProducts.length > 0 && (
-  <div class="my-10 not-prose">
-    <div class="flex items-center gap-3 mb-6">
-      <div class="w-1.5 h-6 bg-civil-secondary"></div>
-      <h3 class="text-xl md:text-2xl font-black text-civil-primary uppercase m-0 leading-none">Alat Uji Terkait</h3>
-    </div>
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {validProducts.map((product: any) => (
-        <ProductCard product={product} />
-      ))}
+  <div class="my-14 not-prose relative">
+    {/* CONTAINER INDUSTRIAL: Memberikan kotak pembungkus yang tegas memisahkan artikel dan produk */}
+    <div class="bg-slate-50 border-2 border-civil-dark p-6 sm:p-8 shadow-[6px_6px_0px_0px_#1E293B]">
+      
+      {/* HEADER SECTION: Dipertegas dengan garis bawah dan aksen shadow pada elemen dekoratif */}
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b-2 border-civil-dark/10">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-8 bg-civil-secondary border-2 border-civil-dark shadow-[2px_2px_0px_0px_#1E293B]"></div>
+          <h3 class="text-xl md:text-2xl font-black text-civil-primary uppercase tracking-wide m-0">
+            Katalog Alat Terkait
+          </h3>
+        </div>
+        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider bg-gray-200 px-3 py-1 rounded-sm border border-gray-300 w-fit">
+          Rekomendasi
+        </span>
+      </div>
+      
+      {/* GRID LAYOUT: Menggunakan susunan yang responsif mengikuti ukuran layar */}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {validProducts.map((product: any) => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+
     </div>
   </div>
 )}
