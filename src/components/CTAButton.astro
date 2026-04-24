@@ -2,11 +2,12 @@
 import { getWALink } from '../config';
 
 interface Props {
-  mode: 'modal' | 'wa';
+  mode: 'modal' | 'wa' | 'link';
   text?: string;
   productName?: string;
   variant?: 'primary' | 'secondary';
   className?: string;
+  href?: string; // PERBAIKAN 1: Tambahkan href ke interface Props
 }
 
 const { 
@@ -14,17 +15,14 @@ const {
   text = "Hubungi Kami", 
   productName = "General Inquiry", 
   variant = 'primary',
-  className = ""
+  className = "",
+  href = "#" // PERBAIKAN 2: Destructure href dengan fallback
 } = Astro.props;
 
 // 1. BASE STYLE: Struktur utama tombol (Industrial Look)
-// inline-flex: Agar panjangnya menyesuaikan konten tapi tetap bisa diatur marginnya
-// items-center & justify-center: Agar teks & icon benar-benar di tengah
 const baseStyle = "group inline-flex items-center justify-center gap-3 px-6 py-3.5 text-sm md:text-base font-black uppercase tracking-wider transition-all duration-200 border-2 border-civil-dark cursor-pointer select-none";
 
 // 2. SHADOW STYLE: Efek tombol timbul (Gumroad Style)
-// shadow-[4px...]: Bayangan keras
-// hover:translate: Saat dihover, tombol turun menutup bayangan (efek ditekan)
 const shadowStyle = "shadow-[4px_4px_0px_0px_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px]";
 
 // 3. COLOR VARIANTS
@@ -36,7 +34,16 @@ const variants = {
 const finalClass = `${baseStyle} ${shadowStyle} ${variants[variant]} ${className}`;
 ---
 
-{mode === 'wa' ? (
+{/* PERBAIKAN 3 & 4: Rantai ternary digabungkan agar dirender secara eksklusif (mutually exclusive) */}
+{mode === 'link' ? (
+  /* --- MODE BARU: DIRECT LINK --- */
+  <a href={href} class={finalClass}>
+    <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+    </svg>
+    <span>{text}</span>
+  </a>
+) : mode === 'wa' ? (
   /* --- MODE 1: WHATSAPP LINK --- */
   <a 
     href={getWALink(`Halo, saya ingin info harga/spesifikasi untuk: ${productName}`)} 
