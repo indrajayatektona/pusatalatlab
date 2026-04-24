@@ -15,35 +15,45 @@ const productEntries = await Promise.all(
   })
 );
 
-// Filter data untuk mencegah error jika ada produk yang terhapus di database
+// Filter data untuk mencegah error jika ada produk yang terhapus
 const validProducts = productEntries.filter(p => p !== undefined && p !== null);
 ---
 
 {validProducts.length > 0 && (
-  <div class="my-14 not-prose relative">
-    {/* CONTAINER INDUSTRIAL: Memberikan kotak pembungkus yang tegas memisahkan artikel dan produk */}
-    <div class="bg-slate-50 border-2 border-civil-dark p-6 sm:p-8 shadow-[6px_6px_0px_0px_#1E293B]">
+  <div class="my-12 not-prose">
+    {/* WIDGET WRAPPER: Memberikan batas tegas agar tidak terlihat sepi */}
+    <div class="bg-slate-50 border-2 border-civil-dark p-6 md:p-8 shadow-[6px_6px_0px_0px_#1E293B]">
       
-      {/* HEADER SECTION: Dipertegas dengan garis bawah dan aksen shadow pada elemen dekoratif */}
+      {/* HEADER SECTION */}
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b-2 border-civil-dark/10">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-8 bg-civil-secondary border-2 border-civil-dark shadow-[2px_2px_0px_0px_#1E293B]"></div>
-          <h3 class="text-xl md:text-2xl font-black text-civil-primary uppercase tracking-wide m-0">
-            Katalog Alat Terkait
-          </h3>
+        
+        <div class="flex items-center gap-3 md:gap-4">
+          {/* ICON BLOCK: Pengganti garis warna sebelumnya agar lebih profesional */}
+          <div class="flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-civil-secondary border-2 border-civil-dark shadow-[2px_2px_0px_0px_#1E293B]">
+            <svg class="w-5 h-5 md:w-6 md:h-6 text-civil-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            </svg>
+          </div>
+          
+          {/* TITLE: Menggunakan div, bukan h3, untuk menghindari bentrok garis prose */}
+          <div class="text-xl md:text-2xl font-black text-civil-primary uppercase tracking-wider m-0 leading-none">
+            Peralatan Terkait
+          </div>
         </div>
-        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider bg-gray-200 px-3 py-1 rounded-sm border border-gray-300 w-fit">
-          Rekomendasi
-        </span>
+
+        {/* COUNTER: Menampilkan jumlah produk yang disisipkan */}
+        <div class="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-widest bg-white px-3 py-1.5 border-2 border-civil-dark/10 rounded">
+          {validProducts.length} Produk
+        </div>
       </div>
       
-      {/* GRID LAYOUT: Menggunakan susunan yang responsif mengikuti ukuran layar */}
+      {/* GRID KONTEN: Akan menyesuaikan ukuran secara rapi */}
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {validProducts.map((product: any) => (
           <ProductCard product={product} />
         ))}
       </div>
-
+      
     </div>
   </div>
 )}
