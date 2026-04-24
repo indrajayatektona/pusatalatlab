@@ -204,7 +204,7 @@ cloud: {
         ),
         
         // PERHATIKAN BLOK CONTENT DI BAWAH INI
-        content: fields.document({
+        content: fields.markdoc({
           label: 'Isi Artikel',
           formatting: true,
           dividers: true,
