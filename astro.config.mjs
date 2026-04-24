@@ -33,6 +33,13 @@ export default defineConfig({
     tailwind(),
 
     sitemap({
+      serialize: (item) => {
+        return {
+          ...item,
+          changefreq: ChangeFreqEnum.DAILY,
+          priority: 1.0,
+        };
+      },
       chunks: {
         'produk-kategori': (item) => {
           const url = new URL(item.url);
@@ -44,8 +51,8 @@ export default defineConfig({
 
           return {
             ...item,
-            changefreq: ChangeFreqEnum.WEEKLY,
-            priority: 0.8,
+            changefreq: ChangeFreqEnum.DAILY,
+            priority: 0.9,
           };
         },
 
@@ -62,8 +69,8 @@ export default defineConfig({
 
           return {
             ...item,
-            changefreq: ChangeFreqEnum.WEEKLY,
-            priority: 0.7,
+            changefreq: ChangeFreqEnum.DAILY,
+            priority: 1.0,
           };
         },
 
@@ -77,8 +84,8 @@ export default defineConfig({
 
           return {
             ...item,
-            changefreq: ChangeFreqEnum.MONTHLY,
-            priority: 0.6,
+            changefreq: ChangeFreqEnum.DAILY,
+            priority: 1.0,
           };
         },
       },
