@@ -55,6 +55,15 @@ const menuCategories = [
     ]
   }
 ];
+
+// Data untuk Menu Profil Baru
+const profilMenu = [
+  { label: "Tentang Kami", href: "/about" },
+  { label: "Kontak", href: "/contact" },
+  { label: "Garansi", href: "/warranty" },
+  { label: "Alur Pemesanan", href: "/guide" },
+  { label: "Kebijakan Pengembalian", href: "/refund-policy" },
+];
 ---
 
 <header class="sticky top-0 z-50 w-full bg-white border-b-2 border-civil-dark shadow-sm font-sans">
@@ -77,77 +86,117 @@ const menuCategories = [
         <a href="/" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
           Beranda
         </a>
+        
 
-<div class="group relative">
-  <a
-    href="/products/"
-    class="flex items-center gap-1 px-4 py-2 font-bold text-civil-dark group-hover:text-civil-primary group-hover:bg-gray-50 rounded-md outline-none"
-  >
-    Produk & Kategori
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-    </svg>
-  </a>
+        {/* --- MENU DROPDOWN BARU: PROFIL --- */}
+        <div class="group relative">
+          <button
+            class="flex items-center gap-1 px-4 py-2 font-bold text-civil-dark group-hover:text-civil-primary group-hover:bg-gray-50 rounded-md outline-none"
+          >
+            Profil & Info
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
-  <div class="absolute left-1/2 -translate-x-1/2 top-full w-[90vw] max-w-5xl pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out transform group-hover:translate-y-0 translate-y-2">
-    <div class="bg-white border-2 border-civil-dark shadow-hard p-6 md:p-8 rounded-sm grid grid-cols-3 gap-y-8 gap-x-6 relative">
-      <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-t-2 border-l-2 border-civil-dark transform rotate-45"></div>
+          <div class="absolute left-0 top-full w-56 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out transform group-hover:translate-y-0 translate-y-2">
+            <div class="bg-white border-2 border-civil-dark shadow-hard py-2 rounded-sm relative">
+              <div class="absolute -top-2 left-6 w-4 h-4 bg-white border-t-2 border-l-2 border-civil-dark transform rotate-45"></div>
+              
+              <ul class="flex flex-col">
+                {profilMenu.map((item) => (
+                  <li>
+                    <a href={item.href} class="block px-6 py-2 text-sm font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 hover:pl-8 transition-all">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
 
-      {menuCategories.map((cat) => (
-        <div class="space-y-3">
-          <a href={`/products/${cat.slug}`} class="block">
-            <h3 class="font-black text-lg text-civil-primary border-b-2 border-gray-100 pb-1 hover:text-civil-secondary hover:border-civil-secondary transition-colors flex items-center justify-between">
-              {cat.title}
-              <span class="text-xs text-gray-400">➜</span>
-            </h3>
+        {/* --- MENU DROPDOWN: PRODUK --- */}
+        <div class="group relative">
+          <a
+            href="/products/"
+            class="flex items-center gap-1 px-4 py-2 font-bold text-civil-dark group-hover:text-civil-primary group-hover:bg-gray-50 rounded-md outline-none"
+          >
+            Produk
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
           </a>
 
-          <ul class="space-y-1">
-            {cat.items.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  class="text-sm text-gray-600 hover:text-civil-primary hover:underline hover:font-bold block py-1"
-                >
-                  • {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div class="absolute left-1/2 -translate-x-1/2 top-full w-[90vw] max-w-5xl pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out transform group-hover:translate-y-0 translate-y-2">
+            <div class="bg-white border-2 border-civil-dark shadow-hard p-6 md:p-8 rounded-sm grid grid-cols-3 gap-y-8 gap-x-6 relative">
+              <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-t-2 border-l-2 border-civil-dark transform rotate-45"></div>
+
+              {menuCategories.map((cat) => (
+                <div class="space-y-3">
+                  <a href={`/products/${cat.slug}`} class="block">
+                    <h3 class="font-black text-lg text-civil-primary border-b-2 border-gray-100 pb-1 hover:text-civil-secondary hover:border-civil-secondary transition-colors flex items-center justify-between">
+                      {cat.title}
+                      <span class="text-xs text-gray-400">➜</span>
+                    </h3>
+                  </a>
+
+                  <ul class="space-y-1">
+                    {cat.items.map((item) => (
+                      <li>
+                        <a
+                          href={item.href}
+                          class="text-sm text-gray-600 hover:text-civil-primary hover:underline hover:font-bold block py-1"
+                        >
+                          • {item.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</div>
+
         <a href="/blog" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
           Blog Teknik
         </a>
+        
+        
+        {/* --- MENU BARU: FAQ --- */}
+        <a href="/faq" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
+          FAQ
+        </a>
+
       </nav>
 
       <div class="hidden lg:flex items-center gap-4">
-<button 
-  onclick="window.dispatchEvent(new CustomEvent('open-search'))"
-  class="text-civil-dark hover:text-civil-secondary p-2 transition-transform hover:scale-110"
-  aria-label="Cari Produk"
->
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-  </svg>
-</button>
+        <button 
+          onclick="window.dispatchEvent(new CustomEvent('open-search'))"
+          class="text-civil-dark hover:text-civil-secondary p-2 transition-transform hover:scale-110"
+          aria-label="Cari Produk"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
 
         <button 
-  onclick="window.dispatchEvent(new CustomEvent('open-quote'))"  class="inline-flex items-center justify-center bg-civil-secondary px-5 py-2.5 text-sm font-black uppercase tracking-wide text-civil-primary border-2 border-civil-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+          onclick="window.dispatchEvent(new CustomEvent('open-quote'))"  
+          class="inline-flex items-center justify-center bg-civil-secondary px-5 py-2.5 text-sm font-black uppercase tracking-wide text-civil-primary border-2 border-civil-dark shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+        >
           Minta Penawaran
-</button>
+        </button>
       </div>
 
       <div class="lg:hidden flex items-center gap-4">
-<button 
-  onclick="window.dispatchEvent(new CustomEvent('open-quote'))" 
-  class="text-xs font-bold bg-civil-secondary px-3 py-2 border border-civil-dark shadow-hard-sm cursor-pointer hover:bg-[#e6ac00] transition-colors"
->
-  KONTAK
-</button>
+        <button 
+          onclick="window.dispatchEvent(new CustomEvent('open-quote'))" 
+          class="text-xs font-bold bg-civil-secondary px-3 py-2 border border-civil-dark shadow-hard-sm cursor-pointer hover:bg-[#e6ac00] transition-colors"
+        >
+          KONTAK
+        </button>
         <button id="mobile-menu-btn" class="p-2 text-civil-dark border-2 border-transparent hover:border-civil-dark rounded">
           <span class="sr-only">Open menu</span>
           <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -162,8 +211,9 @@ const menuCategories = [
     </div>
   </div>
 
-<div id="mobile-menu" class="hidden lg:hidden border-t-2 border-civil-dark bg-white">
-    <div class="space-y-1 px-4 pt-2 pb-3 shadow-lg">
+  {/* --- MOBILE MENU --- */}
+  <div id="mobile-menu" class="hidden lg:hidden border-t-2 border-civil-dark bg-white">
+    <div class="space-y-1 px-4 pt-2 pb-3 shadow-lg h-[80vh] overflow-y-auto">
       
       <button 
         onclick="
@@ -181,20 +231,34 @@ const menuCategories = [
       </button>
 
       <a href="/" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">Beranda</a>
-      <a
-  href="/products/"
-  class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100"
->
-  Semua Produk
-</a>
-      <div x-data="{ open: false }">
-        <button id="mobile-dropdown-btn" class="flex w-full items-center justify-between px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">
-          <span>Kategori Produk</span>
-          <svg id="mobile-chevron" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+      {/* MOBILE DROPDOWN: PROFIL */}
+      <div>
+        <button id="mobile-dropdown-btn-profil" class="flex w-full items-center justify-between px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">
+          <span>Profil & Info</span>
+          <svg id="mobile-chevron-profil" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div id="mobile-dropdown-content" class="hidden bg-gray-50 px-4 py-2 space-y-2 border-b-2 border-civil-dark">
+        <div id="mobile-dropdown-content-profil" class="hidden bg-gray-50 px-4 py-2 space-y-2 border-b-2 border-civil-dark">
+          {profilMenu.map((item) => (
+             <a href={item.href} class="block py-2 text-sm font-semibold text-gray-600 hover:text-civil-primary">
+               ➜ {item.label}
+             </a>
+          ))}
+        </div>
+      </div>
+      
+      {/* MOBILE DROPDOWN: KATEGORI */}
+      <div x-data="{ open: false }">
+        <button id="mobile-dropdown-btn-kategori" class="flex w-full items-center justify-between px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">
+          <span>Produk & Kategori</span>
+          <svg id="mobile-chevron-kategori" class="h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="mobile-dropdown-content-kategori" class="hidden bg-gray-50 px-4 py-2 space-y-2 border-b-2 border-civil-dark">
+          <a href="/products/" class="block py-2 text-sm font-black text-civil-primary border-b border-gray-200 mb-2">Lihat Semua Produk ➜</a>
           {menuCategories.map((cat) => (
              <a href={`/products/${cat.slug}`} class="block py-2 text-sm font-semibold text-gray-600 hover:text-civil-primary">
                ➜ {cat.title}
@@ -202,9 +266,13 @@ const menuCategories = [
           ))}
         </div>
       </div>
-
       <a href="/blog" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">Blog Teknik</a>
-      <a href="/contact" class="block mt-4 text-center px-3 py-4 text-base font-black text-white bg-civil-primary border-2 border-civil-dark shadow-hard-sm active:shadow-none active:translate-y-1">
+      
+      
+      <a href="/faq" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">FAQ</a>
+
+      
+      <a href="/contact" class="block mt-6 text-center px-3 py-4 text-base font-black text-white bg-civil-primary border-2 border-civil-dark shadow-hard-sm active:shadow-none active:translate-y-1">
         MINTA PENAWARAN HARGA
       </a>
     </div>
@@ -212,29 +280,32 @@ const menuCategories = [
 </header>
 
 <script>
-  // Vanilla JS untuk Toggle Mobile Menu
-  // Tidak perlu framework berat, cukup logic sederhana
   document.addEventListener('astro:page-load', () => {
+    // Helper function for toggling dropdowns
+    function setupDropdown(btnId: string, contentId: string, chevronId: string) {
+      const btn = document.getElementById(btnId);
+      const content = document.getElementById(contentId);
+      const chevron = document.getElementById(chevronId);
+
+      btn?.addEventListener('click', () => {
+        content?.classList.toggle('hidden');
+        chevron?.classList.toggle('rotate-180');
+      });
+    }
+
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const iconMenu = document.getElementById('icon-menu');
     const iconClose = document.getElementById('icon-close');
 
-    // Logic Toggle Menu Utama
     menuBtn?.addEventListener('click', () => {
       mobileMenu?.classList.toggle('hidden');
       iconMenu?.classList.toggle('hidden');
       iconClose?.classList.toggle('hidden');
     });
 
-    // Logic Toggle Dropdown Produk di Mobile
-    const dropdownBtn = document.getElementById('mobile-dropdown-btn');
-    const dropdownContent = document.getElementById('mobile-dropdown-content');
-    const chevron = document.getElementById('mobile-chevron');
-
-    dropdownBtn?.addEventListener('click', () => {
-      dropdownContent?.classList.toggle('hidden');
-      chevron?.classList.toggle('rotate-180');
-    });
+    // Initialize the two mobile dropdowns
+    setupDropdown('mobile-dropdown-btn-kategori', 'mobile-dropdown-content-kategori', 'mobile-chevron-kategori');
+    setupDropdown('mobile-dropdown-btn-profil', 'mobile-dropdown-content-profil', 'mobile-chevron-profil');
   });
 </script>
