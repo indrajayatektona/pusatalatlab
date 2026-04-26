@@ -6,6 +6,9 @@ import keystatic from '@keystatic/astro';
 import markdoc from '@astrojs/markdoc';
 import cloudflare from '@astrojs/cloudflare';
 
+// 1. Deklarasikan waktu build untuk lastmod
+const buildDate = new Date().toISOString();
+
 const PRODUCT_CATEGORY_PATHS = [
   '/products/umum/',
   '/products/pertambangan/',
@@ -38,7 +41,7 @@ export default defineConfig({
           ...item,
           changefreq: ChangeFreqEnum.DAILY,
           priority: 1.0,
-          lastmod: buildDate,
+          lastmod: buildDate, // 2. Injeksi lastmod di serialize utama
         };
       },
       chunks: {
@@ -54,7 +57,7 @@ export default defineConfig({
             ...item,
             changefreq: ChangeFreqEnum.DAILY,
             priority: 0.9,
-            lastmod: buildDate,
+            lastmod: buildDate, // Injeksi lastmod
           };
         },
 
@@ -73,7 +76,7 @@ export default defineConfig({
             ...item,
             changefreq: ChangeFreqEnum.DAILY,
             priority: 1.0,
-            lastmod: buildDate,
+            lastmod: buildDate, // Injeksi lastmod
           };
         },
 
@@ -89,7 +92,7 @@ export default defineConfig({
             ...item,
             changefreq: ChangeFreqEnum.DAILY,
             priority: 1.0,
-            lastmod: buildDate,
+            lastmod: buildDate, // Injeksi lastmod
           };
         },
       },
