@@ -38,6 +38,7 @@ export default defineConfig({
           ...item,
           changefreq: ChangeFreqEnum.DAILY,
           priority: 1.0,
+          lastmod: buildDate,
         };
       },
       chunks: {
@@ -53,6 +54,7 @@ export default defineConfig({
             ...item,
             changefreq: ChangeFreqEnum.DAILY,
             priority: 0.9,
+            lastmod: buildDate,
           };
         },
 
@@ -71,6 +73,7 @@ export default defineConfig({
             ...item,
             changefreq: ChangeFreqEnum.DAILY,
             priority: 1.0,
+            lastmod: buildDate,
           };
         },
 
@@ -86,6 +89,7 @@ export default defineConfig({
             ...item,
             changefreq: ChangeFreqEnum.DAILY,
             priority: 1.0,
+            lastmod: buildDate,
           };
         },
       },
