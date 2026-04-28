@@ -8,16 +8,23 @@ interface Props {
 
 const { products = [] } = Astro.props;
 
-// Fetch data produk secara paralel berdasarkan slug dari editor
+// Filter slug yang valid dulu, baru fetch
+const validSlugs = products.filter(slug => slug && typeof slug === 'string' && slug.trim() !== '');
+
 const productEntries = await Promise.all(
-  products.map(async (slug) => {
-    return await getEntry('products', slug);
+  validSlugs.map(async (slug) => {
+    try {
+      return await getEntry('products', slug);
+    } catch {
+      return null;
+    }
   })
 );
 
 // Filter data untuk mencegah error jika ada produk yang terhapus
 const validProducts = productEntries.filter(p => p !== undefined && p !== null);
 ---
+
 
 {validProducts.length > 0 && (
   <div class="my-12 not-prose">
