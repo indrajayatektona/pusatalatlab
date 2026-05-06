@@ -1,15 +1,13 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
-import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
+import sitemap from '@astrojs/sitemap';
 import keystatic from '@keystatic/astro';
 import markdoc from '@astrojs/markdoc';
 import cloudflare from '@astrojs/cloudflare';
+import robotsTxt from 'astro-robots-txt';
 
-// 1. Deklarasikan waktu build untuk lastmod
-const buildDate = new Date().toISOString();
-
-const PRODUCT_CATEGORY_PATHS = [
+const PRODUCT_CATEGORY_PATHS = new Set([
   '/products/umum/',
   '/products/pertambangan/',
   '/products/semen/',
@@ -17,10 +15,22 @@ const PRODUCT_CATEGORY_PATHS = [
   '/products/tanah/',
   '/products/beton/',
   '/products/aspal/',
-];
+]);
 
 function normalizePathname(pathname) {
   return pathname.endsWith('/') ? pathname : `${pathname}/`;
+}
+
+function isProductPaginationPath(pathname) {
+  return (
+    /^\/products\/\d+\/?$/.test(pathname) ||
+    /^\/products\/[^/]+\/\d+\/?$/.test(pathname)
+  );
+}
+
+function getNormalizedPathname(item) {
+  const url = new URL(item.url);
+  return normalizePathname(url.pathname);
 }
 
 export default defineConfig({
@@ -35,65 +45,68 @@ export default defineConfig({
   integrations: [
     tailwind(),
 
+    robotsTxt({
+      policy: [
+        {
+          userAgent: '*',
+          allow: '/',
+          disallow: ['/api/', '/keystatic/'],
+        },
+      ],
+      sitemap: true,
+    }),
+
     sitemap({
       serialize: (item) => {
-        return {
-          ...item,
-          changefreq: ChangeFreqEnum.DAILY,
-          priority: 1.0,
-          lastmod: buildDate, // 2. Injeksi lastmod di serialize utama
-        };
+        const pathname = getNormalizedPathname(item);
+
+        if (isProductPaginationPath(pathname)) {
+          return undefined;
+        }
+
+        if (
+          pathname.startsWith('/api/') ||
+          pathname.startsWith('/keystatic/')
+        ) {
+          return undefined;
+        }
+
+        return item;
       },
+
       chunks: {
         'produk-kategori': (item) => {
-          const url = new URL(item.url);
-          const pathname = normalizePathname(url.pathname);
+          const pathname = getNormalizedPathname(item);
 
-          if (!PRODUCT_CATEGORY_PATHS.includes(pathname)) {
+          if (!PRODUCT_CATEGORY_PATHS.has(pathname)) {
             return undefined;
           }
 
-          return {
-            ...item,
-            changefreq: ChangeFreqEnum.DAILY,
-            priority: 0.9,
-            lastmod: buildDate, // Injeksi lastmod
-          };
+          return item;
         },
 
         produk: (item) => {
-          const url = new URL(item.url);
-          const pathname = normalizePathname(url.pathname);
+          const pathname = getNormalizedPathname(item);
 
           const isProductPath = pathname.startsWith('/products/');
-          const isProductCategory = PRODUCT_CATEGORY_PATHS.includes(pathname);
+          const isProductCategory = PRODUCT_CATEGORY_PATHS.has(pathname);
+          const isPagination = isProductPaginationPath(pathname);
 
-          if (!isProductPath || isProductCategory) {
+          if (!isProductPath || isProductCategory || isPagination) {
             return undefined;
           }
 
-          return {
-            ...item,
-            changefreq: ChangeFreqEnum.DAILY,
-            priority: 1.0,
-            lastmod: buildDate, // Injeksi lastmod
-          };
+          return item;
         },
 
         blog: (item) => {
-          const url = new URL(item.url);
-          const pathname = normalizePathname(url.pathname);
+          const pathname = getNormalizedPathname(item);
 
           if (!pathname.startsWith('/blog/')) {
             return undefined;
           }
 
-          return {
-            ...item,
-            changefreq: ChangeFreqEnum.DAILY,
-            priority: 1.0,
-            lastmod: buildDate, // Injeksi lastmod
-          };
+          return item;
         },
       },
     }),

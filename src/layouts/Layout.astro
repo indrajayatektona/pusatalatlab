@@ -76,11 +76,11 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		
-		{noIndex ? (
-			<meta name="robots" content="noindex, nofollow" />
-		) : (
-			<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-		)}
+{noIndex ? (
+  <meta name="robots" content="noindex, follow, max-image-preview:large" />
+) : (
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+)}
 
 		<title>{title} | {SITE_CONFIG.brandName}</title>
 		<meta name="description" content={description} />
