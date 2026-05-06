@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-Disallow: /api/
-Disallow: /keystatic/
-
-Sitemap: https://pusatalatlabsipil.com/sitemap-index.xml
