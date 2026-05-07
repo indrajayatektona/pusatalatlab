@@ -106,6 +106,8 @@ const formatDate = (date) => {
               src={post.data.image || "https://placehold.co/600x400"} 
               alt={post.data.title} 
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              loading="lazy"
+              decoding="async"
             />
             <div class="absolute top-2 left-2 flex gap-1">
                  <span class="bg-civil-primary text-white text-[10px] font-bold px-2 py-1 uppercase">{post.data.tags[0]}</span>

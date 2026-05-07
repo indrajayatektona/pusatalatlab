@@ -25,6 +25,8 @@ interface Props {
 	noIndex?: boolean; 
 	isFullWidth?: boolean;
 	canonical?: string; // Tambahan untuk Custom Canonical
+	prevUrl?: string; // SEO: Rel Prev
+	nextUrl?: string; // SEO: Rel Next
 }
 
 const { 
@@ -35,7 +37,9 @@ const {
 	showBreadcrumbs = true,
 	noIndex = false,
 	isFullWidth = false,
-	canonical // Ambil prop canonical
+	canonical, // Ambil prop canonical
+	prevUrl,
+	nextUrl
 } = Astro.props;
 
 // Logic Canonical: Jika ada prop canonical pakai itu, jika tidak pakai URL sekarang
@@ -161,6 +165,9 @@ const localBusinessSchema = {
 		<meta property="twitter:title" content={title} />
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content={new URL(image, Astro.site)} />
+
+		{prevUrl && <link rel="prev" href={new URL(prevUrl, Astro.site).toString()} />}
+		{nextUrl && <link rel="next" href={new URL(nextUrl, Astro.site).toString()} />}
 
 		<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

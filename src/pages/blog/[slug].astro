@@ -242,7 +242,7 @@ const sidebarProducts = relatedProducts
               {sidebarProducts.map(prod => (
                  <a href={`/products/${prod.slug}`} class="group flex gap-4 items-center bg-white border border-gray-200 p-2 hover:border-civil-primary hover:shadow-md transition-all">
                     <div class="w-16 h-16 bg-gray-100 flex-shrink-0 border border-gray-200 overflow-hidden">
-                       <img src={prod.data.image} class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                       <img src={prod.data.image} class="w-full h-full object-cover group-hover:scale-110 transition-transform" loading="lazy" decoding="async" />
                     </div>
                     <div>
                        <h4 class="text-xs font-bold text-civil-dark uppercase group-hover:text-civil-primary line-clamp-2">{prod.data.title}</h4>
@@ -256,5 +256,7 @@ const sidebarProducts = relatedProducts
       </aside>
 
     </div>
+  </div>
+</Layout>   </div>
   </div>
 </Layout>

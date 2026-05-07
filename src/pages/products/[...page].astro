@@ -37,6 +37,8 @@ const categories = [
   title={`Katalog Produk Halaman ${page.currentPage}`}
   description={`Daftar lengkap alat laboratorium teknik sipil standar SNI & ASTM halaman ${page.currentPage}.`}
   noIndex={page.currentPage > 1}
+  prevUrl={page.url.prev}
+  nextUrl={page.url.next}
 >
 
   <div class="bg-white border-b border-gray-200 py-12">
