@@ -271,5 +271,38 @@ cloud: {
         }),
       },
     }),
+
+    // --- 5. KOLEKSI SCRIPTS (ADS & ANALYTICS) ---
+    scripts: collection({
+      label: 'Scripts (Ads & Analytics)',
+      slugField: 'title',
+      path: 'src/content/scripts/*',
+      format: { data: 'json' },
+      schema: {
+        title: fields.slug({ name: { label: 'Nama Script' } }),
+        status: fields.select({
+          label: 'Status',
+          options: [
+            { label: 'Aktif', value: 'active' },
+            { label: 'Non-aktif', value: 'disabled' }
+          ],
+          defaultValue: 'active',
+        }),
+        location: fields.select({
+          label: 'Lokasi Penempatan',
+          options: [
+            { label: 'Header (<head>)', value: 'head' },
+            { label: 'Body Start (Setelah <body>)', value: 'body-start' },
+            { label: 'Body End (Sebelum </body>)', value: 'body-end' }
+          ],
+          defaultValue: 'head',
+        }),
+        code: fields.text({
+          label: 'Kode Script',
+          multiline: true,
+          description: 'Masukkan kode script lengkap (termasuk tag <script> jika ada)',
+        }),
+      },
+    }),
   },
 });

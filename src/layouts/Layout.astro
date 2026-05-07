@@ -7,6 +7,13 @@ import QuoteModal from '../components/QuoteModal.astro';
 import FloatingWA from '../components/FloatingWA.astro';
 import { ClientRouter } from 'astro:transitions';
 import { SITE_CONFIG } from '../config';
+import { getCollection } from 'astro:content';
+
+// Ambil Scripts dari Koleksi (CMS)
+const scripts = await getCollection('scripts', ({ data }) => data.status === 'active');
+const headScripts = scripts.filter(s => s.data.location === 'head');
+const bodyStartScripts = scripts.filter(s => s.data.location === 'body-start');
+const bodyEndScripts = scripts.filter(s => s.data.location === 'body-end');
 
 // Definisi Props Master
 interface Props {
@@ -59,12 +66,67 @@ const organizationSchema = {
 };
 
 // Breadcrumbs Generator Logic
-// ... (Bagian ini tidak berubah) ...
 const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, array) => {
 	const href = '/' + array.slice(0, index + 1).join('/');
 	const name = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); 
 	return { name: name === 'Products' ? 'Katalog' : name, href };
 });
+
+// BreadcrumbList Schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": import.meta.env.SITE
+    },
+    ...breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      "position": index + 2,
+      "name": crumb.name,
+      "item": new URL(crumb.href, import.meta.env.SITE).toString()
+    }))
+  ]
+};
+
+// LocalBusiness Schema
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": SITE_CONFIG.brandName,
+  "image": new URL("/images/alat-laboratorium-teknik-sipil.webp", import.meta.env.SITE).toString(),
+  "@id": import.meta.env.SITE,
+  "url": import.meta.env.SITE,
+  "telephone": SITE_CONFIG.whatsapp,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": SITE_CONFIG.address,
+    "addressLocality": "Cimahi",
+    "addressRegion": "Jawa Barat",
+    "postalCode": "40535",
+    "addressCountry": "ID"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -6.9000888,
+    "longitude": 107.5625715
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "opens": "08:00",
+    "closes": "17:00"
+  }
+};
 ---
 
 <!doctype html>
@@ -76,6 +138,9 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		
+		<!-- Render Head Scripts dari CMS -->
+		{headScripts.map(s => <Fragment set:html={s.data.code} />)}
+
 {noIndex ? (
   <meta name="robots" content="noindex, follow, max-image-preview:large" />
 ) : (
@@ -98,6 +163,8 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
 		<meta property="twitter:image" content={new URL(image, Astro.site)} />
 
 		<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,6 +178,9 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
 	</head>
 	
 	<body class="bg-gray-50 text-civil-dark font-sans flex flex-col min-h-screen">
+		
+		<!-- Render Body Start Scripts dari CMS -->
+		{bodyStartScripts.map(s => <Fragment set:html={s.data.code} />)}
 		
 		<a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-civil-secondary focus:text-civil-primary focus:font-bold focus:shadow-hard">
 			Skip to Main Content
@@ -156,6 +226,9 @@ const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, 
 		<FloatingWA />
 		<SearchModal />
 		<QuoteModal />
+
+		<!-- Render Body End Scripts dari CMS -->
+		{bodyEndScripts.map(s => <Fragment set:html={s.data.code} />)}
 
 	</body>
 </html>

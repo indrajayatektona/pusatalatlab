@@ -81,9 +81,21 @@ const pagesCollection = defineCollection({
   }),
 });
 
+// 5. SCRIPTS
+const scriptsCollection = defineCollection({
+  type: 'data',
+  schema: z.object({
+    title: z.string(),
+    status: z.enum(['active', 'disabled']).default('active'),
+    location: z.enum(['head', 'body-start', 'body-end']).default('head'),
+    code: z.string(),
+  }),
+});
+
 export const collections = {
   'products': productsCollection,
   'blog': blogCollection,
   'pages': pagesCollection,
   'authors': authorsCollection,
+  'scripts': scriptsCollection,
 };
