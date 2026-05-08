@@ -6,63 +6,63 @@ const menuCategories = [
     title: "Konstruksi Jalan (Aspal)",
     slug: "aspal",
     items: [
-      { label: "Marshall Test", href: "/products/marshall-test-set" },
-      { label: "Core Drill", href: "/products/core-drilling-test-set" },
-      { label: "Bitumen Extractor Manual", href: "/products/centrifuge-extractor-manual" },
-      { label: "Ductility Machine", href: "/products/ductility-of-bituminous-materials-test-set" },
+      { label: "Marshall Test", href: "/products/marshall-test-set/" },
+      { label: "Core Drill", href: "/products/core-drilling-test-set/" },
+      { label: "Bitumen Extractor Manual", href: "/products/centrifuge-extractor-manual/" },
+      { label: "Ductility Machine", href: "/products/ductility-of-bituminous-materials-test-set/" },
     ]
   },
   {
     title: "Konstruksi Beton",
     slug: "beton",
     items: [
-      { label: "Compression Machine Analog", href: "/products/compression-machine-2000-kn-analog" },
-      { label: "Slump Test", href: "/products/slump-test-set" },
-      { label: "Cube Mold", href: "/products/concrete-cube-mold-15x15x15-cm" },
-      { label: "Hammer Test", href: "/products/concrete-test-hammer" },
+      { label: "Compression Machine Analog", href: "/products/compression-machine-2000-kn-analog/" },
+      { label: "Slump Test", href: "/products/slump-test-set/" },
+      { label: "Cube Mold", href: "/products/concrete-cube-mold-15x15x15-cm/" },
+      { label: "Hammer Test", href: "/products/concrete-test-hammer/" },
     ]
   },
   {
     title: "Mekanika Tanah",
     slug: "tanah",
     items: [
-      { label: "CBR Lapangan", href: "/products/cbr-lapangan" },
-      { label: "Sand Cone", href: "/products/sand-cone-test-set" },
+      { label: "CBR Lapangan", href: "/products/cbr-lapangan/" },
+      { label: "Sand Cone", href: "/products/sand-cone-test-set/" },
     ]
   },
   {
     title: "Material & Batuan",
     slug: "batuan",
     items: [
-      { label: "Los Angeles Machine", href: "/products/los-angeles-abrasion-machine" },
-      { label: "Aggregate Impact", href: "/products/aggregate-impact-test" },
-      { label: "Sieve Shaker Electric", href: "/products/sieve-shaker-electric" },
-      { label: "Sample Splitter", href: "/products/sample-splitter" },
+      { label: "Los Angeles Machine", href: "/products/los-angeles-abrasion-machine/" },
+      { label: "Aggregate Impact", href: "/products/aggregate-impact-test/" },
+      { label: "Sieve Shaker Electric", href: "/products/sieve-shaker-electric/" },
+      { label: "Sample Splitter", href: "/products/sample-splitter/" },
     ]
   },
   {
     title: "Semen & Mortar",
     slug: "semen",
     items: [
-      { label: "Air Permeability", href: "/products/air-permeability-of-portland-cement" },
+      { label: "Air Permeability", href: "/products/air-permeability-of-portland-cement/" },
     ]
   },
   {
     title: "Pengeboran & Tambang",
     slug: "pertambangan",
     items: [
-      { label: "Bor Mesin Hydraulic 50 Meter", href: "/products/mesin-bor-hydraulic-50-meter" },
+      { label: "Bor Mesin Hydraulic 50 Meter", href: "/products/mesin-bor-hydraulic-50-meter/" },
     ]
   }
 ];
 
 // Data untuk Menu Profil Baru
 const profilMenu = [
-  { label: "Tentang Kami", href: "/about" },
-  { label: "Kontak", href: "/contact" },
-  { label: "Garansi", href: "/warranty" },
-  { label: "Alur Pemesanan", href: "/guide" },
-  { label: "Kebijakan Pengembalian", href: "/refund-policy" },
+  { label: "Tentang Kami", href: "/about/" },
+  { label: "Kontak", href: "/contact/" },
+  { label: "Garansi", href: "/warranty/" },
+  { label: "Alur Pemesanan", href: "/guide/" },
+  { label: "Kebijakan Pengembalian", href: "/refund-policy/" },
 ];
 ---
 
@@ -134,7 +134,7 @@ const profilMenu = [
 
               {menuCategories.map((cat) => (
                 <div class="space-y-3">
-                  <a href={`/products/${cat.slug}`} class="block">
+                  <a href={`/products/${cat.slug}/`} class="block">
                     <h3 class="font-black text-lg text-civil-primary border-b-2 border-gray-100 pb-1 hover:text-civil-secondary hover:border-civil-secondary transition-colors flex items-center justify-between">
                       {cat.title}
                       <span class="text-xs text-gray-400">➜</span>
@@ -159,13 +159,13 @@ const profilMenu = [
           </div>
         </div>
 
-        <a href="/blog" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
+        <a href="/blog/" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
           Blog Teknik
         </a>
         
         
         {/* --- MENU BARU: FAQ --- */}
-        <a href="/faq" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
+        <a href="/faq/" class="px-4 py-2 font-bold text-civil-dark hover:text-civil-primary hover:bg-gray-50 rounded-md">
           FAQ
         </a>
 
@@ -260,19 +260,19 @@ const profilMenu = [
         <div id="mobile-dropdown-content-kategori" class="hidden bg-gray-50 px-4 py-2 space-y-2 border-b-2 border-civil-dark">
           <a href="/products/" class="block py-2 text-sm font-black text-civil-primary border-b border-gray-200 mb-2">Lihat Semua Produk ➜</a>
           {menuCategories.map((cat) => (
-             <a href={`/products/${cat.slug}`} class="block py-2 text-sm font-semibold text-gray-600 hover:text-civil-primary">
+             <a href={`/products/${cat.slug}/`} class="block py-2 text-sm font-semibold text-gray-600 hover:text-civil-primary">
                ➜ {cat.title}
              </a>
           ))}
         </div>
       </div>
-      <a href="/blog" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">Blog Teknik</a>
+      <a href="/blog/" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">Blog Teknik</a>
       
       
-      <a href="/faq" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">FAQ</a>
+      <a href="/faq/" class="block px-3 py-4 text-base font-bold text-civil-dark hover:bg-gray-50 border-b border-gray-100">FAQ</a>
 
       
-      <a href="/contact" class="block mt-6 text-center px-3 py-4 text-base font-black text-white bg-civil-primary border-2 border-civil-dark shadow-hard-sm active:shadow-none active:translate-y-1">
+      <a href="/contact/" class="block mt-6 text-center px-3 py-4 text-base font-black text-white bg-civil-primary border-2 border-civil-dark shadow-hard-sm active:shadow-none active:translate-y-1">
         MINTA PENAWARAN HARGA
       </a>
     </div>

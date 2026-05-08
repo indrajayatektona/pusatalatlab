@@ -448,14 +448,14 @@ const products = page.data;
 
 // Sidebar Config
 const sidebarLinks = [
-  { name: "Semua Produk", slug: "/products", active: false },
-  { name: "Alat Lab Aspal", slug: "/products/aspal", active: category === 'aspal' },
-  { name: "Alat Lab Beton", slug: "/products/beton", active: category === 'beton' },
-  { name: "Alat Lab Tanah", slug: "/products/tanah", active: category === 'tanah' },
-  { name: "Alat Lab Batuan", slug: "/products/batuan", active: category === 'batuan' },
-  { name: "Alat Lab Semen", slug: "/products/semen", active: category === 'semen' },
-  { name: "Pertambangan", slug: "/products/pertambangan", active: category === 'pertambangan' },
-  { name: "Alat Umum", slug: "/products/umum", active: category === 'umum' },
+  { name: "Semua Produk", slug: "/products/", active: false },
+  { name: "Alat Lab Aspal", slug: "/products/aspal/", active: category === 'aspal' },
+  { name: "Alat Lab Beton", slug: "/products/beton/", active: category === 'beton' },
+  { name: "Alat Lab Tanah", slug: "/products/tanah/", active: category === 'tanah' },
+  { name: "Alat Lab Batuan", slug: "/products/batuan/", active: category === 'batuan' },
+  { name: "Alat Lab Semen", slug: "/products/semen/", active: category === 'semen' },
+  { name: "Pertambangan", slug: "/products/pertambangan/", active: category === 'pertambangan' },
+  { name: "Alat Umum", slug: "/products/umum/", active: category === 'umum' },
 ];
 ---
 
@@ -550,7 +550,7 @@ const sidebarLinks = [
           <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded p-12 text-center">
             <h3 class="text-lg font-bold text-gray-500">Stok Kosong</h3>
             <p class="text-sm text-gray-400">Tidak ada produk ditemukan di kategori ini.</p>
-            <a href="/products" class="inline-block mt-4 text-civil-primary font-bold hover:underline">Lihat Semua Produk &rarr;</a>
+            <a href="/products/" class="inline-block mt-4 text-civil-primary font-bold hover:underline">Lihat Semua Produk &rarr;</a>
           </div>
         )}
       </div>

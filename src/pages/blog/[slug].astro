@@ -128,7 +128,7 @@ const sidebarProducts = relatedProducts
             <div class="flex gap-2">
               {post.data.tags.map(tag => (
                 <a 
-                  href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                  href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, '-')}/`}
                   class="bg-civil-secondary text-civil-primary px-2 py-1 border border-civil-dark hover:bg-civil-primary hover:text-white transition-colors cursor-pointer"
                 >
                   {tag}
@@ -229,7 +229,7 @@ const sidebarProducts = relatedProducts
            <p class="text-sm text-gray-300 mb-6 relative z-10">
              Kami menyediakan alat uji tanah, beton, dan aspal standar SNI.
            </p>
-           <a href="/products" class="block w-full text-center bg-civil-secondary text-civil-primary font-black uppercase py-3 text-sm hover:bg-white transition-colors relative z-10">
+           <a href="/products/" class="block w-full text-center bg-civil-secondary text-civil-primary font-black uppercase py-3 text-sm hover:bg-white transition-colors relative z-10">
              Lihat Katalog
            </a>
         </div>
@@ -240,7 +240,7 @@ const sidebarProducts = relatedProducts
            </h3>
            <div class="flex flex-col gap-4">
               {sidebarProducts.map(prod => (
-                 <a href={`/products/${prod.slug}`} class="group flex gap-4 items-center bg-white border border-gray-200 p-2 hover:border-civil-primary hover:shadow-md transition-all">
+                 <a href={`/products/${prod.slug}/`} class="group flex gap-4 items-center bg-white border border-gray-200 p-2 hover:border-civil-primary hover:shadow-md transition-all">
                     <div class="w-16 h-16 bg-gray-100 flex-shrink-0 border border-gray-200 overflow-hidden">
                        <img src={prod.data.image} class="w-full h-full object-cover group-hover:scale-110 transition-transform" loading="lazy" decoding="async" />
                     </div>

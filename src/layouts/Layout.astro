@@ -71,7 +71,7 @@ const organizationSchema = {
 
 // Breadcrumbs Generator Logic
 const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, array) => {
-	const href = '/' + array.slice(0, index + 1).join('/');
+	const href = '/' + array.slice(0, index + 1).join('/') + '/';
 	const name = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); 
 	return { name: name === 'Products' ? 'Katalog' : name, href };
 });
@@ -194,7 +194,7 @@ const localBusinessSchema = {
 		</a>
 
 		<div class="bg-civil-dark text-white text-[10px] md:text-xs font-bold text-center py-2 px-4 tracking-wide relative z-50">
-			PROMO: Diskon hingga 20% dan garansi 1 tahun untuk semua produk! <a href="/products" class="underline hover:text-civil-secondary transition-colors">Belanja Sekarang</a>
+			PROMO: Diskon hingga 20% dan garansi 1 tahun untuk semua produk! <a href="/products/" class="underline hover:text-civil-secondary transition-colors">Belanja Sekarang</a>
 		</div>
 
 		<Header />

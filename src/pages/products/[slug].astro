@@ -110,7 +110,7 @@ const productSchema = {
         
         <div class="bg-white border-2 border-civil-dark shadow-hard p-1 mb-6 relative group">
             <a 
-              href={`/products/${category.toLowerCase()}`}
+              href={`/products/${category.toLowerCase()}/`}
               class="absolute top-3 left-3 z-10 bg-civil-secondary text-civil-primary text-[10px] font-black uppercase px-2 py-1 border border-civil-dark shadow-sm hover:bg-civil-primary hover:text-white transition-colors cursor-pointer"
             >
               {category}
@@ -177,7 +177,7 @@ const productSchema = {
                     </span>
                 )}
 
-                <a href={`/products/${category.toLowerCase()}`} class="bg-gray-100 border border-gray-200 text-gray-600 px-3 py-1 text-xs md:text-sm font-bold rounded-sm hover:bg-civil-secondary hover:text-civil-primary transition-colors flex items-center gap-2">
+                <a href={`/products/${category.toLowerCase()}/`} class="bg-gray-100 border border-gray-200 text-gray-600 px-3 py-1 text-xs md:text-sm font-bold rounded-sm hover:bg-civil-secondary hover:text-civil-primary transition-colors flex items-center gap-2">
                     <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                     {category}
                 </a>

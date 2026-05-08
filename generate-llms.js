@@ -73,8 +73,8 @@ async function generateLLMsText() {
   // 1. Pages
   output += `### Halaman Utama\n`;
   output += `- [Beranda](https://pusatalatlabsipil.com/)\n`;
-  output += `- [Produk](https://pusatalatlabsipil.com/products)\n`;
-  output += `- [Blog](https://pusatalatlabsipil.com/blog)\n\n`;
+  output += `- [Produk](https://pusatalatlabsipil.com/products/)\n`;
+  output += `- [Blog](https://pusatalatlabsipil.com/blog/)\n\n`;
 
   // 2. Produk
   const productsDir = path.join(CONTENT_DIR, 'products');
@@ -87,7 +87,7 @@ async function generateLLMsText() {
       const meta = extractFrontmatter(content);
       const slug = file.replace('.mdoc', '');
       if (meta.title) {
-        output += `- [${meta.title}](https://pusatalatlabsipil.com/products/${slug}): ${meta.category || ''} - ${meta.description || ''}\n`;
+        output += `- [${meta.title}](https://pusatalatlabsipil.com/products/${slug}/): ${meta.category || ''} - ${meta.description || ''}\n`;
       }
     }
     output += `\n`;
@@ -104,7 +104,7 @@ async function generateLLMsText() {
       const meta = extractFrontmatter(content);
       const slug = file.replace('.mdoc', '');
       if (meta.title) {
-        output += `- [${meta.title}](https://pusatalatlabsipil.com/blog/${slug})\n`;
+        output += `- [${meta.title}](https://pusatalatlabsipil.com/blog/${slug}/)\n`;
       }
     }
     output += `\n`;
