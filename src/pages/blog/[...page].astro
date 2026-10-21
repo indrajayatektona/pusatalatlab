@@ -47,6 +47,9 @@ const formatDate = (date) => {
 <Layout 
   title={`Blog & Artikel Teknik Sipil - Halaman ${page.currentPage}`} 
   description="Kumpulan artikel edukasi, tutorial pengujian tanah/beton/aspal, dan info standar SNI terbaru."
+  noIndex={page.currentPage > 1}
+  prevUrl={page.url.prev}
+  nextUrl={page.url.next}
 >
 
   <div class="bg-civil-dark py-16 border-b-4 border-civil-secondary relative overflow-hidden">

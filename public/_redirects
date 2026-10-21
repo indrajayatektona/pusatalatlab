@@ -1,0 +1,5 @@
+# URL lama arsip tag masih terindeks. Slug tag sekarang dinormalisasi
+# (koma diganti tanda hubung), jadi URL lama dialihkan permanen ke URL baru.
+# Astro menambahkan sendiri aturan untuk URL persisnya; aturan di bawah
+# menangani URL pagination-nya (/2/, /3/, ...).
+/blog/tag/beton,-mutu-beton/*  /blog/tag/beton-mutu-beton/:splat  301

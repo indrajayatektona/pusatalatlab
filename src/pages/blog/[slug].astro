@@ -2,6 +2,9 @@
 import { getCollection, getEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import { tagToSlug } from '../../lib/slug';
+import { getImageSize } from '../../lib/image-size';
+import { SITE_CONFIG } from '../../config';
 
 // 1. Generate Static Paths
 export async function getStaticPaths() {
@@ -17,6 +20,10 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+// Dimensi intrinsik cover: dipakai untuk width/height agar browser bisa
+// memesan ruang sebelum gambar selesai dimuat (mencegah layout shift).
+const coverSize = getImageSize(post.data.image);
 
 // --- LOGIC AUTHOR ---
 const authorData = await getEntry('authors', post.data.author.id);
@@ -59,23 +66,34 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('id-ID', {
 const isoDate = new Date(post.data.pubDate).toISOString();
 
 // Schema Article
+// publisher memakai @id yang sama dengan node Organization di Layout, jadi
+// Google menggabungkan keduanya menjadi satu entitas (bukan organisasi baru).
+const siteUrl = new URL('/', Astro.site).toString();
+const orgId = new URL('/#organization', Astro.site).toString();
+const coverUrl = new URL(post.data.image || '/default-og.jpg', Astro.site).toString();
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
+  "@id": `${canonicalURL}#article`,
+  "mainEntityOfPage": { "@id": `${canonicalURL}#webpage` },
   "headline": h1Title, // Gunakan H1 Title
-  "image": [
-    new URL(post.data.image || '/default-og.jpg', Astro.site).toString()
-  ],
+  "image": [{
+    "@type": "ImageObject",
+    "url": coverUrl,
+    ...(coverSize ? { "width": coverSize.width, "height": coverSize.height } : {})
+  }],
   "datePublished": isoDate,
   "dateModified": isoDate,
   "author": [{
       "@type": "Person",
       "name": author.name,
-      "url": Astro.site
+      "url": siteUrl
     }],
   "publisher": {
       "@type": "Organization",
-      "name": "CV. Sawarga Teknik",
+      "@id": orgId,
+      "name": SITE_CONFIG.brandName,
       "logo": {
         "@type": "ImageObject",
         "url": new URL("/logo.png", Astro.site).toString()
@@ -116,6 +134,7 @@ const sidebarProducts = relatedProducts
   canonical={canonicalURL}
   noIndex={isNoIndex} 
 >
+  {post.data.image && <link rel="preload" as="image" href={post.data.image} slot="head" />}
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -128,7 +147,7 @@ const sidebarProducts = relatedProducts
             <div class="flex gap-2">
               {post.data.tags.map(tag => (
                 <a 
-                  href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, '-')}/`}
+                  href={`/blog/tag/${tagToSlug(tag)}/`}
                   class="bg-civil-secondary text-civil-primary px-2 py-1 border border-civil-dark hover:bg-civil-primary hover:text-white transition-colors cursor-pointer"
                 >
                   {tag}
@@ -148,6 +167,8 @@ const sidebarProducts = relatedProducts
             <img 
               src={post.data.image} 
               alt={post.data.title} 
+              width={coverSize?.width}
+              height={coverSize?.height}
               class="w-full h-auto" 
             />
           </div>

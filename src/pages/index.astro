@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import ProductCard from '../components/ProductCard.astro';
 import CTAButton from '../components/CTAButton.astro';
+import { getImageSize } from '../lib/image-size';
 import { getCollection } from 'astro:content';
 
 // --- 1. CONFIGURATION (Edit Data Disini) ---
@@ -16,6 +17,9 @@ const CONFIG = {
   email: "admin@pusatalatlabsipil.com",
   heroImage: "https://pusatalatlabsipil.com/images/alat-laboratorium-teknik-sipil.webp" // Foto background Hero
 };
+
+// Dimensi intrinsik hero: mencegah layout shift pada elemen LCP.
+const heroSize = getImageSize('/images/alat-laboratorium-teknik-sipil.webp');
 
 // --- 2. DATA FETCHING ---
 const allProducts = await getCollection('products', ({ data }) => {
@@ -101,6 +105,7 @@ const faqSchema = {
   description={CONFIG.seoDescription} 
   isFullWidth={true}
 >
+  <link rel="preload" as="image" href={CONFIG.heroImage} fetchpriority="high" slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
   <section class="relative h-[85vh] min-h-[600px] w-full flex items-center border-b-4 border-civil-secondary bg-civil-dark">
@@ -108,6 +113,8 @@ const faqSchema = {
       <img 
         src={CONFIG.heroImage} 
         alt="Gudang Alat Laboratorium Teknik Sipil" 
+        width={heroSize?.width}
+        height={heroSize?.height}
         class="w-full h-full object-cover opacity-60" 
         loading="eager" 
         fetchpriority="high"
@@ -316,7 +323,7 @@ const faqSchema = {
 
         <div class="relative">
           <div class="absolute -top-4 -left-4 w-full h-full border-4 border-civil-secondary z-0"></div>
-          <img src="https://pusatalatlabsipil.com/images/alat-laboratorium-teknik-sipil.webp" alt="Teknisi Laboratorium Sipil Sedang Bekerja" class="relative z-10 w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-500" />
+          <img src="https://pusatalatlabsipil.com/images/alat-laboratorium-teknik-sipil.webp" alt="Teknisi Laboratorium Sipil Sedang Bekerja" width={heroSize?.width} height={heroSize?.height} class="relative z-10 w-full h-auto shadow-2xl grayscale hover:grayscale-0 transition-all duration-500" />
           
           <div class="absolute -bottom-6 -right-6 bg-civil-primary text-white p-6 border-2 border-white shadow-hard z-20 hidden md:block">
             <p class="text-3xl font-black text-civil-secondary">10+</p>

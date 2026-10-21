@@ -58,21 +58,19 @@ const relatedProducts = allProducts
   .slice(0, 4);
 
 // --- D. SCHEMA MARKUP ---
+// URL gambar harus absolut; Google menolak Product.image berupa path relatif.
+const imageUrl = new URL(imageSrc, Astro.site).toString();
+
 const productSchema = {
   "@context": "https://schema.org/",
   "@type": "Product",
   "name": h1Title,
-  "image": imageSrc, // Pakai imageSrc yang aman
+  "image": imageUrl,
   "description": metaDesc,
-  "sku": id,
+  // SKU hanya dikirim kalau memang diisi, bukan string kosong.
+  ...(id && id.trim() !== "" ? { "sku": id.trim() } : {}),
   "brand": { "@type": "Brand", "name": "CV. Sawarga Teknik" },
-  "offers": {
-    "@type": "Offer",
-    "availability": "https://schema.org/InStock",
-    "price": "0", // 0 menandakan Call for Price
-    "priceCurrency": "IDR",
-    "url": canonicalURL
-  }
+  "url": canonicalURL
 };
 ---
 

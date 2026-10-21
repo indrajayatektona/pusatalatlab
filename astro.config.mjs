@@ -6,6 +6,8 @@ import keystatic from '@keystatic/astro';
 import markdoc from '@astrojs/markdoc';
 import cloudflare from '@astrojs/cloudflare';
 import robotsTxt from 'astro-robots-txt';
+import { LASTMOD_BY_PATH, NOINDEX_PATHS } from './scripts/sitemap-data.mjs';
+import { stripKeystaticCss } from './scripts/strip-keystatic-css.mjs';
 
 const PRODUCT_CATEGORY_PATHS = new Set([
   '/products/umum/',
@@ -28,6 +30,30 @@ function isProductPaginationPath(pathname) {
   );
 }
 
+// Pagination blog & arsip tag: duplikat konten, selalu noindex di halamannya.
+function isBlogPaginationPath(pathname) {
+  return (
+    /^\/blog\/\d+\/?$/.test(pathname) ||
+    /^\/blog\/tag\/[^/]+\/\d+\/?$/.test(pathname)
+  );
+}
+
+// Arsip tag: halaman tipis dengan judul hampir identik, tidak layak diindeks.
+function isTagArchivePath(pathname) {
+  return pathname.startsWith('/blog/tag/');
+}
+
+function isExcludedPath(pathname) {
+  return (
+    isProductPaginationPath(pathname) ||
+    isBlogPaginationPath(pathname) ||
+    isTagArchivePath(pathname) ||
+    pathname.startsWith('/api/') ||
+    pathname.startsWith('/keystatic/') ||
+    NOINDEX_PATHS.has(pathname)
+  );
+}
+
 function getNormalizedPathname(item) {
   const url = new URL(item.url);
   return normalizePathname(url.pathname);
@@ -41,6 +67,12 @@ export default defineConfig({
   }),
 
   output: 'static',
+
+  // URL lama arsip tag masih hidup di produksi. Slug tag kini dinormalisasi
+  // (koma -> tanda hubung), jadi URL lama dialihkan permanen ke URL baru.
+  redirects: {
+    '/blog/tag/beton,-mutu-beton/': '/blog/tag/beton-mutu-beton/',
+  },
 
   integrations: [
     tailwind(),
@@ -60,15 +92,13 @@ export default defineConfig({
       serialize: (item) => {
         const pathname = getNormalizedPathname(item);
 
-        if (isProductPaginationPath(pathname)) {
+        if (isExcludedPath(pathname)) {
           return undefined;
         }
 
-        if (
-          pathname.startsWith('/api/') ||
-          pathname.startsWith('/keystatic/')
-        ) {
-          return undefined;
+        const lastmod = LASTMOD_BY_PATH.get(pathname);
+        if (lastmod) {
+          return { ...item, lastmod };
         }
 
         return item;
@@ -114,5 +144,6 @@ export default defineConfig({
     react(),
     keystatic(),
     markdoc(),
+    stripKeystaticCss(),
   ],
 });

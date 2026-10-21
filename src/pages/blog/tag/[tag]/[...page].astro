@@ -2,6 +2,7 @@
 import Layout from '../../../../layouts/Layout.astro';
 import Pagination from '../../../../components/Pagination.astro';
 import { getCollection } from 'astro:content';
+import { tagToSlug } from '../../../../lib/slug';
 
 // 1. Generate Paths untuk setiap Tag Unik
 export async function getStaticPaths({ paginate }) {
@@ -17,8 +18,8 @@ export async function getStaticPaths({ paginate }) {
     // Urutkan terbaru
     const sortedPosts = filteredPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-    // Buat slug yang aman (lowercase + dash)
-    const tagSlug = tag.toLowerCase().replace(/\s+/g, '-');
+    // Buat slug yang aman (lowercase + dash, tanpa karakter non-alfanumerik)
+    const tagSlug = tagToSlug(tag);
 
     return paginate(sortedPosts, {
       params: { tag: tagSlug },
@@ -44,6 +45,9 @@ const formatDate = (date) => {
 <Layout 
   title={`Arsip Artikel: ${tagName} | CV. Sawarga Teknik`} 
   description={`Kumpulan artikel dan panduan teknis sipil dengan topik ${tagName}.`}
+  noIndex={true}
+  prevUrl={page.url.prev}
+  nextUrl={page.url.next}
 >
 
   <div class="bg-civil-primary py-12 border-b-4 border-civil-secondary">

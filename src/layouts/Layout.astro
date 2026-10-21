@@ -48,63 +48,47 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site).toStri
 const currentPath = Astro.url.pathname;
 const isHome = currentPath === '/';
 
-// Schema Organization
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
+// URL pagination dari Astro tidak memakai trailing slash; samakan dengan
+// bentuk canonical situs agar rel=prev/next tidak menunjuk URL yang dialihkan.
+function normalizePaginationUrl(value?: string) {
+  if (!value) return undefined;
+  return value.endsWith('/') ? value : `${value}/`;
+}
+
+const prevHref = normalizePaginationUrl(prevUrl);
+const nextHref = normalizePaginationUrl(nextUrl);
+
+// --- Structured Data ---
+// Semua node dikirim dalam satu @graph dengan @id tetap, supaya Google
+// membaca Organization, LocalBusiness, WebSite, dan WebPage sebagai satu
+// entitas yang saling terhubung (bukan beberapa entitas terpisah).
+const siteUrl = new URL('/', Astro.site).toString();
+const orgId = new URL('/#organization', Astro.site).toString();
+const websiteId = new URL('/#website', Astro.site).toString();
+const logoId = new URL('/#logo', Astro.site).toString();
+const logoUrl = new URL('/logo.png', Astro.site).toString();
+const orgImageUrl = new URL('/images/alat-laboratorium-teknik-sipil.webp', Astro.site).toString();
+const pageImageUrl = new URL(image, Astro.site).toString();
+const webpageId = `${canonicalURL}#webpage`;
+const breadcrumbId = `${canonicalURL}#breadcrumb`;
+
+const organizationNode = {
+  "@type": ["Organization", "LocalBusiness"],
+  "@id": orgId,
   "name": SITE_CONFIG.brandName,
-  "url": import.meta.env.SITE,
-  "logo": new URL("/logo.png", import.meta.env.SITE).toString(),
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": SITE_CONFIG.whatsapp,
-    "contactType": "sales",
-    "areaServed": "ID",
-    "availableLanguage": "Indonesian"
+  "alternateName": "Pusat Alat Lab Sipil",
+  "url": siteUrl,
+  "description": "Distributor alat laboratorium teknik sipil untuk pengujian beton, aspal, tanah, dan batuan dengan standar SNI dan ASTM.",
+  "email": SITE_CONFIG.email,
+  "telephone": `+${SITE_CONFIG.whatsapp}`,
+  "logo": {
+    "@type": "ImageObject",
+    "@id": logoId,
+    "url": logoUrl,
+    "contentUrl": logoUrl,
+    "caption": SITE_CONFIG.brandName
   },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": SITE_CONFIG.address,
-    "addressCountry": "ID"
-  }
-};
-
-// Breadcrumbs Generator Logic
-const breadcrumbs = currentPath.split('/').filter(Boolean).map((segment, index, array) => {
-	const href = '/' + array.slice(0, index + 1).join('/') + '/';
-	const name = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); 
-	return { name: name === 'Products' ? 'Katalog' : name, href };
-});
-
-// BreadcrumbList Schema
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": import.meta.env.SITE
-    },
-    ...breadcrumbs.map((crumb, index) => ({
-      "@type": "ListItem",
-      "position": index + 2,
-      "name": crumb.name,
-      "item": new URL(crumb.href, import.meta.env.SITE).toString()
-    }))
-  ]
-};
-
-// LocalBusiness Schema
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": SITE_CONFIG.brandName,
-  "image": new URL("/images/alat-laboratorium-teknik-sipil.webp", import.meta.env.SITE).toString(),
-  "@id": import.meta.env.SITE,
-  "url": import.meta.env.SITE,
-  "telephone": SITE_CONFIG.whatsapp,
+  "image": orgImageUrl,
   "address": {
     "@type": "PostalAddress",
     "streetAddress": SITE_CONFIG.address,
@@ -129,7 +113,144 @@ const localBusinessSchema = {
     ],
     "opens": "08:00",
     "closes": "17:00"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": `+${SITE_CONFIG.whatsapp}`,
+    "email": SITE_CONFIG.email,
+    "contactType": "sales",
+    "areaServed": "ID",
+    "availableLanguage": "Indonesian"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Indonesia"
+  },
+  "knowsAbout": [
+    "Alat laboratorium teknik sipil",
+    "Pengujian beton",
+    "Pengujian aspal",
+    "Pengujian tanah",
+    "Pengujian batuan"
+  ]
+};
+
+const websiteNode = {
+  "@type": "WebSite",
+  "@id": websiteId,
+  "url": siteUrl,
+  "name": SITE_CONFIG.brandName,
+  "alternateName": "Pusat Alat Lab Sipil",
+  "publisher": { "@id": orgId },
+  "inLanguage": "id-ID"
+};
+
+// Breadcrumbs Generator Logic
+// Label khusus untuk segmen URL yang bukan nama halaman.
+const SEGMENT_LABELS = {
+  products: 'Katalog',
+  blog: 'Blog',
+};
+
+// Segmen yang hanya bagian dari struktur URL dan tidak punya halaman sendiri.
+// Contoh: /blog/tag/insight/ -> "tag" tidak boleh jadi item breadcrumb.
+const ROUTING_ONLY_SEGMENTS = new Set(['tag']);
+
+function humanizeSegment(segment) {
+  let decoded = segment;
+  try {
+    decoded = decodeURIComponent(segment);
+  } catch {
+    // biarkan segment apa adanya kalau bukan URI valid
   }
+
+  const cleaned = decoded
+    .replace(/[-_]+/g, ' ')
+    .replace(/[^\p{L}\p{N} ]+/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!cleaned) return '';
+  return cleaned.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+const rawSegments = currentPath.split('/').filter(Boolean);
+const pageNumber = /^\d+$/.test(rawSegments[rawSegments.length - 1] ?? '')
+  ? rawSegments[rawSegments.length - 1]
+  : null;
+
+const breadcrumbs = rawSegments
+  .map((segment, index) => {
+    const href = '/' + rawSegments.slice(0, index + 1).join('/') + '/';
+    const isNumeric = /^\d+$/.test(segment);
+    const isRoutingOnly = ROUTING_ONLY_SEGMENTS.has(segment.toLowerCase());
+    const name = SEGMENT_LABELS[segment.toLowerCase()] ?? humanizeSegment(segment);
+    return { name, href, isNumeric, isRoutingOnly };
+  })
+  // Segmen angka adalah nomor halaman pagination, bukan halaman tersendiri.
+  .filter((crumb) => !crumb.isNumeric && !crumb.isRoutingOnly && crumb.name);
+
+if (pageNumber) {
+  breadcrumbs.push({
+    name: `Halaman ${pageNumber}`,
+    href: currentPath,
+    isNumeric: false,
+    isRoutingOnly: false,
+  });
+}
+
+// Breadcrumb hanya dirender (visual & schema) bila memang tampil di halaman.
+const showBreadcrumbBlock = !isHome && showBreadcrumbs && !isFullWidth;
+
+// BreadcrumbList — butuh minimal 2 item (Home + 1) agar valid.
+const breadcrumbNode =
+  showBreadcrumbBlock && breadcrumbs.length > 0
+    ? {
+        "@type": "BreadcrumbList",
+        "@id": breadcrumbId,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": siteUrl
+          },
+          ...breadcrumbs.map((crumb, index) => ({
+            "@type": "ListItem",
+            "position": index + 2,
+            "name": crumb.name,
+            "item": new URL(crumb.href, Astro.site).toString()
+          }))
+        ]
+      }
+    : null;
+
+// WebPage menghubungkan halaman ke WebSite dan Organization lewat @id,
+// jadi setiap halaman ikut memperkuat entitas yang sama.
+const webpageNode = {
+  "@type": "WebPage",
+  "@id": webpageId,
+  "url": canonicalURL,
+  "name": title,
+  "description": description,
+  "isPartOf": { "@id": websiteId },
+  "about": { "@id": orgId },
+  "inLanguage": "id-ID",
+  "primaryImageOfPage": {
+    "@type": "ImageObject",
+    "url": pageImageUrl
+  },
+  ...(breadcrumbNode ? { "breadcrumb": { "@id": breadcrumbId } } : {})
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organizationNode,
+    websiteNode,
+    webpageNode,
+    ...(breadcrumbNode ? [breadcrumbNode] : [])
+  ]
 };
 ---
 
@@ -166,12 +287,10 @@ const localBusinessSchema = {
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content={new URL(image, Astro.site)} />
 
-		{prevUrl && <link rel="prev" href={new URL(prevUrl, Astro.site).toString()} />}
-		{nextUrl && <link rel="next" href={new URL(nextUrl, Astro.site).toString()} />}
+		{prevHref && <link rel="prev" href={new URL(prevHref, Astro.site).toString()} />}
+		{nextHref && <link rel="next" href={new URL(nextHref, Astro.site).toString()} />}
 
-		<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
-		<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-		<script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -199,7 +318,7 @@ const localBusinessSchema = {
 
 		<Header />
 
-		{(!isHome && showBreadcrumbs && !isFullWidth) && (
+		{showBreadcrumbBlock && (
 			<div class="border-b border-gray-200 bg-white py-3 w-full">
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs font-mono text-gray-500 uppercase tracking-tight">
 					<a href="/" class="hover:text-civil-primary transition-colors">Home</a>

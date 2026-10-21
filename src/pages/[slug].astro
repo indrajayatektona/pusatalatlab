@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import { getImageSize } from '../lib/image-size';
 
 // 1. Generate Static Paths untuk semua halaman di 'src/content/pages'
 export async function getStaticPaths() {
@@ -13,12 +14,16 @@ export async function getStaticPaths() {
 
 const { page } = Astro.props;
 const { Content } = await page.render();
+const seoData = page.data.seo || {};
+const coverSize = getImageSize(page.data.coverImage);
 ---
 
 <Layout 
   title={page.data.title} 
   description={page.data.description || page.data.title}
   image={page.data.coverImage}
+  noIndex={seoData.noIndex || false}
+  canonical={seoData.canonicalUrl || undefined}
 >
 
   <div class="bg-civil-primary relative border-b-4 border-civil-secondary overflow-hidden">
@@ -43,6 +48,8 @@ const { Content } = await page.render();
         <img 
           src={page.data.coverImage} 
           alt={page.data.title} 
+          width={coverSize?.width}
+          height={coverSize?.height}
           class="w-full h-auto object-cover"
         />
       </div>
