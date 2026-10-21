@@ -1,0 +1,115 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+  className?: string;
+}
+
+const { product, className = '' } = Astro.props;
+const { title, id, category, image, standards, description, specifications, brochureLink } =
+  product.data;
+
+// Data yang dikirim ke generator (dibaca saat tombol diklik)
+const payload = {
+  title,
+  slug: product.slug,
+  id: id || '',
+  category,
+  image: image || '',
+  standards: standards || [],
+  description: description || '',
+  specifications: specifications || '',
+};
+
+const baseStyle =
+  'group inline-flex items-center justify-center gap-2.5 px-4 py-4 text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-200 border-2 border-civil-dark cursor-pointer select-none';
+const shadowStyle =
+  'shadow-[2px_2px_0px_0px_#1E293B] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] active:shadow-none active:translate-x-[1px] active:translate-y-[1px]';
+const colorStyle = 'bg-white text-civil-dark hover:bg-gray-50';
+const finalClass = `${baseStyle} ${shadowStyle} ${colorStyle} ${className}`;
+
+const hasManualBrochure = Boolean(brochureLink && brochureLink.trim() !== '');
+---
+
+{
+  hasManualBrochure ? (
+    <a
+      href={brochureLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      class={finalClass}
+      data-brochure-manual
+    >
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      <span data-label>Download Brosur</span>
+    </a>
+  ) : (
+    <button
+      type="button"
+      class={finalClass}
+      data-brochure-btn
+      data-product={JSON.stringify(payload)}
+      aria-label={`Download brosur PDF ${title}`}
+    >
+      <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+      </svg>
+      <span data-label>Download Brosur</span>
+    </button>
+  )
+}
+
+<script>
+  type BrochureButton = HTMLButtonElement;
+
+  async function handleBrochureClick(button: BrochureButton): Promise<void> {
+    if (button.dataset.loading === '1') return;
+
+    const raw = button.dataset.product;
+    if (!raw) return;
+
+    const label = button.querySelector<HTMLElement>('[data-label]');
+    const originalLabel = label?.textContent ?? 'Download Brosur';
+
+    button.dataset.loading = '1';
+    button.disabled = true;
+    button.classList.add('opacity-70', 'pointer-events-none');
+    if (label) label.textContent = 'Menyiapkan...';
+
+    try {
+      // jsPDF baru diunduh di titik ini (bukan saat halaman dibuka)
+      const { generateProductBrochure } = await import('../lib/brochure');
+      await generateProductBrochure(JSON.parse(raw));
+
+      const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+      if (typeof gtag === 'function') {
+        gtag('event', 'brochure_download', {
+          event_category: 'engagement',
+          event_label: JSON.parse(raw).title,
+        });
+      }
+    } catch (error) {
+      console.error('[brosur] gagal membuat PDF:', error);
+      if (label) label.textContent = 'Gagal, coba lagi';
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } finally {
+      if (label) label.textContent = originalLabel;
+      button.dataset.loading = '0';
+      button.disabled = false;
+      button.classList.remove('opacity-70', 'pointer-events-none');
+    }
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement | null;
+    const button = target?.closest?.('[data-brochure-btn]');
+
+    if (button instanceof HTMLButtonElement) {
+      event.preventDefault();
+      void handleBrochureClick(button);
+    }
+  });
+</script>

@@ -126,8 +126,8 @@ cloud: {
         ),
 
         brochureLink: fields.text({
-            label: 'Link Brosur / PDF',
-            description: 'Contoh: /brosur/produk-a.pdf atau https://drive.google.com/...' 
+            label: 'Link Brosur / PDF (Opsional)',
+            description: 'KOSONGKAN untuk memakai brosur otomatis (dibuat dari data produk di halaman ini). Isi hanya jika ingin memakai file PDF manual, contoh: /brosur/produk-a.pdf atau https://drive.google.com/...' 
         }),
 
         specifications: fields.text({

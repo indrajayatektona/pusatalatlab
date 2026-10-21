@@ -3,7 +3,10 @@ export const SITE_CONFIG = {
   brandName: "CV. Sawarga Teknik",
   // Format nomor WA: Gunakan kode negara tanpa +, contoh: 62812xxx
   whatsapp: "6287893030300", 
+  // Versi tampilan nomor WA (dipakai di Footer & brosur PDF)
+  phoneDisplay: "+62 878-9303-0300",
   email: "sales@pusatalatlabsipil.com",
+  website: "https://pusatalatlabsipil.com",
   address: "Jl.Jend Amir Machmud No 111/115 , Cibeureum , Cimahi Selatan Jawa Barat.",
   
   // Pesan default untuk Direct WA

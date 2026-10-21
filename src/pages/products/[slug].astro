@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import CTAButton from '../../components/CTAButton.astro';
+import BrochureButton from '../../components/BrochureButton.astro';
+import { parseSpecifications } from '../../lib/specs';
 
 // 1. GENERATE PATHS
 export async function getStaticPaths() {
@@ -22,27 +24,8 @@ const { Content } = await product.render();
 const { title, id, category, image, standards, description, specifications, seo } = product.data;
 
 // --- [LOGIC BARU] SMART SPECIFICATIONS (SUPPORT LAMA & BARU) ---
-let formattedSpecs = [];
-
-// Cek 1: Jika data LAMA (masih berupa Array/List dari Keystatic lama)
-if (Array.isArray(specifications)) {
-  formattedSpecs = specifications; 
-} 
-// Cek 2: Jika data BARU (berupa String/Teks Panjang dari mode Cepat)
-else if (typeof specifications === 'string') {
-  formattedSpecs = specifications.split('\n')
-    .map(line => {
-      // Pisah key dan value berdasarkan titik dua (:) pertama
-      const parts = line.split(':');
-      if (parts.length < 2) return null; // Skip baris kosong/error
-      
-      return { 
-        key: parts[0].trim(), 
-        value: parts.slice(1).join(':').trim() // Gabung sisa jika value mengandung titik dua
-      };
-    })
-    .filter(item => item !== null); // Buang yang null
-}
+// Parser dipakai bersama dengan generator brosur PDF (src/lib/specs.ts)
+const formattedSpecs = parseSpecifications(specifications);
 // ---------------------------------------------------------------
 
 
@@ -146,6 +129,8 @@ const productSchema = {
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
                 Cek Spesifikasi
             </a>
+
+            <BrochureButton product={product} className="col-span-2 w-full" />
         </div>
 
         <div class="bg-gray-50 border border-gray-200 p-4 text-xs text-gray-600 space-y-2 rounded-sm mb-6 lg:mb-0">
