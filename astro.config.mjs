@@ -7,7 +7,6 @@ import markdoc from '@astrojs/markdoc';
 import cloudflare from '@astrojs/cloudflare';
 import robotsTxt from 'astro-robots-txt';
 import { LASTMOD_BY_PATH, NOINDEX_PATHS } from './scripts/sitemap-data.mjs';
-import { stripKeystaticCss } from './scripts/strip-keystatic-css.mjs';
 
 const PRODUCT_CATEGORY_PATHS = new Set([
   '/products/umum/',
@@ -144,6 +143,5 @@ export default defineConfig({
     react(),
     keystatic(),
     markdoc(),
-    stripKeystaticCss(),
   ],
 });
