@@ -206,14 +206,17 @@ cloud: {
         // PERHATIKAN BLOK CONTENT DI BAWAH INI
         content: fields.markdoc({
           label: 'Isi Artikel',
-          formatting: true,
-          dividers: true,
-          links: true,
-          images: {
-             directory: 'public/images/blog/content',
-             publicPath: '/images/blog/content/',
+          // Opsi editor markdoc harus dibungkus `options` (bukan di root).
+          // Nama key-nya pun tunggal: divider/link/image.
+          options: {
+            divider: true,
+            link: true,
+            image: {
+              directory: 'public/images/blog/content',
+              publicPath: '/images/blog/content/',
+            },
           },
-          // PENYISIPAN COMPONENTS YANG BENAR (Sejajar dengan images & formatting)
+          // components tetap di root, sejajar dengan options
           components: {
             relatedProducts: block({
               label: 'Sisipkan Produk Terkait',
