@@ -36,6 +36,9 @@ const blogCollection = defineCollection({
 
     description: z.string().optional(),
     pubDate: z.date(),
+    // Opsional: diisi manual saat artikel direvisi. Dipakai schema
+    // dateModified dan <lastmod> sitemap supaya keduanya tidak berbeda.
+    updatedDate: z.date().optional(),
     author: reference('authors'), 
     image: z.string().optional(),
     tags: z.array(z.string()).default(['Teknik Sipil']),

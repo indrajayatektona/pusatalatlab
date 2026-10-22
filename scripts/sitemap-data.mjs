@@ -37,7 +37,9 @@ function readCollection(collection) {
     .readdirSync(dir)
     .filter((file) => /\.(mdoc|md|mdx)$/i.test(file))
     .map((file) => {
-      const raw = fs.readFileSync(path.join(dir, file), 'utf8');
+      // Buang BOM kalau ada: kalau tidak, regex frontmatter di bawah gagal
+      // cocok dan entri ini hilang dari sitemap tanpa pesan error apa pun.
+      const raw = fs.readFileSync(path.join(dir, file), 'utf8').replace(/^\uFEFF/, '');
       const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
       if (!match) return null;
 

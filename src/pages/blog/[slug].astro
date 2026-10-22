@@ -65,6 +65,13 @@ const formattedDate = new Date(post.data.pubDate).toLocaleDateString('id-ID', {
 
 const isoDate = new Date(post.data.pubDate).toISOString();
 
+// dateModified mengikuti updatedDate (kalau diisi), sama seperti <lastmod>
+// di sitemap. Tanpa ini schema dan sitemap bisa memberi tanggal berbeda
+// untuk halaman yang sama.
+const isoUpdatedDate = new Date(
+  post.data.updatedDate ?? post.data.pubDate
+).toISOString();
+
 // Schema Article
 // publisher memakai @id yang sama dengan node Organization di Layout, jadi
 // Google menggabungkan keduanya menjadi satu entitas (bukan organisasi baru).
@@ -84,7 +91,7 @@ const articleSchema = {
     ...(coverSize ? { "width": coverSize.width, "height": coverSize.height } : {})
   }],
   "datePublished": isoDate,
-  "dateModified": isoDate,
+  "dateModified": isoUpdatedDate,
   "author": [{
       "@type": "Person",
       "name": author.name,
