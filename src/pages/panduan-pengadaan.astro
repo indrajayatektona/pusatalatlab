@@ -1,0 +1,618 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CTAButton from '../components/CTAButton.astro';
+import { getImageSize } from '../lib/image-size';
+import { SITE_CONFIG } from '../config';
+
+// --- 1. CONFIGURATION (Edit Data Disini) ---
+const CONFIG = {
+  seoTitle: "Panduan Pemesanan & Pengadaan Alat Laboratorium Teknik Sipil",
+  seoDescription: "Panduan lengkap pemesanan dan pengadaan alat laboratorium teknik sipil: alur pembelian, syarat tender instansi, dokumen penawaran, skema pembayaran, packing, dan purna jual.",
+  heroImage: "/images/alat-laboratorium-teknik-sipil.webp",
+};
+
+// Dimensi intrinsik hero: mencegah layout shift pada elemen LCP.
+const heroSize = getImageSize(CONFIG.heroImage);
+
+// --- 2. DATA HALAMAN ---
+// Daftar isi: setiap entri menunjuk ke section yang benar-benar ada di bawah.
+const daftarIsi = [
+  {
+    nomor: "01",
+    judul: "Alur Pemesanan",
+    href: "#alur-pemesanan",
+    ringkas: "Lima langkah dari konsultasi sampai alat tiba di laboratorium Anda.",
+  },
+  {
+    nomor: "02",
+    judul: "Pengadaan Instansi & Tender",
+    href: "#pengadaan-tender",
+    ringkas: "Pendampingan dokumen lelang, LPSE/e-Katalog, dan surat dukungan.",
+  },
+  {
+    nomor: "03",
+    judul: "Dokumen Persyaratan",
+    href: "#dokumen",
+    ringkas: "Kelengkapan legalitas dan teknis yang diminta panitia pengadaan.",
+  },
+  {
+    nomor: "04",
+    judul: "Pembayaran & Termin",
+    href: "#pembayaran",
+    ringkas: "Skema pelunasan, uang muka, dan termin untuk PO instansi.",
+  },
+  {
+    nomor: "05",
+    judul: "Pengiriman & Packing",
+    href: "#pengiriman",
+    ringkas: "Packing kayu, asuransi, dan jalur kargo darat, laut, serta udara.",
+  },
+  {
+    nomor: "06",
+    judul: "Purna Jual",
+    href: "#purna-jual",
+    ringkas: "Garansi, kalibrasi, ketersediaan sparepart, dan asistensi teknisi.",
+  },
+];
+
+// Alur pemesanan retail (pembeli perorangan, kontraktor, konsultan, swasta).
+const langkahPemesanan = [
+  {
+    nomor: "1",
+    judul: "Konsultasi & Pilih Produk",
+    isi: "Telusuri katalog di website, atau kirimkan daftar kebutuhan Anda. Tim kami membantu mencocokkan spesifikasi alat dengan standar pengujian SNI/ASTM yang dipakai proyek.",
+  },
+  {
+    nomor: "2",
+    judul: "Permintaan Penawaran",
+    isi: "Kami terbitkan Surat Penawaran Harga resmi berisi rincian alat, spesifikasi teknis, harga, estimasi ongkos kirim, dan ketentuan garansi.",
+  },
+  {
+    nomor: "3",
+    judul: "Konfirmasi & PO",
+    isi: "Setelah penawaran disetujui, pesanan dikonfirmasi melalui Purchase Order (PO) atau persetujuan tertulis untuk pembelian tanpa PO.",
+  },
+  {
+    nomor: "4",
+    judul: "Pembayaran",
+    isi: "Pembayaran dilakukan ke rekening resmi perusahaan yang tercantum pada Invoice. Skema pelunasan dan uang muka dijelaskan pada bagian pembayaran di bawah.",
+  },
+  {
+    nomor: "5",
+    judul: "Packing & Pengiriman",
+    isi: "Barang melewati pemeriksaan fungsi, dipacking kayu untuk alat presisi, lalu diserahkan ke ekspedisi. Nomor resi dikirimkan kepada Anda.",
+  },
+];
+
+// Pengadaan instansi: kanal pengadaan yang biasa dipakai.
+const kanalPengadaan = [
+  {
+    judul: "Pengadaan Langsung & Penunjukan",
+    isi: "Untuk nilai paket yang memenuhi batas pengadaan langsung, kami menyiapkan penawaran resmi beserta kelengkapan administrasi perusahaan.",
+  },
+  {
+    judul: "LPSE / e-Procurement",
+    isi: "Kami mendukung penyiapan dokumen penawaran untuk paket yang dilelang melalui LPSE, termasuk spesifikasi teknis dan brosur asli.",
+  },
+  {
+    judul: "e-Katalog & Toko Daring",
+    isi: "Untuk instansi yang berbelanja melalui katalog elektronik, kami membantu menyiapkan rincian spesifikasi dan dokumen pendukung yang diminta.",
+  },
+  {
+    judul: "Tender Swasta & Penunjukan Langsung",
+    isi: "Kontraktor dan konsultan dapat meminta penawaran kompetitif beserta surat dukungan untuk keperluan internal perusahaan.",
+  },
+];
+
+// Layanan pendampingan tender.
+const dukunganTender = [
+  "Surat dukungan resmi dari CV. Sawarga Teknik sesuai paket pekerjaan.",
+  "Brosur asli dan spesifikasi teknis pabrikan untuk setiap unit alat.",
+  "Data TKDN untuk alat hasil pabrikasi lokal di Cimahi.",
+  "Certificate of Origin untuk instrumen yang didatangkan dari luar negeri.",
+  "Rekomendasi konfigurasi paket laboratorium agar sesuai pagu anggaran.",
+  "Surat pernyataan jaminan purna jual dan ketersediaan sparepart.",
+];
+
+// Tabel dokumen persyaratan.
+const dokumenPersyaratan = [
+  {
+    dokumen: "NIB (Nomor Induk Berusaha)",
+    kegunaan: "Bukti legalitas usaha",
+    keterangan: "Tersedia untuk verifikasi administrasi penyedia.",
+  },
+  {
+    dokumen: "ISO 9001",
+    kegunaan: "Sertifikasi sistem manajemen mutu",
+    keterangan: "Menjadi nilai tambah pada evaluasi kualifikasi.",
+  },
+  {
+    dokumen: "Status PKP & Faktur Pajak",
+    kegunaan: "Penerbitan faktur pajak resmi",
+    keterangan: "Harga penawaran dapat diterbitkan termasuk PPN.",
+  },
+  {
+    dokumen: "Brosur Asli & Spesifikasi Teknis",
+    kegunaan: "Verifikasi kesesuaian alat",
+    keterangan: "Dilampirkan pada dokumen penawaran teknis.",
+  },
+  {
+    dokumen: "Certificate of Origin",
+    kegunaan: "Bukti asal barang impor",
+    keterangan: "Untuk instrumen presisi merek internasional.",
+  },
+  {
+    dokumen: "Sertifikat Kalibrasi",
+    kegunaan: "Bukti ketertelusuran alat ukur",
+    keterangan: "Tersedia opsi kalibrasi KAN (ISO 17025).",
+  },
+  {
+    dokumen: "Surat Dukungan & Jaminan Purna Jual",
+    kegunaan: "Dukungan distributor terhadap paket",
+    keterangan: "Diterbitkan sesuai kebutuhan dokumen lelang.",
+  },
+];
+
+// Skema pembayaran.
+const skemaPembayaran = [
+  {
+    judul: "Pelunasan di Awal",
+    isi: "Untuk produk ready stock. Setelah pembayaran terkonfirmasi, barang langsung masuk tahap pemeriksaan dan packing.",
+    label: "Ready Stock",
+  },
+  {
+    judul: "Uang Muka (DP)",
+    isi: "Untuk produk pre-order, kustomisasi, atau pengadaan tender. Besaran DP dan sisa pelunasan disepakati bersama sebelum PO diterbitkan.",
+    label: "Pre-Order & Tender",
+  },
+  {
+    judul: "Termin untuk PO Instansi",
+    isi: "Pembayaran bertahap mengikuti jadwal yang tercantum pada PO atau kontrak. Rincian termin dituangkan dalam dokumen penawaran.",
+    label: "PO / Kontrak",
+  },
+];
+
+// Pengiriman.
+const jalurPengiriman = [
+  {
+    judul: "Kargo Darat",
+    isi: "Untuk tujuan Jawa, Bali, dan Sumatera. Cocok untuk alat berat seperti compression machine dan mesin bor.",
+  },
+  {
+    judul: "Kargo Laut",
+    isi: "Untuk luar pulau dengan volume besar. Barang dipacking kayu standar ekspor agar aman selama perjalanan.",
+  },
+  {
+    judul: "Kargo Udara",
+    isi: "Untuk kebutuhan mendesak atau alat ukur presisi yang lebih ringkas.",
+  },
+];
+
+// Purna jual.
+// Breadcrumb schema ditulis di sini karena Layout mematikan breadcrumb
+// otomatis saat isFullWidth aktif (dipakai agar hero bisa full-bleed
+// seperti homepage). Tanpa ini halaman jadi satu-satunya subhalaman
+// tanpa BreadcrumbList.
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": `${canonicalUrl}#breadcrumb`,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": new URL('/', Astro.site).toString(),
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Panduan Pengadaan",
+      "item": canonicalUrl,
+    },
+  ],
+};
+
+const purnajual = [
+  {
+    judul: "Garansi Service",
+    isi: "Garansi service 12 bulan untuk alat manufaktur, dengan ketersediaan sparepart yang terjaga.",
+  },
+  {
+    judul: "Kalibrasi KAN",
+    isi: "Opsi sertifikat kalibrasi KAN (ISO 17025) untuk alat ukur seperti compression machine dan proving ring.",
+  },
+  {
+    judul: "Sparepart & Servis",
+    isi: "Karena kami memproduksi sendiri alat mekanis, suku cadang dan perbaikan ditangani langsung oleh teknisi kami.",
+  },
+  {
+    judul: "Asistensi Teknis",
+    isi: "Panduan operasional dan instalasi tersedia jarak jauh, maupun kunjungan langsung sesuai kebutuhan.",
+  },
+];
+---
+
+<Layout
+  title={CONFIG.seoTitle}
+  description={CONFIG.seoDescription}
+  image={CONFIG.heroImage}
+  isFullWidth={true}
+>
+  <link rel="preload" as="image" href={CONFIG.heroImage} fetchpriority="high" slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} slot="head" />
+
+  <!-- ============ HERO ============ -->
+  <section class="relative min-h-[520px] w-full flex items-center border-b-4 border-civil-secondary bg-civil-dark">
+    <div class="absolute inset-0 z-0">
+      <img
+        src={CONFIG.heroImage}
+        alt="Panduan pemesanan dan pengadaan alat laboratorium teknik sipil"
+        width={heroSize?.width}
+        height={heroSize?.height}
+        class="w-full h-full object-cover opacity-50"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-civil-primary via-civil-primary/95 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 px-3 py-1 rounded-sm mb-6 shadow-sm">
+          <span class="w-2 h-2 bg-civil-secondary rounded-full animate-pulse"></span>
+          <span class="text-[10px] font-black tracking-[0.2em] text-white uppercase">Panduan Pengadaan</span>
+        </div>
+
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight uppercase mb-6 drop-shadow-lg">
+          Panduan Pemesanan &amp;<br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-civil-secondary to-yellow-100">Pengadaan Alat</span><br />
+          Laboratorium Teknik Sipil
+        </h1>
+
+        <p class="text-base md:text-lg text-gray-300 mb-8 max-w-2xl border-l-4 border-civil-secondary pl-6 leading-relaxed">
+          Dari konsultasi spesifikasi sampai alat terpasang di laboratorium. Panduan ini menjelaskan alur pemesanan untuk pembeli perorangan maupun proses pengadaan untuk instansi, kontraktor, dan perguruan tinggi.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <CTAButton mode="wa" text="Konsultasi Pengadaan (WA)" variant="secondary" className="border-white w-full sm:w-auto" />
+          <CTAButton mode="link" href="/products/" text="Lihat Katalog Produk" variant="primary" className="border-white w-full sm:w-auto" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STRIP JAMINAN ============ -->
+  <section class="py-10 bg-civil-dark text-white border-b-4 border-civil-secondary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+        <div class="flex items-center justify-center sm:justify-start gap-3">
+          <span class="w-2 h-2 bg-civil-secondary flex-shrink-0"></span>
+          <span class="text-xs font-black uppercase tracking-widest">ISO 9001:2015</span>
+        </div>
+        <div class="flex items-center justify-center sm:justify-start gap-3">
+          <span class="w-2 h-2 bg-civil-secondary flex-shrink-0"></span>
+          <span class="text-xs font-black uppercase tracking-widest">Kalibrasi KAN (ISO 17025)</span>
+        </div>
+        <div class="flex items-center justify-center sm:justify-start gap-3">
+          <span class="w-2 h-2 bg-civil-secondary flex-shrink-0"></span>
+          <span class="text-xs font-black uppercase tracking-widest">Kirim ke Seluruh Indonesia</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DAFTAR ISI ============ -->
+  <section class="py-16 md:py-20 bg-gray-50 border-b-4 border-civil-dark">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-black text-civil-primary uppercase">Isi Panduan</h2>
+        <p class="text-gray-600 mt-2">Pilih bagian yang paling relevan dengan kebutuhan Anda.</p>
+        <div class="w-20 h-1 bg-civil-secondary mx-auto mt-4"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {daftarIsi.map((item) => (
+          <a
+            href={item.href}
+            class="group bg-white border-4 border-civil-dark shadow-[6px_6px_0px_0px_#1E293B] p-6 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_#1E293B] transition-all"
+          >
+            <span class="block text-civil-secondary text-2xl font-black mb-3">{item.nomor}</span>
+            <h3 class="text-base font-black text-civil-primary uppercase leading-tight mb-2 group-hover:text-civil-secondary transition-colors">
+              {item.judul}
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed">{item.ringkas}</p>
+            <span class="inline-block mt-4 text-[10px] font-black uppercase tracking-widest text-civil-dark border-b-2 border-civil-secondary pb-0.5">
+              Baca bagian ini →
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 01. ALUR PEMESANAN ============ -->
+  <section id="alur-pemesanan" class="py-16 md:py-24 bg-white border-b-4 border-civil-dark scroll-mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 max-w-4xl">
+        <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Bagian 01</span>
+        <h2 class="text-3xl md:text-4xl font-black text-civil-primary uppercase mt-2 mb-4 border-l-8 border-civil-secondary pl-4 leading-tight">
+          Alur Pemesanan Alat Laboratorium
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed">
+          Proses pembelian dibuat sederhana dan transparan. Setiap tahap menghasilkan dokumen resmi, sehingga pembelian dapat dipertanggungjawabkan untuk keperluan perusahaan maupun instansi.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        {langkahPemesanan.map((langkah) => (
+          <div class="relative bg-white border-4 border-civil-dark p-6 shadow-[6px_6px_0px_0px_#1E293B] flex flex-col">
+            <div class="w-12 h-12 bg-civil-primary text-civil-secondary border-2 border-civil-dark flex items-center justify-center text-xl font-black mb-4 shadow-[4px_4px_0px_0px_#e6c55c]">
+              {langkah.nomor}
+            </div>
+            <h3 class="text-sm font-black text-civil-primary uppercase leading-tight mb-3">{langkah.judul}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed flex-grow">{langkah.isi}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-10 bg-gray-50 border-l-4 border-civil-secondary p-6">
+        <p class="text-sm text-gray-700 leading-relaxed">
+          <strong class="text-civil-primary">Sudah punya daftar kebutuhan?</strong>
+          Kirimkan rincian alat, jumlah unit, dan standar pengujian yang dipakai. Kami akan menyiapkan penawaran resmi beserta spesifikasi teknisnya.
+          <a href="/guide/" class="font-bold text-civil-primary underline decoration-2 underline-offset-4 hover:text-civil-secondary">Lihat panduan pemesanan singkat →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02. PENGADAAN INSTANSI & TENDER ============ -->
+  <section id="pengadaan-tender" class="py-16 md:py-24 bg-gray-50 border-b-4 border-civil-dark scroll-mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 max-w-4xl">
+        <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Bagian 02</span>
+        <h2 class="text-3xl md:text-4xl font-black text-civil-primary uppercase mt-2 mb-4 border-l-8 border-civil-secondary pl-4 leading-tight">
+          Pengadaan Instansi &amp; Tender
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed">
+          Kami terbiasa mendampingi dinas PU, BUMN, perguruan tinggi, serta kontraktor swasta dalam menyiapkan paket pengadaan alat laboratorium. Berikut kanal pengadaan yang dapat kami layani.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-6">
+          {kanalPengadaan.map((kanal) => (
+            <div class="bg-white border-l-4 border-civil-primary p-6 shadow-sm">
+              <h3 class="text-base font-black text-civil-primary uppercase mb-2">{kanal.judul}</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">{kanal.isi}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="bg-civil-primary text-white border-4 border-civil-dark shadow-[8px_8px_0px_0px_#1E293B] p-8 lg:p-10">
+          <h3 class="text-xl font-black text-civil-secondary uppercase mb-6 border-b-2 border-white/20 pb-4">
+            Dukungan Dokumen Tender
+          </h3>
+          <ul class="space-y-4">
+            {dukunganTender.map((item) => (
+              <li class="flex items-start gap-3 text-sm leading-relaxed text-gray-200">
+                <svg class="w-5 h-5 flex-shrink-0 text-civil-secondary mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-8 pt-6 border-t-2 border-white/20">
+            <CTAButton mode="wa" productName="Dukungan dokumen tender alat lab sipil" text="Ajukan Surat Dukungan" variant="secondary" className="w-full border-white" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03. DOKUMEN PERSYARATAN ============ -->
+  <section id="dokumen" class="py-16 md:py-24 bg-white border-b-4 border-civil-dark scroll-mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 max-w-4xl">
+        <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Bagian 03</span>
+        <h2 class="text-3xl md:text-4xl font-black text-civil-primary uppercase mt-2 mb-4 border-l-8 border-civil-secondary pl-4 leading-tight">
+          Dokumen Persyaratan Pengadaan
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed">
+          Panitia pengadaan umumnya meminta kelengkapan administrasi dan teknis berikut. Sebutkan kebutuhan dokumen pada saat permintaan penawaran agar dapat kami siapkan bersama penawaran harga.
+        </p>
+      </div>
+
+      <div class="w-full overflow-x-auto border-4 border-civil-dark shadow-[8px_8px_0px_0px_#1E293B] bg-white">
+        <table class="w-full text-left border-collapse min-w-[720px]">
+          <thead>
+            <tr class="bg-civil-primary text-white border-b-4 border-civil-dark">
+              <th class="p-4 md:p-5 font-black uppercase tracking-wide text-sm border-r-2 border-civil-dark w-[32%]">Dokumen</th>
+              <th class="p-4 md:p-5 font-black uppercase tracking-wide text-sm border-r-2 border-civil-dark w-[28%]">Kegunaan</th>
+              <th class="p-4 md:p-5 font-black uppercase tracking-wide text-sm">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody class="text-civil-dark font-medium">
+            {dokumenPersyaratan.map((baris, index) => (
+              <tr class={`border-b-2 border-gray-200 hover:bg-slate-50 transition-colors ${index === dokumenPersyaratan.length - 1 ? 'border-b-0' : ''}`}>
+                <td class="p-4 md:p-5 border-r-2 border-civil-dark font-black text-sm">{baris.dokumen}</td>
+                <td class="p-4 md:p-5 border-r-2 border-civil-dark text-sm text-gray-600">{baris.kegunaan}</td>
+                <td class="p-4 md:p-5 text-sm text-gray-600">{baris.keterangan}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-6 text-xs text-gray-500 leading-relaxed">
+        Ketersediaan dan cakupan setiap dokumen dapat berbeda tergantung jenis alat dan ketentuan paket pengadaan. Sampaikan persyaratan panitia sejak awal agar dapat kami konfirmasi sebelum penawaran diterbitkan.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 04. PEMBAYARAN & TERMIN ============ -->
+  <section id="pembayaran" class="py-16 md:py-24 bg-gray-50 border-b-4 border-civil-dark scroll-mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 max-w-4xl">
+        <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Bagian 04</span>
+        <h2 class="text-3xl md:text-4xl font-black text-civil-primary uppercase mt-2 mb-4 border-l-8 border-civil-secondary pl-4 leading-tight">
+          Pembayaran &amp; Termin
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed">
+          Pembayaran hanya dilakukan ke rekening resmi perusahaan yang tercantum pada Invoice. Kami tidak pernah meminta transfer ke rekening pribadi.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {skemaPembayaran.map((skema) => (
+          <div class="bg-white border-4 border-civil-dark p-8 shadow-[6px_6px_0px_0px_#1E293B] flex flex-col">
+            <span class="inline-block self-start px-2 py-1 bg-civil-secondary text-civil-primary text-[10px] font-black uppercase tracking-widest mb-4">
+              {skema.label}
+            </span>
+            <h3 class="text-lg font-black text-civil-primary uppercase mb-3 leading-tight">{skema.judul}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed flex-grow">{skema.isi}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white border-l-4 border-civil-secondary p-6">
+          <h3 class="text-sm font-black text-civil-primary uppercase mb-2">Faktur Pajak</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">
+            Penawaran dapat diterbitkan termasuk PPN, dengan faktur pajak resmi untuk instansi yang membutuhkan.
+          </p>
+        </div>
+        <div class="bg-white border-l-4 border-civil-secondary p-6">
+          <h3 class="text-sm font-black text-civil-primary uppercase mb-2">Dokumen Pembelian</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">
+            Setiap transaksi dilengkapi Invoice, kuitansi, dan surat jalan untuk keperluan arsip serta audit.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05. PENGIRIMAN & PACKING ============ -->
+  <section id="pengiriman" class="py-16 md:py-24 bg-white border-b-4 border-civil-dark scroll-mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 max-w-4xl">
+        <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Bagian 05</span>
+        <h2 class="text-3xl md:text-4xl font-black text-civil-primary uppercase mt-2 mb-4 border-l-8 border-civil-secondary pl-4 leading-tight">
+          Pengiriman &amp; Packing
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed">
+          Alat laboratorium banyak yang berat dan presisi, sehingga pengemasan menjadi bagian dari mutu layanan. Barang diperiksa fungsinya sebelum dikirim, lalu dipacking kayu bila diperlukan untuk keamanan.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        {jalurPengiriman.map((jalur) => (
+          <div class="bg-gray-50 border-2 border-civil-dark p-6 hover:bg-white hover:shadow-hard transition-all">
+            <div class="w-12 h-12 bg-civil-primary text-civil-secondary border-2 border-civil-dark flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_#e6c55c]">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0zM13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1" />
+              </svg>
+            </div>
+            <h3 class="text-base font-black text-civil-primary uppercase mb-2">{jalur.judul}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">{jalur.isi}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="bg-civil-dark text-white p-8 lg:p-10 border-4 border-civil-dark shadow-[8px_8px_0px_0px_#e6c55c]">
+        <h3 class="text-lg font-black text-civil-secondary uppercase mb-6 border-b-2 border-white/20 pb-4">
+          Standar Pengemasan &amp; Serah Terima
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-300 leading-relaxed">
+          <p>
+            Alat presisi dan unit berat dipacking menggunakan kayu agar terlindungi selama pengangkutan darat, laut, maupun udara.
+          </p>
+          <p>
+            Nomor resi ekspedisi dikirimkan setelah barang diserahkan ke kurir, sehingga pergerakan barang dapat dipantau.
+          </p>
+          <p>
+            Untuk barang ready stock, pesanan diserahkan ke kurir maksimal H+1 setelah pembayaran terkonfirmasi.
+          </p>
+          <p>
+            Opsi asuransi pengiriman dan surat jalan resmi tersedia untuk kebutuhan pengadaan instansi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06. PURNA JUAL ============ -->
+  <section id="purna-jual" class="py-16 md:py-24 bg-gray-50 border-b-4 border-civil-dark scroll-mt-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mb-12 max-w-4xl">
+        <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Bagian 06</span>
+        <h2 class="text-3xl md:text-4xl font-black text-civil-primary uppercase mt-2 mb-4 border-l-8 border-civil-secondary pl-4 leading-tight">
+          Dukungan Purna Jual
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed">
+          Layanan tidak berhenti saat alat tiba. Karena sebagian alat kami produksi sendiri di Cimahi, suku cadang dan perbaikan dapat ditangani langsung oleh teknisi kami.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {purnajual.map((item) => (
+          <div class="bg-white border-4 border-civil-dark p-6 shadow-[6px_6px_0px_0px_#1E293B]">
+            <h3 class="text-base font-black text-civil-primary uppercase mb-3">{item.judul}</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">{item.isi}</p>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 text-sm text-gray-600 leading-relaxed">
+        Ketentuan garansi selengkapnya dapat dibaca pada halaman
+        <a href="/warranty/" class="font-bold text-civil-primary underline decoration-2 underline-offset-4 hover:text-civil-secondary">Garansi</a>
+        dan
+        <a href="/refund-policy/" class="font-bold text-civil-primary underline decoration-2 underline-offset-4 hover:text-civil-secondary">Kebijakan Pengembalian</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ CTA PENUTUP ============ -->
+  <section class="py-16 md:py-24 bg-civil-primary text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.05]" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 2px, transparent 2px, transparent 10px);"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Langkah Berikutnya</span>
+          <h2 class="text-3xl md:text-4xl font-black uppercase mt-2 mb-6 leading-tight">
+            Siap Menyusun <span class="text-civil-secondary">Penawaran Pengadaan?</span>
+          </h2>
+          <p class="text-gray-300 text-base leading-relaxed mb-8">
+            Kirimkan daftar kebutuhan alat, jumlah unit, dan standar pengujian yang dipakai. Tim kami akan membantu menyusun spesifikasi dan menerbitkan penawaran resmi sesuai kebutuhan laboratorium Anda.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <CTAButton mode="wa" productName="Pengadaan alat laboratorium teknik sipil" text="Minta Penawaran via WA" variant="secondary" className="border-white w-full sm:w-auto" />
+            <CTAButton mode="link" href="/contact/" text="Halaman Kontak" variant="primary" className="border-white w-full sm:w-auto" />
+          </div>
+        </div>
+
+        <div class="bg-civil-dark border-4 border-white/20 p-8 shadow-[8px_8px_0px_0px_#e6c55c]">
+          <h3 class="text-sm font-black text-civil-secondary uppercase tracking-widest mb-6">Informasi Kontak</h3>
+          <dl class="space-y-5 text-sm">
+            <div>
+              <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Alamat</dt>
+              <dd class="text-gray-200 leading-relaxed">{SITE_CONFIG.address}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">WhatsApp</dt>
+              <dd class="text-gray-200 font-bold">{SITE_CONFIG.phoneDisplay}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Email</dt>
+              <dd class="text-gray-200 font-bold break-all">{SITE_CONFIG.email}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
