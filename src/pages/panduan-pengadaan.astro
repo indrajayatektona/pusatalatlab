@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CTAButton from '../components/CTAButton.astro';
+import Icon from '../components/Icon.astro';
 import { getImageSize } from '../lib/image-size';
 import { SITE_CONFIG } from '../config';
 
@@ -22,38 +23,44 @@ const daftarIsi = [
     judul: "Alur Pemesanan",
     href: "#alur-pemesanan",
     ringkas: "Lima langkah dari konsultasi sampai alat tiba di laboratorium Anda.",
+    ikon: "shopping-cart-2-line",
   },
   {
     nomor: "02",
     judul: "Pengadaan Instansi & Tender",
     href: "#pengadaan-tender",
     ringkas: "Pendampingan dokumen lelang, LPSE/e-Katalog, dan surat dukungan.",
+    ikon: "government-line",
   },
   {
     nomor: "03",
     judul: "Dokumen Persyaratan",
     href: "#dokumen",
     ringkas: "Kelengkapan legalitas dan teknis yang diminta panitia pengadaan.",
+    ikon: "file-list-3-line",
   },
   {
     nomor: "04",
     judul: "Pembayaran & Termin",
     href: "#pembayaran",
     ringkas: "Skema pelunasan, uang muka, dan termin untuk PO instansi.",
+    ikon: "bank-card-line",
   },
   {
     nomor: "05",
     judul: "Pengiriman & Packing",
     href: "#pengiriman",
     ringkas: "Packing kayu, asuransi, dan jalur kargo darat, laut, serta udara.",
+    ikon: "truck-line",
   },
   {
     nomor: "06",
     judul: "Purna Jual",
     href: "#purna-jual",
     ringkas: "Garansi, kalibrasi, ketersediaan sparepart, dan asistensi teknisi.",
+    ikon: "customer-service-2-line",
   },
-];
+] as const;
 
 // Alur pemesanan retail (pembeli perorangan, kontraktor, konsultan, swasta).
 const langkahPemesanan = [
@@ -177,18 +184,20 @@ const jalurPengiriman = [
   {
     judul: "Kargo Darat",
     isi: "Untuk tujuan Jawa, Bali, dan Sumatera. Cocok untuk alat berat seperti compression machine dan mesin bor.",
+    ikon: "roadster-line",
   },
   {
     judul: "Kargo Laut",
     isi: "Untuk luar pulau dengan volume besar. Barang dipacking kayu standar ekspor agar aman selama perjalanan.",
+    ikon: "ship-line",
   },
   {
     judul: "Kargo Udara",
     isi: "Untuk kebutuhan mendesak atau alat ukur presisi yang lebih ringkas.",
+    ikon: "plane-line",
   },
-];
+] as const;
 
-// Purna jual.
 // Breadcrumb schema ditulis di sini karena Layout mematikan breadcrumb
 // otomatis saat isFullWidth aktif (dipakai agar hero bisa full-bleed
 // seperti homepage). Tanpa ini halaman jadi satu-satunya subhalaman
@@ -214,6 +223,7 @@ const breadcrumbSchema = {
   ],
 };
 
+// Purna jual.
 const purnajual = [
   {
     judul: "Garansi Service",
@@ -277,7 +287,7 @@ const purnajual = [
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4">
-          <CTAButton mode="wa" text="Konsultasi Pengadaan (WA)" variant="secondary" className="border-white w-full sm:w-auto" />
+          <CTAButton mode="modal" productName="Pengadaan alat laboratorium teknik sipil" text="Minta Penawaran" variant="secondary" className="border-white w-full sm:w-auto" />
           <CTAButton mode="link" href="/products/" text="Lihat Katalog Produk" variant="primary" className="border-white w-full sm:w-auto" />
         </div>
       </div>
@@ -287,17 +297,17 @@ const purnajual = [
   <!-- ============ STRIP JAMINAN ============ -->
   <section class="py-10 bg-civil-dark text-white border-b-4 border-civil-secondary">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div class="flex items-center justify-center sm:justify-start gap-3">
-          <span class="w-2 h-2 bg-civil-secondary flex-shrink-0"></span>
+          <Icon name="shield-check-line" class="w-5 h-5 flex-shrink-0 text-civil-secondary" />
           <span class="text-xs font-black uppercase tracking-widest">ISO 9001:2015</span>
         </div>
         <div class="flex items-center justify-center sm:justify-start gap-3">
-          <span class="w-2 h-2 bg-civil-secondary flex-shrink-0"></span>
+          <Icon name="award-line" class="w-5 h-5 flex-shrink-0 text-civil-secondary" />
           <span class="text-xs font-black uppercase tracking-widest">Kalibrasi KAN (ISO 17025)</span>
         </div>
         <div class="flex items-center justify-center sm:justify-start gap-3">
-          <span class="w-2 h-2 bg-civil-secondary flex-shrink-0"></span>
+          <Icon name="truck-line" class="w-5 h-5 flex-shrink-0 text-civil-secondary" />
           <span class="text-xs font-black uppercase tracking-widest">Kirim ke Seluruh Indonesia</span>
         </div>
       </div>
@@ -319,13 +329,19 @@ const purnajual = [
             href={item.href}
             class="group bg-white border-4 border-civil-dark shadow-[6px_6px_0px_0px_#1E293B] p-6 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_#1E293B] transition-all"
           >
-            <span class="block text-civil-secondary text-2xl font-black mb-3">{item.nomor}</span>
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <span class="block text-civil-secondary text-2xl font-black leading-none">{item.nomor}</span>
+              <span class="w-11 h-11 flex-shrink-0 bg-civil-primary text-civil-secondary border-2 border-civil-dark flex items-center justify-center shadow-[3px_3px_0px_0px_#e6c55c] group-hover:bg-civil-secondary group-hover:text-civil-primary transition-colors">
+                <Icon name={item.ikon} class="w-6 h-6" />
+              </span>
+            </div>
             <h3 class="text-base font-black text-civil-primary uppercase leading-tight mb-2 group-hover:text-civil-secondary transition-colors">
               {item.judul}
             </h3>
             <p class="text-sm text-gray-600 leading-relaxed">{item.ringkas}</p>
-            <span class="inline-block mt-4 text-[10px] font-black uppercase tracking-widest text-civil-dark border-b-2 border-civil-secondary pb-0.5">
-              Baca bagian ini →
+            <span class="inline-flex items-center gap-1.5 mt-4 text-[10px] font-black uppercase tracking-widest text-civil-dark border-b-2 border-civil-secondary pb-0.5">
+              Baca bagian ini
+              <Icon name="arrow-right-line" class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
             </span>
           </a>
         ))}
@@ -398,15 +414,13 @@ const purnajual = [
           <ul class="space-y-4">
             {dukunganTender.map((item) => (
               <li class="flex items-start gap-3 text-sm leading-relaxed text-gray-200">
-                <svg class="w-5 h-5 flex-shrink-0 text-civil-secondary mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                </svg>
+                <Icon name="checkbox-circle-fill" class="w-5 h-5 flex-shrink-0 text-civil-secondary mt-0.5" />
                 <span>{item}</span>
               </li>
             ))}
           </ul>
           <div class="mt-8 pt-6 border-t-2 border-white/20">
-            <CTAButton mode="wa" productName="Dukungan dokumen tender alat lab sipil" text="Ajukan Surat Dukungan" variant="secondary" className="w-full border-white" />
+            <CTAButton mode="modal" productName="Dukungan dokumen tender alat lab sipil" text="Ajukan Surat Dukungan" variant="secondary" className="w-full border-white" />
           </div>
         </div>
       </div>
@@ -512,9 +526,7 @@ const purnajual = [
         {jalurPengiriman.map((jalur) => (
           <div class="bg-gray-50 border-2 border-civil-dark p-6 hover:bg-white hover:shadow-hard transition-all">
             <div class="w-12 h-12 bg-civil-primary text-civil-secondary border-2 border-civil-dark flex items-center justify-center mb-4 shadow-[4px_4px_0px_0px_#e6c55c]">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0zM13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1" />
-              </svg>
+              <Icon name={jalur.ikon} class="w-6 h-6" />
             </div>
             <h3 class="text-base font-black text-civil-primary uppercase mb-2">{jalur.judul}</h3>
             <p class="text-sm text-gray-600 leading-relaxed">{jalur.isi}</p>
@@ -583,32 +595,45 @@ const purnajual = [
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <span class="text-civil-secondary font-bold tracking-[0.2em] text-xs uppercase">Langkah Berikutnya</span>
-          <h2 class="text-3xl md:text-4xl font-black uppercase mt-2 mb-6 leading-tight">
+          <h2 class="text-3xl md:text-4xl text-white uppercase mt-2 mb-6 leading-tight">
             Siap Menyusun <span class="text-civil-secondary">Penawaran Pengadaan?</span>
           </h2>
           <p class="text-gray-300 text-base leading-relaxed mb-8">
             Kirimkan daftar kebutuhan alat, jumlah unit, dan standar pengujian yang dipakai. Tim kami akan membantu menyusun spesifikasi dan menerbitkan penawaran resmi sesuai kebutuhan laboratorium Anda.
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
-            <CTAButton mode="wa" productName="Pengadaan alat laboratorium teknik sipil" text="Minta Penawaran via WA" variant="secondary" className="border-white w-full sm:w-auto" />
-            <CTAButton mode="link" href="/contact/" text="Halaman Kontak" variant="primary" className="border-white w-full sm:w-auto" />
+            <CTAButton mode="modal" productName="Pengadaan alat laboratorium teknik sipil" text="Minta Penawaran Resmi" variant="secondary" className="border-white w-full sm:w-auto" />
+            <CTAButton mode="wa" productName="Pengadaan alat laboratorium teknik sipil" text="Chat Langsung" variant="primary" className="border-white w-full sm:w-auto" />
           </div>
+          <p class="mt-5 text-sm text-gray-400">
+            Butuh diskusi lebih detail?
+            <a href="/contact/" class="font-bold text-civil-secondary underline decoration-2 underline-offset-4 hover:text-white">Lihat halaman kontak</a>
+          </p>
         </div>
 
         <div class="bg-civil-dark border-4 border-white/20 p-8 shadow-[8px_8px_0px_0px_#e6c55c]">
           <h3 class="text-sm font-black text-civil-secondary uppercase tracking-widest mb-6">Informasi Kontak</h3>
           <dl class="space-y-5 text-sm">
-            <div>
-              <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Alamat</dt>
-              <dd class="text-gray-200 leading-relaxed">{SITE_CONFIG.address}</dd>
+            <div class="flex items-start gap-3">
+              <Icon name="map-pin-line" class="w-5 h-5 flex-shrink-0 text-civil-secondary mt-0.5" />
+              <div>
+                <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Alamat</dt>
+                <dd class="text-gray-200 leading-relaxed">{SITE_CONFIG.address}</dd>
+              </div>
             </div>
-            <div>
-              <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">WhatsApp</dt>
-              <dd class="text-gray-200 font-bold">{SITE_CONFIG.phoneDisplay}</dd>
+            <div class="flex items-start gap-3">
+              <Icon name="whatsapp-line" class="w-5 h-5 flex-shrink-0 text-civil-secondary mt-0.5" />
+              <div>
+                <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">WhatsApp</dt>
+                <dd class="text-gray-200 font-bold">{SITE_CONFIG.phoneDisplay}</dd>
+              </div>
             </div>
-            <div>
-              <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Email</dt>
-              <dd class="text-gray-200 font-bold break-all">{SITE_CONFIG.email}</dd>
+            <div class="flex items-start gap-3">
+              <Icon name="mail-line" class="w-5 h-5 flex-shrink-0 text-civil-secondary mt-0.5" />
+              <div>
+                <dt class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Email</dt>
+                <dd class="text-gray-200 font-bold break-all">{SITE_CONFIG.email}</dd>
+              </div>
             </div>
           </dl>
         </div>

@@ -1,0 +1,77 @@
+---
+/**
+ * Icon.astro — pembungkus tipis untuk Remix Icon (https://remixicon.com).
+ *
+ * Ikon diimpor sebagai teks mentah saat build (`?raw`), lalu di-inline ke HTML.
+ * Konsekuensinya: tidak ada request tambahan, tidak ada font/CSS ikon yang
+ * ikut ke dist, dan warna tetap mengikuti `currentColor` sehingga bisa diatur
+ * lewat class Tailwind (mis. `text-civil-secondary`).
+ *
+ * Hanya ikon yang terdaftar di peta `icons` di bawah yang ikut ke bundel.
+ * Tambahkan entri baru di sini bila halaman lain butuh ikon lain.
+ */
+import shieldCheckLine from 'remixicon/icons/System/shield-check-line.svg?raw';
+import awardLine from 'remixicon/icons/Business/award-line.svg?raw';
+import truckLine from 'remixicon/icons/Map/truck-line.svg?raw';
+import shoppingCart2Line from 'remixicon/icons/Finance/shopping-cart-2-line.svg?raw';
+import governmentLine from 'remixicon/icons/Buildings/government-line.svg?raw';
+import fileList3Line from 'remixicon/icons/Document/file-list-3-line.svg?raw';
+import bankCardLine from 'remixicon/icons/Finance/bank-card-line.svg?raw';
+import customerService2Line from 'remixicon/icons/Business/customer-service-2-line.svg?raw';
+import arrowRightLine from 'remixicon/icons/Arrows/arrow-right-line.svg?raw';
+import checkboxCircleFill from 'remixicon/icons/System/checkbox-circle-fill.svg?raw';
+import roadsterLine from 'remixicon/icons/Map/roadster-line.svg?raw';
+import shipLine from 'remixicon/icons/Map/ship-line.svg?raw';
+import planeLine from 'remixicon/icons/Map/plane-line.svg?raw';
+import mapPinLine from 'remixicon/icons/Map/map-pin-line.svg?raw';
+import whatsappLine from 'remixicon/icons/Logos/whatsapp-line.svg?raw';
+import mailLine from 'remixicon/icons/Business/mail-line.svg?raw';
+
+const icons = {
+  'shield-check-line': shieldCheckLine,
+  'award-line': awardLine,
+  'truck-line': truckLine,
+  'shopping-cart-2-line': shoppingCart2Line,
+  'government-line': governmentLine,
+  'file-list-3-line': fileList3Line,
+  'bank-card-line': bankCardLine,
+  'customer-service-2-line': customerService2Line,
+  'arrow-right-line': arrowRightLine,
+  'checkbox-circle-fill': checkboxCircleFill,
+  'roadster-line': roadsterLine,
+  'ship-line': shipLine,
+  'plane-line': planeLine,
+  'map-pin-line': mapPinLine,
+  'whatsapp-line': whatsappLine,
+  'mail-line': mailLine,
+};
+
+interface Props {
+  name: keyof typeof icons;
+  /** Class Tailwind untuk ukuran/warna. Default: w-5 h-5. */
+  class?: string;
+  /**
+   * Isi bila ikon menyampaikan makna sendiri (tombol tanpa teks).
+   * Bila kosong, ikon dianggap dekoratif dan disembunyikan dari screen reader.
+   */
+  label?: string;
+}
+
+const { name, class: className = 'w-5 h-5', label } = Astro.props;
+
+// Gagal keras saat build lebih baik daripada ikon hilang diam-diam.
+const source = icons[name];
+if (!source) {
+  throw new Error(`[Icon] Ikon "${name}" belum terdaftar di peta icons.`);
+}
+
+const a11y = label
+  ? `role="img" aria-label="${label}"`
+  : 'aria-hidden="true" focusable="false"';
+
+// Semua SVG Remix Icon diawali `<svg viewBox="0 0 24 24" ...>` sehingga
+// penyisipan atribut di titik ini konsisten untuk seluruh ikon.
+const markup = source.replace('<svg ', `<svg class="${className}" ${a11y} `);
+---
+
+<Fragment set:html={markup} />
