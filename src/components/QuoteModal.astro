@@ -86,6 +86,9 @@ import { SITE_CONFIG } from '../config';
     const closeBtn = document.getElementById('close-quote');
     const form = document.getElementById('rfq-form');
 
+    // Sumber tombol yang terakhir membuka modal (untuk pelacakan klik).
+    let openedBy = { source: 'modal_unknown', product: 'General Inquiry' };
+
     // ANIMATION FUNCTIONS
     function enterAnimation() {
       modal.classList.remove('hidden');
@@ -117,6 +120,11 @@ import { SITE_CONFIG } from '../config';
          const productInput = document.getElementById('rfq-product');
          if (productInput) productInput.value = e.detail.product;
       }
+      // Simpan asal tombol yang membuka modal untuk atribusi klik.
+      openedBy = {
+        source: (e.detail && e.detail.source) ? String(e.detail.source) : 'modal_unknown',
+        product: (e.detail && e.detail.product) ? String(e.detail.product) : 'General Inquiry',
+      };
       enterAnimation();
     });
 
@@ -155,6 +163,18 @@ import { SITE_CONFIG } from '../config';
 
       const url = `https://wa.me/${waNumber}?text=${text}`;
       window.open(url, '_blank');
+
+      // Catat klik WhatsApp yang berasal dari form RFQ.
+      if (window.__waTrack) {
+        window.__waTrack({
+          event: 'rfq_submit',
+          source: openedBy.source,
+          clickType: 'modal',
+          product: product,
+          form: { name, city, status: type, message },
+        });
+      }
+
       leaveAnimation();
     });
   });

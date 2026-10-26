@@ -11,6 +11,13 @@ export const SITE_CONFIG = {
   
   // Pesan default untuk Direct WA
   defaultWAMessage: "Halo, Sawarga Teknik saya tertarik dengan produk alat lab sipil Anda.",
+
+  // Tracking klik WhatsApp ke Google Sheet (via Apps Script Web App).
+  // Isi endpoint dengan URL deploy Apps Script yang berakhiran /exec.
+  // Kosongkan ("") untuk mematikan tracking sepenuhnya.
+  tracking: {
+    endpoint: (import.meta.env.PUBLIC_WA_TRACK_ENDPOINT || "").trim(),
+  },
 };
 
 // Helper function untuk generate Link WA

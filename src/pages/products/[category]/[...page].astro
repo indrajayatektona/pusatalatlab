@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import ProductCard from '../../../components/ProductCard.astro';
 import Pagination from '../../../components/Pagination.astro';
+import { getWALink } from '../../../config';
 import { getCollection } from 'astro:content';
 
 // 1. SETUP PAGINATION PER KATEGORI
@@ -506,7 +507,7 @@ const sidebarLinks = [
           <div class="bg-civil-secondary p-6 text-center border-2 border-civil-dark">
             <h3 class="font-black text-civil-primary uppercase mb-2">Butuh Bantuan?</h3>
             <p class="text-xs text-civil-dark mb-4">Konsultasikan kebutuhan alat {name} Anda.</p>
-            <a href="https://wa.me/6281234567890" target="_blank" class="block w-full bg-white border-2 border-civil-dark py-2 text-xs font-bold uppercase hover:bg-civil-primary hover:text-white transition-colors">
+            <a href={getWALink(`Halo, saya ingin konsultasi alat kategori ${name}.`)} target="_blank" class="block w-full bg-white border-2 border-civil-dark py-2 text-xs font-bold uppercase hover:bg-civil-primary hover:text-white transition-colors" data-wa-source="category_sidebar_wa" data-wa-type="direct" data-wa-product={`Kategori ${name}`}>
               Chat Sales
             </a>
           </div>

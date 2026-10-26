@@ -356,6 +356,65 @@ const structuredData = {
 		<!-- Render Body End Scripts dari CMS -->
 		{bodyEndScripts.map(s => <Fragment set:html={s.data.code} />)}
 
+		<script>
+			import { trackWAClick } from '../lib/tracking';
+
+			// Ekspos helper untuk komponen lain (mis. QuoteModal).
+			(window as any).__waTrack = trackWAClick;
+
+			/**
+			 * Tebak sumber klik untuk tombol WA yang tidak diberi data-wa-source
+			 * (mis. link di konten Markdown/CMS).
+			 */
+			function guessWASource(el: HTMLElement): { source: string; product: string } {
+				const href = el.getAttribute('href') || '';
+
+				// Share blog: wa.me tanpa nomor tujuan.
+				if (/^https:\/\/wa\.me\/\?/.test(href) || href.includes('api.whatsapp.com/send?text')) {
+					return { source: 'blog_share', product: document.title };
+				}
+
+				if (document.querySelector('article.prose, .prose') && location.pathname.startsWith('/blog/')) {
+					return { source: 'blog_inline', product: document.title };
+				}
+
+				const h1 = document.querySelector('h1')?.textContent?.trim() || '';
+				return { source: 'inline_link', product: h1 };
+			}
+
+			// Delegasi klik: tangkap semua tombol WA yang punya data-wa-source,
+			// termasuk elemen yang dirender dinamis.
+			document.addEventListener(
+				'click',
+				(event) => {
+					const target = event.target as Element | null;
+
+					// 1) Tombol ber-atribusi eksplisit.
+					const tagged = target?.closest?.('[data-wa-source]') as HTMLElement | null;
+					if (tagged) {
+						trackWAClick({
+							source: tagged.dataset.waSource || 'unknown',
+							clickType: (tagged.dataset.waType as 'direct' | 'modal') || 'direct',
+							product: tagged.dataset.waProduct || '',
+						});
+						return;
+					}
+
+					// 2) Fallback: link/konten WA tanpa atribusi.
+					const link = target?.closest?.('a[href*="wa.me"], a[href*="api.whatsapp.com"]') as HTMLElement | null;
+					if (!link) return;
+
+					const guess = guessWASource(link);
+					trackWAClick({
+						source: guess.source,
+						clickType: 'direct',
+						product: guess.product,
+					});
+				},
+				{ capture: true }
+			);
+		</script>
+
 	</body>
 </html>
 

@@ -142,7 +142,7 @@ const faqSchema = {
 
         <div class="flex flex-col sm:flex-row gap-4">
           <CTAButton mode="link" href="/products/" text="Lihat Katalog Produk" variant="secondary" className="shadow-hard border-white w-full sm:w-auto" />
-          <CTAButton mode="wa" text="Konsultasi Gratis (WA)" variant="primary" className="border-white w-full sm:w-auto" />
+          <CTAButton mode="wa" text="Konsultasi Gratis (WA)" variant="primary" className="border-white w-full sm:w-auto" waSource="hero_cta" />
         </div>
 
         <div class="mt-8 flex flex-wrap gap-6 text-xs font-bold text-gray-400 uppercase tracking-widest">
@@ -600,6 +600,9 @@ const faqSchema = {
             <button 
               onclick="window.dispatchEvent(new CustomEvent('open-quote'))" 
               class="w-full group flex items-center justify-between bg-civil-dark text-white font-black uppercase px-6 py-4 border-2 border-civil-dark shadow-[4px_4px_0px_0px_#e6c04f] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer"
+              data-wa-source="featured_card_rfq"
+              data-wa-type="modal"
+              data-wa-product="General Inquiry"
             >
               <span class="text-sm">Minta Penawaran Resmi</span>
               <svg class="w-5 h-5 text-civil-secondary group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -693,7 +696,7 @@ const faqSchema = {
         </p>
       </div>
       
-      <div class="bg-civil-secondary text-civil-primary p-6 border-4 border-civil-dark shadow-[6px_6px_0px_0px_#1E293B] flex flex-col justify-center items-center text-center hover:bg-white transition-colors cursor-pointer" onclick="window.dispatchEvent(new CustomEvent('open-quote'))">
+      <div class="bg-civil-secondary text-civil-primary p-6 border-4 border-civil-dark shadow-[6px_6px_0px_0px_#1E293B] flex flex-col justify-center items-center text-center hover:bg-white transition-colors cursor-pointer" onclick="window.dispatchEvent(new CustomEvent('open-quote'))" data-wa-source="shipping_card" data-wa-type="modal" data-wa-product="Cek ongkos kirim">
         <h3 class="font-black text-xl uppercase mb-2">Kota Anda Tidak Tercantum?</h3>
         <p class="text-sm font-bold text-civil-dark mb-4">Kami melayani pengiriman ke tingkat kabupaten dan kecamatan seluruh Indonesia.</p>
         <span class="inline-block bg-civil-primary text-white font-black uppercase px-4 py-2 text-xs border-2 border-civil-dark">Cek Ongkos Kirim ➜</span>
@@ -855,7 +858,7 @@ const faqSchema = {
                   </p>
                   
                   <div class="flex flex-col sm:flex-row gap-4">
-                      <button onclick="window.open('https://wa.me/+6287893030300?text=Halo%20Admin,%20saya%20mau%20request%20PDF%20Katalog%20Alat%20Sipil', '_blank')" class="inline-flex items-center justify-center gap-2 bg-civil-secondary text-civil-primary px-8 py-4 font-black uppercase hover:bg-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                      <button onclick="window.open('https://wa.me/+6287893030300?text=Halo%20Admin,%20saya%20mau%20request%20PDF%20Katalog%20Alat%20Sipil', '_blank')" class="inline-flex items-center justify-center gap-2 bg-civil-secondary text-civil-primary px-8 py-4 font-black uppercase hover:bg-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none" data-wa-source="catalog_pdf" data-wa-type="direct" data-wa-product="PDF Katalog">
                           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                           Download PDF (15 MB)
                       </button>
