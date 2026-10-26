@@ -34,6 +34,31 @@ langsung, jadi Apps Script berperan sebagai jembatan.
    - Who has access: **Anyone**
 8. Salin URL yang berakhiran `/exec`.
 
+> **Setiap kali kode Apps Script diubah**, deployment lama tidak ikut ter-update.
+> Wajib: **Deploy → Manage deployments → ikon pensil → Version: New version → Deploy**.
+
+## Bagian 1b — Sheet Rekap otomatis
+
+File Apps Script sudah menyertakan fungsi `buildRecap()` yang membuat sheet
+`Rekap` berisi ringkasan per tanggal:
+
+| Tanggal | Total Klik | RFQ | Klik Biasa | Modal | Direct | Mobile | Desktop | Tablet | Halaman Teratas |
+|---|---|---|---|---|---|---|---|---|---|
+| 2026-10-27 | 42 | 5 | 37 | 12 | 30 | 31 | 11 | 0 | `/products/alat-uji-beton/ (9)` |
+
+Cara mengaktifkan — cukup jalankan **satu** dari ini:
+
+- **Otomatis**: biarkan `var AUTO_RECAP = true;` (default). Rekap dihitung ulang
+  setiap ada klik baru.
+- **Manual**: ubah jadi `var AUTO_RECAP = false;`, lalu di Google Sheet klik menu
+  **WA Tracking → Perbarui Rekap** kapan pun perlu.
+
+Uji cepat dari editor Apps Script: jalankan fungsi `testRecap` — satu baris uji
+masuk ke `wa_clicks` dan sheet `Rekap` langsung terbentuk.
+
+`Rekap` dihitung penuh dari `wa_clicks` setiap kali dibangun, jadi tidak pernah
+ada angka dobel. Nama/kota/pesan dari form RFQ tidak ikut ke `Rekap`.
+
 ## Bagian 2 — Hubungkan ke website
 
 Tambahkan baris berikut ke file `.env`:
