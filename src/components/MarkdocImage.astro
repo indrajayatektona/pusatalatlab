@@ -1,0 +1,53 @@
+---
+import { getImageSize } from '../lib/image-size';
+
+interface Props {
+  src?: string;
+  alt?: string;
+  title?: string;
+}
+
+const { src = '', alt = '', title } = Astro.props;
+const size = src.startsWith('/') ? getImageSize(src) : null;
+const caption = title?.trim();
+
+// Lebar tampilan mengikuti ukuran asli gambar, dibatasi maksimal 720px.
+// aspect-ratio dari dimensi asli memesan ruang sebelum gambar lazy selesai
+// dimuat, sehingga tidak ada layout shift saat gambar muncul.
+const displayWidth = size ? Math.min(size.width, 720) : null;
+const anchorStyle =
+  size && displayWidth
+    ? `width: min(${displayWidth}px, 100%); aspect-ratio: ${size.width} / ${size.height};`
+    : undefined;
+---
+
+{src && (
+  <span class="my-8 block">
+    <a
+      href={src}
+      target="_blank"
+      rel="noopener noreferrer"
+      class:list={[
+        'mx-auto block cursor-zoom-in',
+        size ? 'max-w-full' : 'w-full max-w-[720px]',
+      ]}
+      style={anchorStyle}
+      aria-label={alt ? `Perbesar gambar: ${alt}` : 'Perbesar gambar'}
+    >
+      <img
+        src={src}
+        alt={alt}
+        title={caption || undefined}
+        width={size?.width}
+        height={size?.height}
+        loading="lazy"
+        decoding="async"
+        style={size ? 'width: 100%;' : undefined}
+        class="mx-auto !my-0 h-auto max-h-[70vh] max-w-full rounded-sm border-2 border-gray-200 object-contain shadow-lg"
+      />
+    </a>
+    {caption && (
+      <span class="mt-2 block text-center text-sm text-gray-500">{caption}</span>
+    )}
+  </span>
+)}

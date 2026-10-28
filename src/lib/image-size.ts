@@ -118,7 +118,17 @@ export function getImageSize(src?: string): ImageSize | null {
   const cached = cache.get(src);
   if (cached !== undefined) return cached;
 
-  const filePath = path.join(process.cwd(), 'public', src);
+  // URL gambar bisa mengandung encoding seperti %20 (spasi). Nama file di
+  // disk memakai karakter aslinya, jadi decode dulu sebelum dicek.
+  let localPath = src.split('?')[0].split('#')[0];
+
+  try {
+    localPath = decodeURIComponent(localPath);
+  } catch {
+    // Biarkan path apa adanya jika encoding-nya tidak valid.
+  }
+
+  const filePath = path.join(process.cwd(), 'public', localPath);
 
   if (!fs.existsSync(filePath)) {
     cache.set(src, null);

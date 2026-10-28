@@ -34,6 +34,28 @@ const seoSchema = fields.object({
 }, { label: 'Pengaturan SEO & Metadata' });
 
 
+// Nama file hasil paste/screenshot sering mengandung spasi dan tanda kurung
+// (mis. "image_20 (4).webp"). Markdown memakai ")" sebagai penutup URL,
+// sehingga nama seperti itu membuat URL gambar terpotong. Sanitasi di sini
+// supaya gambar yang di-upload lewat editor selalu punya nama aman.
+function safeImageFilename(originalFilename: string) {
+  const lastDot = originalFilename.lastIndexOf('.');
+  const hasExtension = lastDot > 0;
+  const extension = hasExtension ? originalFilename.slice(lastDot).toLowerCase() : '';
+  const baseName = hasExtension ? originalFilename.slice(0, lastDot) : originalFilename;
+
+  const slug = baseName
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+
+  return `${slug || 'image'}${extension}`;
+}
+
+
 export default config({
   // --- BAGIAN INI YANG DIUPDATE OTOMATIS ---
   // Jika sedang di Production (Cloudflare), pakai GitHub mode.
@@ -214,6 +236,7 @@ cloud: {
             image: {
               directory: 'public/images/blog/content',
               publicPath: '/images/blog/content/',
+              transformFilename: safeImageFilename,
             },
           },
           // components tetap di root, sejajar dengan options
