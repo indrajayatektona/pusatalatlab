@@ -1,0 +1,313 @@
+---
+title: Tabel Konversi Mutu Beton K ke fc' (MPa) dan Rumusnya
+status: published
+seo:
+  metaDescription: >-
+    Tabel konversi beton K ke fc' (MPa) lengkap dengan rumus, contoh perhitungan
+    K-250, dan penjelasan perbedaan mutu beton kubus dan silinder.
+  noIndex: false
+pubDate: 2026-10-28
+author: tim-sawarga-teknik
+image: /images/blog/tabel-konversi-mutu-beton-k-ke-fc/image.webp
+tags:
+  - Beton
+---
+![Konversi Mutu Beton K ke fc](/images/blog/content/tabel-konversi-mutu-beton-k-ke-fc/image_20%20\(4).webp)
+
+Mutu beton K-250 setara dengan kuat tekan beton silinder fc' sekitar 19,7 MPa jika dikonversi menggunakan pendekatan hubungan kuat tekan kubus dan silinder yang digunakan dalam konteks SNI 2847:2019. Angka ini berbeda dari tabel konversi populer yang menyebut K-250 setara dengan 20,75 MPa karena metode dan asumsi konversinya tidak sama.
+
+Perbedaan tersebut penting ketika kami membantu kebutuhan pengujian beton, [pengadaan alat laboratorium teknik sipil](https://pusatalatlabsipil.com/panduan-pengadaan/), maupun pemeriksaan dokumen mutu material. Angka K dan fc' tidak boleh dipertukarkan begitu saja tanpa memeriksa metode pengujian, satuan, dan standar yang menjadi acuan.
+
+Berikut tabel konversi praktis dari mutu beton K berbasis kuat tekan kubus ke fc' berbasis kuat tekan silinder:
+
+{% table %}
+- Mutu Beton K (kg/cm²)
+- Kuat Tekan Kubus (MPa)
+- Perkiraan fc' Silinder (MPa)
+---
+- K-100
+- 9,81
+- 7,1
+---
+- K-125
+- 12,26
+- 9,1
+---
+- K-150
+- 14,71
+- 11,2
+---
+- K-175
+- 17,16
+- 13,2
+---
+- K-200
+- 19,61
+- 15,4
+---
+- K-225
+- 22,06
+- 17,5
+---
+- K-250
+- 24,52
+- 19,7
+---
+- K-275
+- 26,97
+- 21,9
+---
+- K-300
+- 29,42
+- 24,1
+---
+- K-325
+- 31,87
+- 26,3
+---
+- K-350
+- 34,32
+- 28,6
+---
+- K-375
+- 36,77
+- 30,8
+---
+- K-400
+- 39,23
+- 33,1
+---
+- K-450
+- 44,13
+- 37,7
+---
+- K-500
+- 49,03
+- 42,3
+---
+- K-550
+- 53,94
+- 47,0
+---
+- K-600
+- 58,84
+- 51,7
+{% /table %}
+
+**Catatan teknis:** tabel ini merupakan estimasi matematis berdasarkan rumus konversi empiris kuat tekan kubus ke silinder, bukan tabel kesetaraan mutu yang diwajibkan SNI 2847:2019. Hasil pembulatan satu desimal. Referensi pendekatan rumus dapat ditelusuri pada dokumen teknis dan penelitian beton.
+
+### Tabel Konversi fc' ke Mutu Beton K
+
+Untuk membaca tabel dari arah sebaliknya, berikut perkiraan nilai K yang mendekati nilai fc' tertentu. Nilai K pada tabel merupakan pendekatan balik dari rumus di atas, bukan penetapan mutu beton untuk keperluan desain struktur.
+
+{% table %}
+- Kuat Tekan Silinder fc' (MPa)
+- Perkiraan Mutu Beton K Terdekat
+---
+- 10 MPa
+- K-135
+---
+- 12 MPa
+- K-160
+---
+- 15 MPa
+- K-195
+---
+- 17 MPa
+- K-220
+---
+- 20 MPa
+- K-254
+---
+- 22 MPa
+- K-276
+---
+- 25 MPa
+- K-310
+---
+- 27 MPa
+- K-333
+---
+- 30 MPa
+- K-366
+---
+- 32 MPa
+- K-389
+---
+- 35 MPa
+- K-423
+---
+- 40 MPa
+- K-475
+---
+- 42 MPa
+- K-497
+---
+- 45 MPa
+- K-529
+---
+- 50 MPa
+- K-584
+{% /table %}
+
+Angka K hasil konversi balik dapat berada di antara mutu yang lazim diperdagangkan, seperti K-250, K-300, atau K-350. Karena itu, jangan langsung membulatkan hasil menjadi mutu pemesanan atau mutu desain. Cocokkan dahulu dengan spesifikasi teknis proyek dan metode pengujian yang disepakati.
+
+## Apa Perbedaan Mutu Beton K dan fc'?
+
+Perbedaan utama terletak pada sistem penilaian kuat tekan beton dan benda uji yang digunakan.
+
+{% table %}
+- Aspek
+- Mutu Beton K
+- Mutu Beton fc'
+---
+- Pengertian
+- Mutu kuat tekan karakteristik dengan sistem lama
+- Kuat tekan beton yang ditetapkan untuk desain struktural
+---
+- Benda uji yang umum dikaitkan
+- Kubus beton
+- Silinder beton
+---
+- Satuan yang lazim digunakan
+- kg/cm²
+- MPa atau N/mm²
+---
+- Contoh penulisan
+- K-250
+- fc' 20 MPa
+---
+- Konteks penggunaan
+- Dokumen lama, spesifikasi tertentu, dan praktik pengadaan
+- Perencanaan dan persyaratan beton struktural
+{% /table %}
+
+Istilah K dalam spesifikasi lama mengacu pada kuat tekan karakteristik beton berbasis kubus. Sementara itu, fc' merupakan parameter kuat tekan beton yang digunakan dalam perencanaan struktur berdasarkan standar yang berlaku.
+
+Ada satu hal penting yang sering terlewat saat membaca tabel konversi. Perbedaan K dan fc' bukan hanya masalah mengubah satuan dari kg/cm² menjadi MPa. Bentuk benda uji, metode pengujian, dan definisi statistik kekuatan yang digunakan turut memengaruhi hubungan kedua nilai tersebut.
+
+SNI 2847:2019 berjudul Persyaratan Beton Struktural untuk Bangunan Gedung dan Penjelasan berstatus berlaku pada katalog Badan Standardisasi Nasional. Standar ini menggunakan fc' sebagai parameter kuat tekan beton untuk desain struktural.
+
+## Rumus Konversi Mutu Beton K ke fc'
+
+Salah satu rumus empiris yang dikenal untuk memperkirakan hubungan kuat tekan kubus dan silinder adalah sebagai berikut.
+
+![](/images/blog/content/tabel-konversi-mutu-beton-k-ke-fc/rumus%20konversi%20mutu%20beton%20k%20ke%20fc.webp)
+
+Keterangan:
+
+- fc' adalah perkiraan kuat tekan silinder dalam MPa.
+- fck adalah kuat tekan kubus dalam MPa.
+- log10 adalah logaritma berbasis 10.
+- Angka 15 pada rumus menggunakan satuan MPa sebagai acuan.
+
+Sebelum menggunakan rumus, mutu K dalam kg/cm² perlu dikonversi ke MPa.
+
+![](/images/blog/content/tabel-konversi-mutu-beton-k-ke-fc/rumus%20konversi%20mutu%20beton%20k%20ke%20mpa.webp)
+
+Rumus tersebut merupakan pendekatan empiris yang memiliki riwayat penggunaan dalam referensi konversi beton. Rumus ini tidak boleh dianggap sebagai metode universal untuk menetapkan kesetaraan mutu beton menurut SNI 2847:2019. Materi teknis Direktorat Jenderal Cipta Karya juga menjelaskan bahwa konversi langsung K ke fc' tidak dapat digunakan begitu saja berdasarkan standar tersebut.
+
+### Contoh Perhitungan K-250 ke fc'
+
+Misalnya, kita ingin memperkirakan nilai fc' dari mutu beton K-250 menggunakan rumus empiris di atas.
+
+Langkah 1. Konversi K-250 ke MPa
+
+![](/images/blog/content/tabel-konversi-mutu-beton-k-ke-fc/image_16%20\(5).webp)
+
+![](/images/blog/content/tabel-konversi-mutu-beton-k-ke-fc/image_15%20\(3).webp)
+
+Langkah 2. Masukkan ke rumus empiris
+
+![](/images/blog/content/tabel-konversi-mutu-beton-k-ke-fc/image_17%20\(5).webp)
+
+![](/images/blog/content/tabel-konversi-mutu-beton-k-ke-fc/image_18%20\(7).webp)
+
+Hasilnya adalah perkiraan fc' sebesar 19,7 MPa.
+
+Perhitungan ini menjelaskan asal angka dalam tabel. Namun, hasil matematis tersebut bukan pengganti hasil pengujian laboratorium dan tidak otomatis membuktikan bahwa beton K-250 memenuhi persyaratan desain fc' 20 MPa.
+
+## Mengapa Tabel Konversi Mutu Beton Bisa Berbeda?
+
+Ketika mencari tabel konversi mutu beton di internet, kita dapat menemukan K-250 yang dipasangkan dengan nilai 19,7 MPa, 20,75 MPa, atau angka lain. Perbedaan itu perlu diperiksa dari sumber dan metode yang digunakan, bukan langsung dianggap sebagai kesalahan hitung.
+
+Beberapa faktor yang memengaruhinya adalah sebagai berikut.
+
+### 1. Metode Konversi yang Digunakan Berbeda
+
+Tabel konversi populer dapat menggunakan faktor pengali tetap, pendekatan empiris berbasis logaritma, atau acuan lama. Ketiganya tidak otomatis menghasilkan angka yang sama.
+
+Sebagai contoh, pendekatan faktor 0,83 terhadap kuat tekan kubus dalam MPa menghasilkan nilai yang berbeda dari rumus empiris berbasis logaritma pada mutu tertentu. Penelitian hubungan kuat tekan kubus dan silinder juga menunjukkan bahwa rasio hasil pengujian dapat dipengaruhi karakteristik agregat dan kondisi pengujian.
+
+### 2. Bentuk dan Dimensi Benda Uji Berbeda
+
+Benda uji kubus dan silinder memiliki geometri berbeda. Perbedaan rasio tinggi terhadap diameter atau lebar memengaruhi kondisi tegangan saat benda uji menerima beban tekan.
+
+Akibatnya, nilai kuat tekan yang dihasilkan dari kubus tidak dapat langsung disamakan dengan nilai kuat tekan silinder hanya berdasarkan satuan.
+
+### 3. Definisi Kuat Tekan yang Digunakan Berbeda
+
+Mutu beton K dalam sistem lama berkaitan dengan kuat tekan karakteristik kubus. Sementara itu, fc' dalam desain struktural modern memiliki ketentuan tersendiri.
+
+Kesetaraan angka harus memperhatikan bukan hanya bentuk benda uji, tetapi juga definisi karakteristik kekuatan dan dasar penerimaan hasil pengujian. Hal ini menjadi alasan mengapa konversi langsung K ke fc' tidak dapat dijadikan satu-satunya dasar penetapan mutu struktural.
+
+## Cara Menggunakan Tabel Konversi untuk Kebutuhan Proyek
+
+Tabel konversi paling bermanfaat ketika digunakan untuk membaca dokumen teknis, memeriksa spesifikasi material, atau memahami hasil pengujian. Penggunaannya perlu dibedakan berdasarkan tujuan pemeriksaan.
+
+{% table %}
+- Kebutuhan
+- Cara Menggunakan Konversi
+---
+- Membaca spesifikasi lama
+- Gunakan tabel sebagai referensi awal untuk memahami mutu K yang tertulis.
+---
+- Membandingkan penawaran beton
+- Periksa mutu yang dijanjikan, standar pengujian, dan benda uji yang menjadi acuan.
+---
+- Mengevaluasi hasil uji kuat tekan
+- Gunakan hasil pengujian dan kriteria penerimaan sesuai spesifikasi proyek.
+---
+- Menetapkan mutu untuk desain struktur
+- Ikuti standar desain dan dokumen perencanaan yang berlaku, bukan konversi perkiraan semata.
+---
+- Memeriksa beton hasil pengecoran
+- Pastikan umur pengujian, identitas sampel, dimensi benda uji, dan metode pengujian tercatat.
+{% /table %}
+
+Dalam pekerjaan laboratorium teknik sipil, kami memandang tabel konversi sebagai alat bantu interpretasi, bukan pengganti pengujian. Jika dokumen proyek menetapkan fc' 25 MPa, misalnya, hasil konversi perkiraan dari mutu K tidak cukup untuk menyatakan beton memenuhi persyaratan tersebut.
+
+Pemeriksaan harus mengacu pada spesifikasi proyek, metode pengambilan sampel, prosedur pengujian kuat tekan, serta kriteria penerimaan yang berlaku.
+
+## Alat Laboratorium yang Digunakan untuk Menguji Kuat Tekan Beton
+
+Untuk mengetahui kuat tekan beton secara langsung, pengujian dilakukan menggunakan mesin uji tekan beton atau concrete compression testing machine dengan prosedur pengujian yang sesuai.
+
+Peralatan dan perlengkapan yang relevan meliputi:
+
+- Mesin uji tekan beton untuk memberikan beban tekan pada benda uji hingga mencapai kondisi keruntuhan sesuai prosedur pengujian.
+- Cetakan benda uji beton untuk membentuk sampel kubus atau silinder sesuai metode yang digunakan.
+- Alat ukur dimensi untuk memeriksa ukuran benda uji yang diperlukan dalam perhitungan luas penampang.
+- Peralatan perawatan benda uji untuk menjaga kondisi perawatan beton sebelum pengujian.
+- Perlengkapan pencatatan hasil uji untuk merekam identitas sampel, umur beton, beban maksimum, dan hasil perhitungan kuat tekan.
+
+Nilai kuat tekan dihitung berdasarkan beban maksimum yang tercatat dan luas penampang benda uji sesuai metode pengujian. Hasilnya kemudian dievaluasi berdasarkan standar serta kriteria penerimaan yang berlaku untuk proyek terkait.
+
+Pemilihan mesin uji tekan perlu mempertimbangkan rentang kapasitas beban, dimensi benda uji, ketelitian pengukuran, dan persyaratan pengujian. Kapasitas mesin harus sesuai dengan kebutuhan laboratorium, bukan sekadar mengikuti mutu beton tertinggi yang pernah diuji.
+
+## Sumber Referensi dan Dasar Teknis
+
+Untuk menjaga ketepatan penggunaan tabel konversi, berikut referensi yang dapat digunakan untuk memeriksa dasar teknisnya.
+
+1. [SNI 2847:2019 di katalog Badan Standardisasi Nasional](https://pesta.bsn.go.id/produk/detail/12731-sni28472019?utm_source=chatgpt.com), sebagai acuan persyaratan beton struktural untuk bangunan gedung.
+1. [Dokumen SNI 2847:2019](https://lmsspada.kemdiktisaintek.go.id/pluginfile.php/543340/mod_resource/content/1/SNI%202847-2019%20Persyaratan%20Beton%20Struktural%20Untuk%20Bangunan%20Gedung%20dan%20penjelasan.pdf?utm_source=chatgpt.com), untuk memeriksa ketentuan kuat tekan beton struktural.
+1. [Penelitian hubungan kuat tekan beton kubus dan silinder](https://ojs.unr.ac.id/index.php/teknikgradien/article/view/56?utm_source=chatgpt.com), yang membahas evaluasi faktor konversi serta pengaruh karakteristik agregat terhadap hasil pengujian.
+1. [Materi teknis mengenai spesifikasi material beton](https://www.scribd.com/document/664889166/Materi-2022-Q-A-Spesifikasi-Material-untuk-Komponen-Struktur-BG?utm_source=chatgpt.com), sebagai referensi pembahasan keterbatasan konversi K ke fc'.
+
+Gunakan standar yang berlaku dan dokumen proyek sebagai dasar keputusan teknis. Tabel konversi di artikel ini ditujukan untuk membantu memahami hubungan angka mutu beton, bukan menetapkan kesetaraan yang berlaku untuk seluruh kondisi material.
+
+## Konsultasikan Kebutuhan Alat Uji Beton dengan CV. Sawarga Teknik
+
+[Sawarga Teknik](https://pusatalatlabsipil.com/) menyediakan solusi kebutuhan [alat laboratorium teknik sipil](https://pusatalatlabsipil.com/products/) untuk mendukung pemeriksaan material konstruksi. Jika Anda membutuhkan [mesin uji tekan beton](https://pusatalatlabsipil.com/products/beton/) atau perlengkapan pengujian kuat tekan lainnya, kami dapat membantu menyesuaikan pilihan alat dengan kebutuhan laboratorium dan jenis benda uji yang akan diperiksa.
+
+[Hubungi Sawarga Teknik](https://pusatalatlabsipil.com/contact/) untuk mendiskusikan kebutuhan alat pengujian beton dan spesifikasi teknis yang sesuai.
