@@ -20,6 +20,23 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 const products = page.data;
 
+// ItemList hanya untuk halaman pertama; halaman 2+ di-noindex dan tidak perlu
+// mendaftarkan ulang produk yang sama.
+const itemListSchema = page.currentPage === 1 && products.length > 0
+  ? {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "@id": `${new URL(Astro.url.pathname, Astro.site).toString()}#itemlist`,
+      "name": "Katalog Produk Alat Laboratorium Teknik Sipil",
+      "itemListElement": products.map((product, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": new URL(`/products/${product.slug}/`, Astro.site).toString(),
+        "name": product.data.title
+      }))
+    }
+  : null;
+
 // List Kategori untuk Sidebar/Dropdown
 const categories = [
   { name: "Semua Produk", slug: "/products/", active: true },
@@ -40,6 +57,7 @@ const categories = [
   prevUrl={page.url.prev}
   nextUrl={page.url.next}
 >
+  {itemListSchema && <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} slot="head" />}
 
   <div class="bg-white border-b border-gray-200 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

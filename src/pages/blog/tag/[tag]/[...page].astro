@@ -6,8 +6,11 @@ import { tagToSlug } from '../../../../lib/slug';
 
 // 1. Generate Paths untuk setiap Tag Unik
 export async function getStaticPaths({ paginate }) {
-  const allPosts = await getCollection('blog');
-  
+  // Draft tidak dirender sebagai artikel, jadi tag-nya juga tidak boleh
+  // menghasilkan arsip yang menaut ke halaman 404.
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return data.status !== 'draft';
+  });
   // Ambil semua tag dari semua post, lalu ratakan (flat), dan ambil uniknya saja
   const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags))];
 

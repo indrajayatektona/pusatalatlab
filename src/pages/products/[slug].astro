@@ -61,16 +61,30 @@ const relatedProducts = allProducts
 // URL gambar harus absolut; Google menolak Product.image berupa path relatif.
 const imageUrl = new URL(imageSrc, Astro.site).toString();
 
+// @id organization dipakai ulang di Layout. Menunjuk ke @id yang sama membuat
+// Google membaca penjual ini sebagai CV. Sawarga Teknik, bukan entitas baru.
+const orgId = new URL('/#organization', Astro.site).toString();
+
 const productSchema = {
   "@context": "https://schema.org/",
   "@type": "Product",
+  "@id": `${canonicalURL}#product`,
   "name": h1Title,
   "image": imageUrl,
   "description": metaDesc,
   // SKU hanya dikirim kalau memang diisi, bukan string kosong.
   ...(id && id.trim() !== "" ? { "sku": id.trim() } : {}),
   "brand": { "@type": "Brand", "name": "CV. Sawarga Teknik" },
-  "url": canonicalURL
+  "url": canonicalURL,
+  // Harga sengaja tidak diisi: penjualan berbasis permintaan penawaran (quotation).
+  // offers tetap dikirim agar Google tahu produk ini dijual dan tersedia.
+  "offers": {
+    "@type": "Offer",
+    "url": canonicalURL,
+    "availability": "https://schema.org/InStock",
+    "priceCurrency": "IDR",
+    "seller": { "@id": orgId }
+  }
 };
 ---
 

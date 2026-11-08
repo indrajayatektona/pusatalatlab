@@ -1,6 +1,6 @@
 {
   "title": "Google Analytics Placeholder",
-  "status": "active",
+  "status": "disabled",
   "location": "head",
-  "code": "<!-- GA Placeholder -->\n"
+  "code": "<!-- Google Analytics 4 belum aktif. Ganti G-XXXXXXXXXX dengan Measurement ID GA4 milik Anda, lalu ubah \"Status\" menjadi Aktif. -->\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX\"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-XXXXXXXXXX');\n</script>\n"
 }

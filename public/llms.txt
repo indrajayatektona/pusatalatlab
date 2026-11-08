@@ -1,15 +1,33 @@
-# Pusatalatlabsipil - Distributor Alat Laboratorium Teknik Sipil
+# Pusat Alat Lab Sipil - Distributor Alat Laboratorium Teknik Sipil
 
-Distributor resmi alat laboratorium teknik sipil dengan jaminan garansi dan kualitas standar SNI/ASTM. Melayani pengadaan peralatan untuk pengujian tanah, beton, aspal, batuan, dan semen.
+> Distributor resmi dan produsen alat laboratorium teknik sipil dengan jaminan garansi
+> dan kualitas standar SNI/ASTM. Melayani pengadaan peralatan untuk pengujian tanah,
+> beton, aspal, batuan, dan semen di seluruh Indonesia.
 
-## Koleksi Utama
+## Kontak
+- Email: sales@pusatalatlabsipil.com
+- WhatsApp: +62 878-9303-0300
+- Alamat: Jl. Jend. Amir Machmud No. 111/115, Cibeureum, Cimahi Selatan, Jawa Barat, Indonesia
+- Harga: berbasis penawaran (quotation). Hubungi sales untuk daftar harga dan surat dukungan tender.
 
-### Halaman Utama
+## Halaman Utama
 - [Beranda](https://pusatalatlabsipil.com/)
-- [Produk](https://pusatalatlabsipil.com/products/)
-- [Blog](https://pusatalatlabsipil.com/blog/)
+- [Katalog Produk](https://pusatalatlabsipil.com/products/)
+- [Blog & Artikel Teknik Sipil](https://pusatalatlabsipil.com/blog/)
+- [Panduan Pengadaan](https://pusatalatlabsipil.com/panduan-pengadaan/)
+- [FAQ](https://pusatalatlabsipil.com/faq/)
+- [Kontak](https://pusatalatlabsipil.com/contact/)
 
-### Produk Unggulan
+## Kategori Produk
+- [Alat Lab Aspal](https://pusatalatlabsipil.com/products/aspal/)
+- [Alat Lab Beton](https://pusatalatlabsipil.com/products/beton/)
+- [Alat Lab Tanah](https://pusatalatlabsipil.com/products/tanah/)
+- [Alat Lab Batuan](https://pusatalatlabsipil.com/products/batuan/)
+- [Alat Lab Semen](https://pusatalatlabsipil.com/products/semen/)
+- [Pertambangan](https://pusatalatlabsipil.com/products/pertambangan/)
+- [Alat Umum](https://pusatalatlabsipil.com/products/umum/)
+
+## Produk
 - [Absorption of Fine Aggregate Test Set](https://pusatalatlabsipil.com/products/absorption-of-fine-aggregate-test-set/): Batuan - Absorption of Fine Aggregate Test Set digunakan untuk mengukur berat jenis dan tingkat penyerapan air pada agregat halus sesuai standar ASTM C-128. Alat wajib untuk kontrol kualitas beton dan aspal.
 - [Aggregate Crushing Value Apparatus](https://pusatalatlabsipil.com/products/aggregate-crushing-value-apparatus/): Batuan - Aggregate Crushing Value (ACV) Apparatus digunakan untuk mengukur ketahanan agregat terhadap beban tekanan bertahap sesuai standar BS-812. Ideal untuk kontrol kualitas material pengeras jalan.
 - [Aggregate Impact Test](https://pusatalatlabsipil.com/products/aggregate-impact-test/): Batuan - Aggregate Impact Test digunakan untuk mengevaluasi ketahanan agregat terhadap beban kejut (impak) sesuai standar BS-812. Alat wajib untuk menentukan nilai Aggregate Impact Value (AIV).
@@ -31,7 +49,6 @@ Distributor resmi alat laboratorium teknik sipil dengan jaminan garansi dan kual
 - [Compaction Test Set](https://pusatalatlabsipil.com/products/compaction-test-set/): Tanah - Compaction Test Set digunakan untuk menentukan hubungan kadar air dan kepadatan tanah di laboratorium sesuai standar ASTM D-698 (Proctor) dan ASTM D-1557 (Modified).
 - [Compression Machine 2000 kN Analog](https://pusatalatlabsipil.com/products/compression-machine-2000-kn-analog/): Beton - Compression Machine 2000 kN Analog digunakan untuk menguji kuat tekan (compressive strength) spesimen beton silinder atau kubus sesuai standar ASTM C-39. Dirancang kokoh untuk penggunaan industri.
 - [Compression Machine CE](https://pusatalatlabsipil.com/products/compression-machine-ce/): Semen - Compression Machine CE kapasitas 250 kN dirancang untuk pengujian kuat tekan yang presisi pada spesimen kubus mortar semen dan silinder kecil sesuai standar ASTM C-109.
-- [Compressive Strength Of Hydraulic Cement Mortar Electric](https://pusatalatlabsipil.com/products/compressive-strength-of-hydraulic-cement-mortar-electric/): Semen - Compressive Strength of Hydraulic Cement Mortar Electric digunakan untuk mencetak spesimen kubus mortar semen dan menguji nilai alir (flow) secara elektrik sesuai standar ASTM C-109.
 - [Compressive Strength Of Hydraulic Cement Mortar Manual](https://pusatalatlabsipil.com/products/compressive-strength-of-hydraulic-cement-mortar-manual/): Semen - Compressive Strength of Hydraulic Cement Mortar Manual digunakan untuk mencetak spesimen kubus mortar semen dan menguji nilai alir (flow) secara manual sesuai standar ASTM C-109.
 - [Concrete Beam Mold 15x15x60 cm](https://pusatalatlabsipil.com/products/concrete-beam-mold-15x15x60-cm/): Beton - Concrete Beam Mold 15x15x60 cm digunakan untuk mencetak sampel beton balok untuk pengujian kuat lentur. Terbuat dari besi cor tebal dengan sistem knock-down yang presisi.
 - [Concrete Compression Machine Digital 2000 kN](https://pusatalatlabsipil.com/products/concrete-compression-machine-digital-2000-kn/): Beton - Concrete Compression Machine Digital 2000 kN digunakan untuk menguji kuat tekan beton silinder atau kubus dengan sistem hidrolik handal sesuai standar ASTM C-39.
@@ -50,14 +67,12 @@ Distributor resmi alat laboratorium teknik sipil dengan jaminan garansi dan kual
 - [Double Roll Crusher](https://pusatalatlabsipil.com/products/double-roll-crusher/): Pertambangan - Double Roll Crusher digunakan untuk pengecilan ukuran (size reduction) tahap sekunder pada batuan, mineral, atau batu bara dengan hasil partikel yang homogen.
 - [Drying Oven ASTM](https://pusatalatlabsipil.com/products/drying-oven-astm/): Pertambangan - Drying Oven ASTM digunakan untuk pengeringan sampel tanah, agregat, dan aspal secara merata dengan sistem kontrol suhu digital hingga 250°C. Akurat untuk uji kadar air.
 - [Ductility of Bituminous Materials Test Set](https://pusatalatlabsipil.com/products/ductility-of-bituminous-materials-test-set/): Aspal - Ductility of Bituminous Materials Test Set digunakan untuk mengukur tingkat daktilitas (perpanjangan) aspal hingga terputus sesuai standar ASTM D-113.
-- [Dunagan Test Manual](https://pusatalatlabsipil.com/products/dunagan-test-manual/): Batuan - 
 - [Dunagan Test Set Digital](https://pusatalatlabsipil.com/products/dunagan-test-set-digital/): Batuan - Dunagan Test Set Digital digunakan untuk mengukur spesifik gravitasi (berat jenis) dan penyerapan agregat kasar dalam air secara digital sesuai standar ASTM C-127.
 - [Dynamic Cone Penetrometer](https://pusatalatlabsipil.com/products/dynamic-cone-penetrometer/): Tanah - Dynamic Cone Penetrometer (DCP) digunakan untuk mengukur daya dukung tanah lapangan (CBR) secara cepat melalui penetrasi mekanis. Alat portabel untuk audit jalan.
 - [Field Vane Shear Test Set](https://pusatalatlabsipil.com/products/field-vane-shear-test-set/): Tanah - Field Vane Shear Test Set digunakan untuk menentukan kekuatan geser tak terdrainase (undrained shear strength) pada tanah lempung lunak secara langsung di lapangan (in-situ).
 - [Flash and Fire Point Cleveland Open Cup Electric](https://pusatalatlabsipil.com/products/flash-and-fire-point-cleveland-open-cup-electric/): Aspal - Flash and Fire Point Cleveland Open Cup Electric digunakan untuk mengukur titik nyala dan titik bakar aspal sesuai standar ASTM D-92 dengan pemanas elektrik yang presisi.
 - [Flash and Fire Point Cleveland Open Cup Manual](https://pusatalatlabsipil.com/products/flash-and-fire-point-cleveland-open-cup-manual/): Aspal - Flash and Fire Point Cleveland Open Cup Manual digunakan untuk menentukan titik nyala dan titik bakar aspal menggunakan pemanas Bunsen sesuai standar ASTM D-92.
 - [Hammer Mill Batubara](https://pusatalatlabsipil.com/products/hammer-mill-batubara/): Pertambangan - Hammer Mill Batubara digunakan untuk menghancurkan sampel batubara, kokas, atau kapur menjadi ukuran butir halus untuk analisis laboratorium lanjutan.
-- [Hand Bor Test Set](https://pusatalatlabsipil.com/products/hand-bor-test-set/): Tanah - Hand Bor Test Set digunakan untuk pengeboran manual dan pengambilan sampel tanah hingga kedalaman 10 meter. Dilengkapi mata bor Iwan Type dan tabung sampel presisi.
 - [Hydraulic Concrete Beam Testing Machine FS](https://pusatalatlabsipil.com/products/hydraulic-concrete-beam-testing-machine-fs/): Beton - Hydraulic Concrete Beam Testing Machine FS digunakan untuk menguji kuat lentur (flexural strength) balok beton sesuai standar ASTM C-78. Dilengkapi sistem hidrolik presisi.
 - [Hydraulic Pellet Press Machine Automatic](https://pusatalatlabsipil.com/products/hydraulic-pellet-press-machine-automatic/): Pertambangan - Hydraulic Pellet Press Machine Automatic digunakan untuk membentuk pelet dari sampel serbuk (XRF/FTIR) secara otomatis dengan tekanan hingga 60 Ton.
 - [Hydraulic Pellet Press Machine Manual](https://pusatalatlabsipil.com/products/hydraulic-pellet-press-machine-manual/): Pertambangan - Hydraulic Pellet Press Machine Manual digunakan untuk memadatkan sampel serbuk menjadi pelet solid menggunakan tenaga hidrolik manual hingga 25 Ton.
@@ -117,7 +132,6 @@ Distributor resmi alat laboratorium teknik sipil dengan jaminan garansi dan kual
 - [Specific Gravity of Semi Solid Bituminous Materials](https://pusatalatlabsipil.com/products/specific-gravity-of-semi-solid-bituminous-materials/): Aspal - Specific Gravity of Semi Solid Bituminous Materials (Pycnometer) digunakan untuk menentukan berat jenis material aspal semi-padat sesuai standar ASTM D-70.
 - [Specific Gravity (Vacuum Method)](https://pusatalatlabsipil.com/products/specific-gravity-vacuum-method/): Tanah - Specific Gravity (Vacuum Method) digunakan untuk menentukan berat jenis butiran tanah sesuai standar ASTM D-854 melalui proses pembuangan udara menggunakan pompa vakum.
 - [Speedy Moisture Tester](https://pusatalatlabsipil.com/products/speedy-moisture-tester/): Tanah - Speedy Moisture Tester digunakan untuk menentukan kadar air tanah secara cepat di lapangan menggunakan reaksi kimia kalsium karbida sesuai standar ASTM D-4944.
-- [Standard Penetration Test](https://pusatalatlabsipil.com/products/standard-penetration-test/): Tanah - Standard Penetration Test (SPT) digunakan untuk menentukan daya dukung tanah dan mengambil sampel tanah terganggu (disturbed) sesuai standar ASTM D-1586.
 - [Thickness Gauge](https://pusatalatlabsipil.com/products/thickness-gauge/): Batuan - Thickness Gauge (Flakiness Gauge) digunakan untuk menentukan indeks kepipihan agregat kasar sesuai standar BS-812. Terbuat dari pelat logam galvanis presisi.
 - [Time Of Setting Of Hydraulic Cement](https://pusatalatlabsipil.com/products/time-of-setting-of-hydraulic-cement/): Semen - Time Of Setting Of Hydraulic Cement (Vicat Apparatus) digunakan untuk menentukan konsistensi normal dan waktu ikat semen sesuai standar ASTM C-191.
 - [Triaxial Test Set](https://pusatalatlabsipil.com/products/triaxial-test-set/): Tanah - Triaxial Test Set digunakan untuk menentukan parameter kuat geser tanah (kohesi dan sudut geser dalam) pada kondisi tegangan tiga arah sesuai standar ASTM D-2850.
@@ -129,28 +143,29 @@ Distributor resmi alat laboratorium teknik sipil dengan jaminan garansi dan kual
 - [Vertical Cylinder Capping Set](https://pusatalatlabsipil.com/products/vertical-cylinder-capping-set/): Beton - Vertical Cylinder Capping Set digunakan untuk meratakan permukaan silinder beton menggunakan sulfur panas guna menjamin distribusi beban tekan yang merata sesuai ASTM C-617.
 - [Vibrating Table](https://pusatalatlabsipil.com/products/vibrating-table/): Beton - Vibrating Table digunakan untuk memadatkan campuran beton segar di dalam cetakan secara mekanis guna menghilangkan rongga udara dan menjamin kepadatan spesimen.
 - [Water Content in Petroleum Product](https://pusatalatlabsipil.com/products/water-content-in-petroleum-product/): Aspal - Water Content in Petroleum Product digunakan untuk menentukan kadar air dalam aspal, minyak bumi, dan produk sejenis melalui metode distilasi sesuai standar ASTM D-95.
+- [Compressive Strength Of Hydraulic Cement Mortar Electric](https://pusatalatlabsipil.com/products/compressive-strength-of-hydraulic-cement-mortar-electric/): Semen - Compressive Strength of Hydraulic Cement Mortar Electric digunakan untuk mencetak spesimen kubus mortar semen dan menguji nilai alir (flow) secara elektrik sesuai standar ASTM C-109.
+- [Hand Bor Test Set](https://pusatalatlabsipil.com/products/hand-bor-test-set/): Tanah - Hand Bor Test Set digunakan untuk pengeboran manual dan pengambilan sampel tanah hingga kedalaman 10 meter. Dilengkapi mata bor Iwan Type dan tabung sampel presisi.
+- [Standard Penetration Test](https://pusatalatlabsipil.com/products/standard-penetration-test/): Tanah - Standard Penetration Test (SPT) digunakan untuk menentukan daya dukung tanah dan mengambil sampel tanah terganggu (disturbed) sesuai standar ASTM D-1586.
 
-### Artikel Terbaru
-- [Daftar Lengkap Alat Slump Test dan Cara Penggunaannya di Lapangan](https://pusatalatlabsipil.com/blog/alat-slump-test-dan-cara-penggunaannya/)
-- [7 Alat Uji Konstruksi Kolam Renang untuk Cek Mutu Beton dan Tanah](https://pusatalatlabsipil.com/blog/alat-uji-konstruksi-kolam-renang-untuk-cek-mutu-beton-dan-tanah/)
-- [Apa Itu Aspal? Pengertian, Jenis, Fungsi, dan Pengujiannya](https://pusatalatlabsipil.com/blog/apa-itu-aspal/)
-- ['Core Drill Adalah: Pengertian, Fungsi, Prosedur, dan Standar Pengujian Lengkap'](https://pusatalatlabsipil.com/blog/apa-itu-core-drill/)
-- [Apa Itu Slump Test Beton? Fungsi, Alat, dan Cara Membaca Hasil](https://pusatalatlabsipil.com/blog/apa-itu-slump-test-beton/)
-- [Beton fc 25 MPa Setara K Berapa? Ini Penjelasan dan Cara Hitungnya](https://pusatalatlabsipil.com/blog/beton-fc-25-mpa-setara-k-berapa/)
-- [Distributor Alat Laboratorium Teknik Sipil Garansi Resmi](https://pusatalatlabsipil.com/blog/distributor-alat-laboratorium-teknik-sipil-garansi-resmi/)
-- ['7 Fungsi Diamond Core Drill Bit dalam Proyek Konstruksi dan Sipil'](https://pusatalatlabsipil.com/blog/fungsi-diamond-core-drill-bit/)
-- [5 Fungsi Slump Test pada Beton Segar](https://pusatalatlabsipil.com/blog/fungsi-slump-test-beton/)
-- ['5 Jenis Mata Core Drill Beton dan Kegunaannya dalam Konstruksi'](https://pusatalatlabsipil.com/blog/jenis-mata-core-drill-beton/)
-- [5 Jenis Uji Tiang Pancang yang Wajib Dilakukan Sebelum dan Sesudah Pemancangan](https://pusatalatlabsipil.com/blog/jenis-uji-tiang-pancang-yang-wajib-dilakukan/)
-- [Mutu Beton untuk Tiang Pancang Berapa MPa? Ini Standarnya](https://pusatalatlabsipil.com/blog/mutu-beton-untuk-tiang-pancang/)
-- [Penggunaan Alat Lab Beton untuk Beton Precast](https://pusatalatlabsipil.com/blog/penggunaan-alat-lab-beton-untuk-beton-precast/)
-- ['Perbedaan Core Drill dan Hammer Drill: Mana yang Tepat untuk Proyek Anda?'](https://pusatalatlabsipil.com/blog/perbedaan-core-drill-dan-hammer-drill/)
-- [Panduan Lengkap Prosedur Pengujian dan Tahapan Slump Test Beton](https://pusatalatlabsipil.com/blog/prosedur-pengujian-dan-tahapan-slump-test-beton/)
-- ['Prosedur Pengujian Slump Test Abrams: Panduan Lengkap dan Standar SNI'](https://pusatalatlabsipil.com/blog/prosedur-pengujian-slump-test-abrams/)
-- [Spesifikasi Teknis Alat Laboratorium Teknik Sipil untuk Pengadaan](https://pusatalatlabsipil.com/blog/spesifikasi-teknis-alat-laboratorium-teknik-sipil-untuk-pengadaan/)
-- ['Spesifikasi Umum Mesin Core Drill Beton Standar Proyek dan Keunggulannya'](https://pusatalatlabsipil.com/blog/spesifikasi-umum-mesin-core-drill-beton/)
-- ['Memahami Standar SNI Pengujian Core Drill Beton (Beton Inti) yang Benar'](https://pusatalatlabsipil.com/blog/standar-sni-pengujian-core-drill-beton/)
+## Artikel
 - [Tabel Konversi Mutu Beton K ke fc' (MPa) dan Rumusnya](https://pusatalatlabsipil.com/blog/tabel-konversi-mutu-beton-k-ke-fc/)
+- [Spesifikasi Teknis Alat Laboratorium Teknik Sipil untuk Pengadaan](https://pusatalatlabsipil.com/blog/spesifikasi-teknis-alat-laboratorium-teknik-sipil-untuk-pengadaan/)
+- [Apa Itu Aspal? Pengertian, Jenis, Fungsi, dan Pengujiannya](https://pusatalatlabsipil.com/blog/apa-itu-aspal/)
+- [7 Alat Uji Konstruksi Kolam Renang untuk Cek Mutu Beton dan Tanah](https://pusatalatlabsipil.com/blog/alat-uji-konstruksi-kolam-renang-untuk-cek-mutu-beton-dan-tanah/)
+- [5 Jenis Uji Tiang Pancang yang Wajib Dilakukan Sebelum dan Sesudah Pemancangan](https://pusatalatlabsipil.com/blog/jenis-uji-tiang-pancang-yang-wajib-dilakukan/)
+- [Penggunaan Alat Lab Beton untuk Beton Precast](https://pusatalatlabsipil.com/blog/penggunaan-alat-lab-beton-untuk-beton-precast/)
+- [Mutu Beton untuk Tiang Pancang Berapa MPa? Ini Standarnya](https://pusatalatlabsipil.com/blog/mutu-beton-untuk-tiang-pancang/)
+- [Beton fc 25 MPa Setara K Berapa? Ini Penjelasan dan Cara Hitungnya](https://pusatalatlabsipil.com/blog/beton-fc-25-mpa-setara-k-berapa/)
+- [7 Fungsi Diamond Core Drill Bit dalam Proyek Konstruksi dan Sipil](https://pusatalatlabsipil.com/blog/fungsi-diamond-core-drill-bit/)
+- [5 Jenis Mata Core Drill Beton dan Kegunaannya dalam Konstruksi](https://pusatalatlabsipil.com/blog/jenis-mata-core-drill-beton/)
+- [Perbedaan Core Drill dan Hammer Drill: Mana yang Tepat untuk Proyek Anda?](https://pusatalatlabsipil.com/blog/perbedaan-core-drill-dan-hammer-drill/)
+- [Spesifikasi Umum Mesin Core Drill Beton Standar Proyek dan Keunggulannya](https://pusatalatlabsipil.com/blog/spesifikasi-umum-mesin-core-drill-beton/)
+- [Memahami Standar SNI Pengujian Core Drill Beton (Beton Inti) yang Benar](https://pusatalatlabsipil.com/blog/standar-sni-pengujian-core-drill-beton/)
+- [Distributor Alat Laboratorium Teknik Sipil Garansi Resmi](https://pusatalatlabsipil.com/blog/distributor-alat-laboratorium-teknik-sipil-garansi-resmi/)
+- [Daftar Lengkap Alat Slump Test dan Cara Penggunaannya di Lapangan](https://pusatalatlabsipil.com/blog/alat-slump-test-dan-cara-penggunaannya/)
+- [Core Drill Adalah: Pengertian, Fungsi, Prosedur, dan Standar Pengujian Lengkap](https://pusatalatlabsipil.com/blog/apa-itu-core-drill/)
+- [Prosedur Pengujian Slump Test Abrams: Panduan Lengkap dan Standar SNI](https://pusatalatlabsipil.com/blog/prosedur-pengujian-slump-test-abrams/)
 - [Tabel Nilai Slump Test Beton SNI (Panduan Lengkap Mutu & Pengujian)](https://pusatalatlabsipil.com/blog/tabel-nilai-slump-test-beton-sni/)
 - [Pahami 5 Tujuan Slump Test Beton untuk Standar Kualitas](https://pusatalatlabsipil.com/blog/tujuan-slump-test-beton/)
-
+- [5 Fungsi Slump Test pada Beton Segar](https://pusatalatlabsipil.com/blog/fungsi-slump-test-beton/)
+- [Apa Itu Slump Test Beton? Fungsi, Alat, dan Cara Membaca Hasil](https://pusatalatlabsipil.com/blog/apa-itu-slump-test-beton/)

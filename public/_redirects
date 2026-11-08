@@ -1,5 +1,8 @@
-# URL lama arsip tag masih terindeks. Slug tag sekarang dinormalisasi
-# (koma diganti tanda hubung), jadi URL lama dialihkan permanen ke URL baru.
+# Tag "Beton, Mutu Beton" dulu tersimpan sebagai satu item sehingga slug-nya
+# menjadi gabungan. Sekarang sudah dipecah menjadi tag "Beton" dan "Mutu Beton",
+# jadi URL lama (versi mentah ber-koma maupun versi slug gabungan) diarahkan
+# permanen ke arsip tag /beton/.
 # Astro menambahkan sendiri aturan untuk URL persisnya; aturan di bawah
 # menangani URL pagination-nya (/2/, /3/, ...).
-/blog/tag/beton,-mutu-beton/*  /blog/tag/beton-mutu-beton/:splat  301
+/blog/tag/beton,-mutu-beton/*  /blog/tag/beton/:splat  301
+/blog/tag/beton-mutu-beton/*   /blog/tag/beton/:splat  301

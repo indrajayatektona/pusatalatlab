@@ -138,8 +138,10 @@ function build() {
   }
 
   // --- HALAMAN STATIS (src/content/pages) ---
+  // Halaman draft tidak dirender sebagai halaman publik, jadi harus keluar
+  // dari sitemap juga — sama seperti produk dan blog.
   for (const { slug, data } of readCollection('pages')) {
-    if (data?.seo?.noIndex === true) {
+    if (data?.status === 'draft' || data?.seo?.noIndex === true) {
       noindex.add(`/${slug}/`);
     }
   }

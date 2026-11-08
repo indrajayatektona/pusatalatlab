@@ -2,10 +2,13 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import { getImageSize } from '../lib/image-size';
+import { extractFaq } from '../lib/faq';
 
 // 1. Generate Static Paths untuk semua halaman di 'src/content/pages'
 export async function getStaticPaths() {
-  const pages = await getCollection('pages');
+  const pages = await getCollection('pages', ({ data }) => {
+    return data.status !== 'draft';
+  });
   return pages.map(page => ({
     params: { slug: page.slug },
     props: { page },
@@ -16,6 +19,22 @@ const { page } = Astro.props;
 const { Content } = await page.render();
 const seoData = page.data.seo || {};
 const coverSize = getImageSize(page.data.coverImage);
+
+// Halaman FAQ menyusun tanya-jawabnya tanpa heading "FAQ" di setiap blok,
+// jadi ekstraksi di sini dijalankan tanpa syarat heading tersebut.
+const faqItems = page.slug === 'faq' ? extractFaq(page.body, { requireHeading: false }) : [];
+const faqSchema = faqItems.length > 0
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": `${new URL(Astro.url.pathname, Astro.site).toString()}#faq`,
+      "mainEntity": faqItems.map(({ question, answer }) => ({
+        "@type": "Question",
+        "name": question,
+        "acceptedAnswer": { "@type": "Answer", "text": answer }
+      }))
+    }
+  : null;
 ---
 
 <Layout 
@@ -25,6 +44,7 @@ const coverSize = getImageSize(page.data.coverImage);
   noIndex={seoData.noIndex || false}
   canonical={seoData.canonicalUrl || undefined}
 >
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
 
   <div class="bg-civil-primary relative border-b-4 border-civil-secondary overflow-hidden">
     <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 20px 20px;"></div>

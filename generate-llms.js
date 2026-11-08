@@ -1,117 +1,166 @@
-import fs from 'fs';
-import path from 'path';
+/**
+ * Generator public/llms.txt.
+ *
+ * Dijalankan otomatis lewat `prebuild` dan `dev` (lihat package.json), jadi
+ * file selalu ikut terbarui sebelum build.
+ *
+ * Aturan penting: entri draft dan halaman `seo.noIndex: true` TIDAK boleh
+ * masuk. File ini dibaca langsung oleh mesin AI, jadi apa pun yang tidak
+ * diindeks Google juga tidak boleh dipromosikan di sini.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { parse } from 'yaml';
 
 const CONTENT_DIR = 'src/content';
-const PUBLIC_DIR = 'public';
-const OUTPUT_FILE = path.join(PUBLIC_DIR, 'llms.txt');
+const OUTPUT_FILE = path.join('public', 'llms.txt');
+const BASE_URL = 'https://pusatalatlabsipil.com';
 
-function extractFrontmatter(content) {
-  const match = content.match(/^---([\s\S]*?)---/);
-  if (!match) return {};
-  
-  const yaml = match[1];
-  const metadata = {};
-  
-  const lines = yaml.split('\n');
-  let currentKey = null;
-  let inMultiline = false;
-  let multilineValue = [];
+const CATEGORIES = [
+  { name: 'Alat Lab Aspal', slug: 'aspal' },
+  { name: 'Alat Lab Beton', slug: 'beton' },
+  { name: 'Alat Lab Tanah', slug: 'tanah' },
+  { name: 'Alat Lab Batuan', slug: 'batuan' },
+  { name: 'Alat Lab Semen', slug: 'semen' },
+  { name: 'Pertambangan', slug: 'pertambangan' },
+  { name: 'Alat Umum', slug: 'umum' },
+];
 
-  for (let line of lines) {
-    if (!line.trim()) continue;
+function readCollection(collection) {
+  const dir = path.join(CONTENT_DIR, collection);
+  if (!fs.existsSync(dir)) return [];
 
-    // Check for new key
-    const keyMatch = line.match(/^([a-zA-Z0-9_-]+):\s*(.*)/);
-    if (keyMatch && !inMultiline) {
-      currentKey = keyMatch[1];
-      let value = keyMatch[2].trim();
+  return fs
+    .readdirSync(dir)
+    .filter((file) => /\.(mdoc|md|mdx)$/i.test(file))
+    .map((file) => {
+      // Buang BOM supaya regex frontmatter tetap cocok.
+      const raw = fs
+        .readFileSync(path.join(dir, file), 'utf8')
+        .replace(/^\uFEFF/, '');
+      const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+      if (!match) return null;
 
-      if (value === '>-' || value === '|' || value === '|-') {
-        inMultiline = true;
-        multilineValue = [];
-      } else {
-        // Basic cleanup for quotes
-        if (value.startsWith('"') && value.endsWith('"')) {
-          value = value.substring(1, value.length - 1);
-        }
-        metadata[currentKey] = value;
-        inMultiline = false;
+      let data;
+      try {
+        data = parse(match[1]) ?? {};
+      } catch {
+        return null;
       }
-    } else if (inMultiline && line.startsWith('  ')) {
-      multilineValue.push(line.trim());
-    } else if (inMultiline && !line.startsWith('  ')) {
-      metadata[currentKey] = multilineValue.join(' ');
-      inMultiline = false;
-      // Re-process this line as it might be a new key
-      const retryMatch = line.match(/^([a-zA-Z0-9_-]+):\s*(.*)/);
-      if (retryMatch) {
-        currentKey = retryMatch[1];
-        let value = retryMatch[2].trim();
-        if (value === '>-' || value === '|' || value === '|-') {
-          inMultiline = true;
-          multilineValue = [];
-        } else {
-          metadata[currentKey] = value;
-        }
-      }
-    }
-  }
-  if (inMultiline) {
-    metadata[currentKey] = multilineValue.join(' ');
-  }
-  return metadata;
+
+      if (!data || typeof data !== 'object') return null;
+
+      return {
+        slug: file.replace(/\.(mdoc|md|mdx)$/i, ''),
+        data,
+      };
+    })
+    .filter(Boolean);
 }
 
-async function generateLLMsText() {
-  console.log('Generating llms.txt...');
-  
-  let output = `# Pusatalatlabsipil - Distributor Alat Laboratorium Teknik Sipil\n\n`;
-  output += `Distributor resmi alat laboratorium teknik sipil dengan jaminan garansi dan kualitas standar SNI/ASTM. Melayani pengadaan peralatan untuk pengujian tanah, beton, aspal, batuan, dan semen.\n\n`;
-  
-  output += `## Koleksi Utama\n\n`;
-  
-  // 1. Pages
-  output += `### Halaman Utama\n`;
-  output += `- [Beranda](https://pusatalatlabsipil.com/)\n`;
-  output += `- [Produk](https://pusatalatlabsipil.com/products/)\n`;
-  output += `- [Blog](https://pusatalatlabsipil.com/blog/)\n\n`;
-
-  // 2. Produk
-  const productsDir = path.join(CONTENT_DIR, 'products');
-  if (fs.existsSync(productsDir)) {
-    output += `### Produk Unggulan\n`;
-    const files = fs.readdirSync(productsDir).filter(f => f.endsWith('.mdoc'));
-    
-    for (const file of files) {
-      const content = fs.readFileSync(path.join(productsDir, file), 'utf-8');
-      const meta = extractFrontmatter(content);
-      const slug = file.replace('.mdoc', '');
-      if (meta.title) {
-        output += `- [${meta.title}](https://pusatalatlabsipil.com/products/${slug}/): ${meta.category || ''} - ${meta.description || ''}\n`;
-      }
-    }
-    output += `\n`;
-  }
-
-  // 3. Blog
-  const blogDir = path.join(CONTENT_DIR, 'blog');
-  if (fs.existsSync(blogDir)) {
-    output += `### Artikel Terbaru\n`;
-    const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.mdoc'));
-    
-    for (const file of files) {
-      const content = fs.readFileSync(path.join(blogDir, file), 'utf-8');
-      const meta = extractFrontmatter(content);
-      const slug = file.replace('.mdoc', '');
-      if (meta.title) {
-        output += `- [${meta.title}](https://pusatalatlabsipil.com/blog/${slug}/)\n`;
-      }
-    }
-    output += `\n`;
-  }
-
-  fs.writeFileSync(OUTPUT_FILE, output);
-  console.log(`Successfully generated ${OUTPUT_FILE}`);
+function isPublic(entry) {
+  return entry.data.status !== 'draft' && entry.data?.seo?.noIndex !== true;
 }
 
-generateLLMsText().catch(console.error);
+function toTime(value) {
+  if (!value) return 0;
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+}
+
+function oneLine(value) {
+  return String(value ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function generateLLMsText() {
+  const lines = [];
+
+  lines.push('# Pusat Alat Lab Sipil - Distributor Alat Laboratorium Teknik Sipil');
+  lines.push('');
+  lines.push(
+    '> Distributor resmi dan produsen alat laboratorium teknik sipil dengan jaminan garansi',
+  );
+  lines.push(
+    '> dan kualitas standar SNI/ASTM. Melayani pengadaan peralatan untuk pengujian tanah,',
+  );
+  lines.push('> beton, aspal, batuan, dan semen di seluruh Indonesia.');
+  lines.push('');
+
+  lines.push('## Kontak');
+  lines.push('- Email: sales@pusatalatlabsipil.com');
+  lines.push('- WhatsApp: +62 878-9303-0300');
+  lines.push(
+    '- Alamat: Jl. Jend. Amir Machmud No. 111/115, Cibeureum, Cimahi Selatan, Jawa Barat, Indonesia',
+  );
+  lines.push(
+    '- Harga: berbasis penawaran (quotation). Hubungi sales untuk daftar harga dan surat dukungan tender.',
+  );
+  lines.push('');
+
+  lines.push('## Halaman Utama');
+  lines.push(`- [Beranda](${BASE_URL}/)`);
+  lines.push(`- [Katalog Produk](${BASE_URL}/products/)`);
+  lines.push(`- [Blog & Artikel Teknik Sipil](${BASE_URL}/blog/)`);
+  lines.push(`- [Panduan Pengadaan](${BASE_URL}/panduan-pengadaan/)`);
+  lines.push(`- [FAQ](${BASE_URL}/faq/)`);
+  lines.push(`- [Kontak](${BASE_URL}/contact/)`);
+  lines.push('');
+
+  lines.push('## Kategori Produk');
+  for (const category of CATEGORIES) {
+    lines.push(`- [${category.name}](${BASE_URL}/products/${category.slug}/)`);
+  }
+  lines.push('');
+
+  const products = readCollection('products')
+    .filter(isPublic)
+    .sort(
+      (a, b) => toTime(b.data.publishDate) - toTime(a.data.publishDate),
+    );
+
+  if (products.length > 0) {
+    lines.push('## Produk');
+    for (const { slug, data } of products) {
+      const title = oneLine(data.title);
+      if (!title) continue;
+
+      const category = oneLine(data.category);
+      const description = oneLine(
+        data.description ?? data?.seo?.metaDescription,
+      );
+      const suffix = [category, description].filter(Boolean).join(' - ');
+
+      lines.push(
+        `- [${title}](${BASE_URL}/products/${slug}/)${suffix ? `: ${suffix}` : ''}`,
+      );
+    }
+    lines.push('');
+  }
+
+  const posts = readCollection('blog')
+    .filter(isPublic)
+    .sort(
+      (a, b) =>
+        toTime(b.data.updatedDate ?? b.data.pubDate) -
+        toTime(a.data.updatedDate ?? a.data.pubDate),
+    );
+
+  if (posts.length > 0) {
+    lines.push('## Artikel');
+    for (const { slug, data } of posts) {
+      const title = oneLine(data.title);
+      if (!title) continue;
+      lines.push(`- [${title}](${BASE_URL}/blog/${slug}/)`);
+    }
+    lines.push('');
+  }
+
+  fs.writeFileSync(OUTPUT_FILE, lines.join('\n'));
+  console.log(
+    `[llms.txt] ${products.length} produk + ${posts.length} artikel ditulis ke ${OUTPUT_FILE}`,
+  );
+}
+
+generateLLMsText();

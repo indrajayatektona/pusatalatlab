@@ -70,7 +70,11 @@ export default defineConfig({
   // URL lama arsip tag masih hidup di produksi. Slug tag kini dinormalisasi
   // (koma -> tanda hubung), jadi URL lama dialihkan permanen ke URL baru.
   redirects: {
-    '/blog/tag/beton,-mutu-beton/': '/blog/tag/beton-mutu-beton/',
+    // Tag ini dulu tersimpan sebagai satu item "Beton, Mutu Beton" sehingga
+    // menghasilkan slug gabungan. Sekarang dipecah jadi dua tag, jadi URL
+    // lamanya (versi mentah ber-koma maupun versi slug) diarahkan ke /beton/.
+    '/blog/tag/beton,-mutu-beton/': '/blog/tag/beton/',
+    '/blog/tag/beton-mutu-beton/': '/blog/tag/beton/',
   },
 
   integrations: [

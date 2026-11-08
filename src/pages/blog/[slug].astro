@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { tagToSlug } from '../../lib/slug';
 import { getImageSize } from '../../lib/image-size';
+import { extractFaq } from '../../lib/faq';
 import { SITE_CONFIG } from '../../config';
 
 // 1. Generate Static Paths
@@ -77,7 +78,7 @@ const isoUpdatedDate = new Date(
 // Google menggabungkan keduanya menjadi satu entitas (bukan organisasi baru).
 const siteUrl = new URL('/', Astro.site).toString();
 const orgId = new URL('/#organization', Astro.site).toString();
-const coverUrl = new URL(post.data.image || '/default-og.jpg', Astro.site).toString();
+const coverUrl = new URL(post.data.image || '/images/default-og.jpg', Astro.site).toString();
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -108,6 +109,23 @@ const articleSchema = {
   },
   "description": metaDesc // Gunakan deskripsi SEO
 };
+
+// FAQPage hanya ditambahkan kalau artikel benar-benar punya bagian FAQ
+// (heading yang memuat kata "FAQ"). Tanpa syarat heading itu, daftar
+// tanya-jawab di bagian lain artikel bisa salah terbaca sebagai FAQ.
+const faqItems = extractFaq(post.body);
+const faqSchema = faqItems.length > 0
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": `${canonicalURL}#faq`,
+      "mainEntity": faqItems.map(({ question, answer }) => ({
+        "@type": "Question",
+        "name": question,
+        "acceptedAnswer": { "@type": "Answer", "text": answer }
+      }))
+    }
+  : null;
 
 // 1. Ambil tag dari artikel saat ini menggunakan variabel 'post'
 const articleTags = post.data.tags || [];
@@ -143,6 +161,7 @@ const sidebarProducts = relatedProducts
 >
   {post.data.image && <link rel="preload" as="image" href={post.data.image} slot="head" />}
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
@@ -270,7 +289,7 @@ const sidebarProducts = relatedProducts
               {sidebarProducts.map(prod => (
                  <a href={`/products/${prod.slug}/`} class="group flex gap-4 items-center bg-white border border-gray-200 p-2 hover:border-civil-primary hover:shadow-md transition-all">
                     <div class="w-16 h-16 bg-gray-100 flex-shrink-0 border border-gray-200 overflow-hidden">
-                       <img src={prod.data.image} class="w-full h-full object-cover group-hover:scale-110 transition-transform" loading="lazy" decoding="async" />
+                       <img src={prod.data.image} alt={prod.data.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform" loading="lazy" decoding="async" />
                     </div>
                     <div>
                        <h4 class="text-xs font-bold text-civil-dark uppercase group-hover:text-civil-primary line-clamp-2">{prod.data.title}</h4>
